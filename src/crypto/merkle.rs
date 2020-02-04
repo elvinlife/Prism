@@ -132,9 +132,17 @@ mod tests {
 
     macro_rules! gen_merkle_tree_data {
         () => {{
+            //vec![
+            //    (hex!("0a0b0c0d0e0f0e0d0a0b0c0d0e0f0e0d0a0b0c0d0e0f0e0d0a0b0c0d0e0f0e0d")).into(),
+            //    (hex!("0101010101010101010101010101010101010101010101010101010101010202")).into(),
+            //]
             vec![
                 (hex!("0a0b0c0d0e0f0e0d0a0b0c0d0e0f0e0d0a0b0c0d0e0f0e0d0a0b0c0d0e0f0e0d")).into(),
                 (hex!("0101010101010101010101010101010101010101010101010101010101010202")).into(),
+                (hex!("0101010101010101010101010101010101010101010101010101010101010203")).into(),
+                (hex!("0101010101010101010101010101010101010101010101010101010101010204")).into(),
+                (hex!("0101010101010101010101010101010101010101010101010101010101010205")).into(),
+
             ]
         }};
     }
@@ -146,7 +154,8 @@ mod tests {
         let root = merkle_tree.root();
         assert_eq!(
             root,
-            (hex!("6b787718210e0b3b608814e04e61fde06d0df794319a12162f287412df3ec920")).into()
+            //(hex!("6b787718210e0b3b608814e04e61fde06d0df794319a12162f287412df3ec920")).into()
+            (hex!("ef823a0327b78067ec81340c1513c70bb76871b39ca2ac5072885e167b835b22")).into()
         );
         // "b69566be6e1720872f73651d1851a0eae0060a132cf0f64a0ffaea248de6cba0" is the hash of
         // "0a0b0c0d0e0f0e0d0a0b0c0d0e0f0e0d0a0b0c0d0e0f0e0d0a0b0c0d0e0f0e0d"
@@ -163,7 +172,12 @@ mod tests {
         let merkle_tree = MerkleTree::new(&input_data);
         let proof = merkle_tree.proof(0);
         assert_eq!(proof,
-                   vec![hex!("965b093a75a75895a351786dd7a188515173f6928a8af8c9baa4dcff268a4f0f").into()]
+                   //vec![hex!("965b093a75a75895a351786dd7a188515173f6928a8af8c9baa4dcff268a4f0f").into()]
+                    vec![
+                        hex!("965b093a75a75895a351786dd7a188515173f6928a8af8c9baa4dcff268a4f0f").into(),
+                        hex!("b818366af651c9c84b6a09df4927821b2b33c9e4abfd0e03d4be882cb609e504").into(),
+                        hex!("38af33ff1e555412e0c80ad03cde61a41ef95d7928c39d436da2ee2a834f252b").into(),
+                   ]
         );
         // "965b093a75a75895a351786dd7a188515173f6928a8af8c9baa4dcff268a4f0f" is the hash of
         // "0101010101010101010101010101010101010101010101010101010101010202"
@@ -173,7 +187,7 @@ mod tests {
     fn verifying() {
         let input_data: Vec<H256> = gen_merkle_tree_data!();
         let merkle_tree = MerkleTree::new(&input_data);
-        let proof = merkle_tree.proof(0);
-        assert!(verify(&merkle_tree.root(), &input_data[0].hash(), &proof, 0, input_data.len()));
+        let proof = merkle_tree.proof(3);
+        assert!(verify(&merkle_tree.root(), &input_data[3].hash(), &proof, 3, input_data.len()));
     }
 }
