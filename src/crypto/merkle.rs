@@ -187,7 +187,14 @@ mod tests {
     fn verifying() {
         let input_data: Vec<H256> = gen_merkle_tree_data!();
         let merkle_tree = MerkleTree::new(&input_data);
-        let proof = merkle_tree.proof(3);
-        assert!(verify(&merkle_tree.root(), &input_data[3].hash(), &proof, 3, input_data.len()));
+        for i in 0..input_data.len(){
+            let proof = merkle_tree.proof(i);
+            assert!(verify(&merkle_tree.root(), &input_data[i].hash(), &proof, i, input_data.len()));
+        }
+        for i in input_data.len()-1..=0{
+            let proof = merkle_tree.proof(input_data.len()-1-i);
+            assert!(!verify(&merkle_tree.root(), &input_data[i].hash(), &proof, input_data.len()-1-i, input_data.len()));
+        }
+        
     }
 }
