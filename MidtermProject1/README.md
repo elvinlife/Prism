@@ -2,18 +2,18 @@
 
 For midterm project, you are going to build a simplified Bitcoin client. The goal of the client is not to run in Bitcoin mainnet or any public testnet. Instead, the goal is to run it inside your team and let you have fun with it. You have plenty of freedom of designing and implementing this project.
 
-The midterm project should be based on your code of assignment 2. You are free to discuss assignment 2 or merge codes of teammates after its due (12:30PM, Feb 6).
+The midterm project should be based on your code of assignment 2. You are free to discuss assignment 2 or merge codes of teammates after its due (12:30PM, Feb 6). Also please keep the code for assignment 2 and not push code for midterm project until its due. (You can use another branch rather than *master*.)
 
 This is the first part of midterm project. You are going to finish the **Block** struct and the **Blockchain** struct. Please work in teams of 2.
 
-**Due date: 12:30PM, Feb 11, 2020.** This part of project is not as heavy as previous assignment, and we believe 1 week is enough.
+**Due date: 12:30PM, Feb 11, 2020.** This part of project is not as heavy as previous assignment, and we believe 5 days are enough.
 
 ## Repository management and submission
 
 1. We suggest you to continue to work on your repo of assignment 2. Team members should work on one same repo.
 2. Remember to change visibility of your repo to private.
 3. Add TAs as a reporter if you haven't done it. TAs are `geruiw2` and `rbrana2`.
-4. Fill in a google form to provide your repo URL. One team just need to fill it once. The form will be ready by Feb 6.
+4. Fill in a google form to provide your repo URL. One team just need to fill it once. This is the link: [https://forms.gle/RTBHo8tzAP5LKPfy9](https://forms.gle/RTBHo8tzAP5LKPfy9)
 5. Students can run tests (by command cargo test) provided in the code to check the validity of their implementation.
 6. TAs will run additional tests (private) on the final submission to award marks.
 
@@ -72,7 +72,7 @@ In the future, the **Blockchain** struct will be shared between threads, such as
 If your programming is working, you will pass the test named *insert_one*. (By running `cargo test`.)
 
 We will use other private tests to grade your submission.
-The tests will insert several blocks into a new blockchain, and check whether the tip is correct. The tests contain forking scenarios  to check the correctness of your longest chain rule.
+The tests will insert several blocks into a new blockchain, and check whether the tip is correct. The tests contain forking/branching scenarios to check the correctness of your longest chain rule.
 
 We will *NOT* call insert function with invalid blocks. Specifically, we will not insert a block whose parent is not already inserted.
 
