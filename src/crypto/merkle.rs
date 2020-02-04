@@ -94,9 +94,13 @@ impl MerkleTree {
 /// Verify that the datum hash with a vector of proofs will produce the Merkle root. Also need the
 /// index of datum and `leaf_size`, the total number of leaves.
 pub fn verify(root: &H256, datum: &H256, proof: &[H256], index: usize, leaf_size: usize) -> bool {
-    if index >= leaf_size{
+    let mut _sz = 1;
+    let mut cnt = 0;
+    while _sz < leaf_size { _sz = _sz << 1; cnt += 1; }
+    
+    if index >= leaf_size || proof.len() != cnt {
         false
-    }
+    } 
     else{
         let mut idx = index;
         let mut curr : H256 = *datum;
