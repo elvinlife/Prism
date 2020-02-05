@@ -11,14 +11,16 @@ pub struct Transaction {
 /// Create digital signature of a transaction
 pub fn sign(t: &Transaction, key: &Ed25519KeyPair) -> Signature {
     let t_bytes = bincode::serialize(t).unwrap();
-    key.sign(&t_bytes)  
+    let t_digest = ring::digest::digest(&ring::digest::SHA256, &t_bytes);
+    key.sign(t_digest.as_ref())  
 }
 
 /// Verify digital signature of a transaction, using public key instead of secret key
 pub fn verify(t: &Transaction, public_key: &<Ed25519KeyPair as KeyPair>::PublicKey, signature: &Signature) -> bool {
     let t_bytes = bincode::serialize(t).unwrap();
+    let t_digest = ring::digest::digest(&ring::digest::SHA256, &t_bytes);
     let public_key = UnparsedPublicKey::new(&ED25519, public_key);
-    public_key.verify(&t_bytes, signature.as_ref()).is_ok()
+    public_key.verify(t_digest.as_ref(), signature.as_ref()).is_ok()
 }
 
 #[cfg(any(test, test_utilities))]
