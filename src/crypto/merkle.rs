@@ -4,60 +4,66 @@ use std::vec::Vec;
 /// A Merkle tree.
 #[derive(Debug, Default)]
 pub struct MerkleTree {
-    tree: Vec<H256>,
-    valid: Vec<bool>,
-    sz: usize,
+    tree: Vec<H256>,    // Vector of tree nodes.
+    valid: Vec<bool>,   // Vector of flags indicating whether index in tree[] corresponds to valid node.
+    sz: usize,          // Next greatest power of 2 of the leaf size.
 }
 
 impl MerkleTree {
     pub fn new<T>(data: &[T]) -> Self where T: Hashable, {
+        // Find the next greatest power of 2 of the leaf size.
         let mut _sz = 1;
         while _sz < data.len(){
             _sz = _sz << 1;
         }
 
+        // Initialize tree[] and valid[] to have 2*sz-1 elements.
         let mut _tree: Vec<H256> = Vec::<H256>::new();
         _tree.resize(2*_sz-1,Default::default());
         let mut _valid: Vec<bool> = Vec::<bool>::new();
         _valid.resize(2*_sz-1,false);
 
+        // Copy the input data to the last level of the tree[].
         for i in 0..data.len(){
             _tree[i+_sz-1] = data[i].hash();
             _valid[i+_sz-1] = true;
         }
 
+        // Construct the tree[] level by level from leaf up to the root.
         let save_sz = _sz;
-        while _sz > 1{
-            let mut i = 0;
-            while i < _sz {
-                let l_idx = _sz - 1 + i;
-                let r_idx = l_idx + 1;
-                let p_idx = (l_idx - 1) >> 1;
+        while _sz > 1{                                      // While not at level 0 (the root)
+            let mut i = 0;                                  // Let i be the current node in the level.
+            while i < _sz {                                 // Continue until you reach the end of the level.
+
+                let l_idx = _sz - 1 + i;                    // Index of i in tree[].
+                let r_idx = l_idx + 1;                      // Index of right sibling of i in tree[].
+                let p_idx = (l_idx - 1) >> 1;               // Index of parent of i in tree[].
 
                 let mut buf : Vec<u8> = Vec::<u8>::new();
 
-                if !_valid[l_idx]{
+                if !_valid[l_idx]{                          // If we reached the end of the level, go to next level.
                     break;
                 }
-                else if _valid[l_idx] && !_valid[r_idx]{
+                else if _valid[l_idx] && !_valid[r_idx]{    // Otherwise, if current node is valid but right sibling is invalid, copy current node to right sibling before filling parent.
                     _tree[r_idx] = _tree[l_idx];
                     buf.extend_from_slice(_tree[l_idx].as_ref()); 
                     buf.extend_from_slice(_tree[r_idx].as_ref());
                     _tree[p_idx] = ring::digest::digest(&ring::digest::SHA256, &buf).into();
                     _valid[p_idx] = true;
                 }
-                else{
+                else{                                       // Otherwise, fill parent hash with hash of current node and its right sibling.
                     buf.extend_from_slice(_tree[l_idx].as_ref()); 
                     buf.extend_from_slice(_tree[r_idx].as_ref());
                     _tree[p_idx] = ring::digest::digest(&ring::digest::SHA256, &buf).into();
                     _valid[p_idx] = true;
                 } 
 
-                i += 2;
+                i += 2;                                     // Advance current node past its right sibling.
             }
-            _sz  = _sz >> 1;
+            _sz  = _sz >> 1;                                // Move to next level.
         }
 
+        // Return the constructed tree.
         MerkleTree{
             tree: _tree,
             valid: _valid,
@@ -67,17 +73,20 @@ impl MerkleTree {
     }
 
     pub fn root(&self) -> H256 {
-        self.tree[0]
+        self.tree[0]                                        // Root of tree is at index 0.
     }
 
     /// Returns the Merkle Proof of data at index i
     pub fn proof(&self, index: usize) -> Vec<H256> {
         let mut proof : Vec<H256> = Vec::<H256>::new();
-        let mut idx = self.sz - 1 + index;
-        if idx < 2*self.sz - 1 && self.valid[idx]{
-            while idx > 0{
-                let p_idx = (idx - 1) >> 1;
-                let s_idx = if idx % 2 == 1{
+
+        let mut idx = self.sz - 1 + index;                 // Get index of leaf in the tree[].
+
+        if idx < 2*self.sz - 1 && self.valid[idx]{         // Make sure this is a valid leaf.
+
+            while idx > 0{                                 // Construct the proof from bottom up until we reach root.
+                let p_idx = (idx - 1) >> 1;                // Index of parent.
+                let s_idx = if idx % 2 == 1{               // Index of sibling, which depends on whether current node is a left or right child of its parent.
                     idx + 1
                 }
                 else{
@@ -96,31 +105,31 @@ impl MerkleTree {
 pub fn verify(root: &H256, datum: &H256, proof: &[H256], index: usize, leaf_size: usize) -> bool {
     let mut _sz = 1;
     let mut cnt = 0;
-    while _sz < leaf_size { _sz = _sz << 1; cnt += 1; }
+    while _sz < leaf_size { _sz = _sz << 1; cnt += 1; }            // Given leaf_size, we expect the proof to have length cnt.
     
-    if index >= leaf_size || proof.len() != cnt {
+    if index >= leaf_size || proof.len() != cnt {                  // If either invalid index or proof length != cnt, prematurely abort.
         false
     } 
     else{
         let mut idx = index;
         let mut curr : H256 = *datum;
 
-        for hash in proof{
+        for hash in proof{                                        // Do the proof.
             let mut buf : Vec<u8> = Vec::<u8>::new();
-            if idx % 2 == 0{
+            if idx % 2 == 0{                                      // If the current index is even, we know it is the left child of its parent.
                 buf.extend_from_slice(curr.as_ref());
                 buf.extend_from_slice(hash.as_ref());
                 curr = ring::digest::digest(&ring::digest::SHA256,&buf).into(); 
             }
             else{
-                buf.extend_from_slice(hash.as_ref());
+                buf.extend_from_slice(hash.as_ref());             // If current index is odd, it is right child of parent.
                 buf.extend_from_slice(curr.as_ref());
                 curr = ring::digest::digest(&ring::digest::SHA256,&buf).into();
             }
             idx = idx >> 1;
         }
     
-        *root == curr 
+        *root == curr                                             // Compare final value with root.
     }
     
 }
