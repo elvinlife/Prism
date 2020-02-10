@@ -1,11 +1,20 @@
 use serde::{Serialize,Deserialize};
 use ring::signature::{Ed25519KeyPair, Signature, KeyPair, VerificationAlgorithm, EdDSAParameters, UnparsedPublicKey, ED25519};
 use rand::{Rng, distributions::Alphanumeric};
+use crate::crypto::hash::{H256, Hashable};
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct Transaction {
     input: String,
     output: String,
+}
+
+impl Hashable for Transaction{
+    fn hash(&self) -> H256 {
+        let t_bytes = bincode::serialize(&self).unwrap();
+        let t_digest = ring::digest::digest(&ring::digest::SHA256, &t_bytes);
+        t_digest.into()
+    }
 }
 
 /// Create digital signature of a transaction
