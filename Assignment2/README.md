@@ -1,12 +1,12 @@
 # Assignment 2
-In this assignment, you will implement some crypto-primitives and basic data structures. You will need the code that we provide in this repo. Please follow the instructions. **Due data: 12:30PM, Feb 6, 2020.**
+In this assignment, you will implement some crypto-primitives and basic data structures. You will need the code that we provide in this repo. Please follow the instructions. **Due date: 12:30PM, Feb 6, 2020.**
 
 **Notice that this is an individual assignment. You should finish it on your own.**
 
 ## Repository management and submission:
 1. Fork the current repo. **Change visibility to private, if you don't want someone see your code.** Note: We are also going to use the same repo for midterm project, which means you don't need to fork this repo again in the future.
 2. Add TAs as a reporter on your forked repo (this repo is different from the one you used for assignment 1, so please add TAs again). TAs are `geruiw2` and `rbrana2`.
-3. Fill in a form to provide your repo URL. The form is not yet ready and will be ready by Jan 30.
+3. Fill in a google form to provide your repo URL. ~~The form is not yet ready and will be ready by Jan 30.~~ The link is: [https://forms.gle/BSva88p8MVCCAVPw5](https://forms.gle/BSva88p8MVCCAVPw5).
 4. TAs will initiate a pull from your repo at the deadline for submission, and this will be considered a final submission.
 5. Students can run tests (by command `cargo test`) provided in the code to check the validity of their implementation.
 6. TAs will run additional tests (private) on the final submission to award marks.
