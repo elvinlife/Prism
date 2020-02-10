@@ -3,7 +3,8 @@ use ring::signature::{Ed25519KeyPair, Signature, KeyPair, VerificationAlgorithm,
 use rand::{Rng, distributions::Alphanumeric};
 use crate::crypto::hash::{H256, Hashable};
 
-#[derive(Serialize, Deserialize, Debug, Default)]
+
+#[derive(Serialize, Deserialize, Debug, Default, Clone)]
 pub struct Transaction {
     input: String,
     output: String,

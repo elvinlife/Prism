@@ -1,13 +1,11 @@
 use serde::{Serialize, Deserialize};
 use crate::crypto::hash::{H256, Hashable};
-use chrono::{DateTime, Utc};
 use crate::transaction::{Transaction};
-use rand;
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Default, Clone)]
 pub struct Block {
-    header: Header,
-    content: Content,
+    pub header: Header,
+    pub content: Content,
 }
 
 impl Hashable for Block {
@@ -16,13 +14,13 @@ impl Hashable for Block {
     }
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Default, Clone, Copy)]
 pub struct Header{
-    parent: H256,
-    nonce: u32,
-    difficulty: H256,
-    timestamp: DateTime<Utc>,
-    merkle_root: H256,
+    pub parent: H256,
+    pub nonce: u32,
+    pub difficulty: H256,
+    pub timestamp: u64,
+    pub merkle_root: H256,
 }
 
 impl Hashable for Header{
@@ -33,9 +31,17 @@ impl Hashable for Header{
     }
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Default, Clone)]
 pub struct Content{
-    transactions: Vec<Transaction>,
+    pub transactions: Vec<Transaction>,
+}
+
+impl Content{
+    pub fn new() -> Self {
+        Content{
+            transactions: Default::default(),
+        }
+    }
 }
 
 
@@ -44,18 +50,18 @@ pub mod test {
     use super::*;
     use crate::crypto::hash::H256;
 
-    pub fn generate_random_block(parent: &H256) -> Block {
-        Block{
+    pub fn generate_random_block(parent: &H256) -> Block { 
+        Block {
             header: Header{
                 parent: *parent,
                 nonce: rand::random::<u32>(),
                 difficulty: Default::default(),
-                timestamp: Utc::now(),
+                timestamp: Default::default(),
                 merkle_root: Default::default(),
             },
             content: Content{
                 transactions: Default::default(),
-            },
+            }
         }
     }
 }
