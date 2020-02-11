@@ -3,9 +3,9 @@ use crate::crypto::hash::{H256, Hashable};
 use std::collections::HashMap;
 
 pub struct Blockchain {
-    pub blocks: HashMap<H256,Block>,
-    pub block_len: HashMap<H256,u32>,
-    pub head: H256,
+    blocks: HashMap<H256,Block>,
+    block_len: HashMap<H256,u32>,
+    head: H256,
 }
 
 impl Blockchain {
