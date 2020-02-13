@@ -3,9 +3,9 @@ use crate::crypto::hash::{H256, Hashable};
 use std::collections::HashMap;
 
 pub struct Blockchain {
-    pub blocks: HashMap<H256,Block>,
-    pub block_len: HashMap<H256,u32>,
-    pub head: H256,
+    blocks: HashMap<H256,Block>,
+    block_len: HashMap<H256,u32>,
+    head: H256,
 }
 
 impl Blockchain {
@@ -41,20 +41,23 @@ impl Blockchain {
 
     /// Insert a block into blockchain
     pub fn insert(&mut self, block: &Block) {
-        let cloned_block = block.clone();
         let curr_block_hash = block.hash();
         let prev_block_hash = block.header.parent;
 
 
-        if self.blocks.contains_key(&prev_block_hash){
-            self.blocks.insert(curr_block_hash, cloned_block);
+        match self.blocks.get(&prev_block_hash){
+            Some(prev_block) => {
+                self.blocks.insert(curr_block_hash, block.clone());
 
-            let new_len: u32 = self.block_len.get(&prev_block_hash).unwrap() + 1; 
-            self.block_len.insert(curr_block_hash, new_len);
+                let new_len: u32 = self.block_len.get(&prev_block_hash).unwrap() + 1; 
+                self.block_len.insert(curr_block_hash, new_len);
 
-            if new_len > *self.block_len.get(&self.head).unwrap(){
-                self.head = curr_block_hash; 
-            }
+                if new_len > *self.block_len.get(&self.head).unwrap(){
+                    self.head = curr_block_hash; 
+                }
+            },
+            None => {},
+
         }
         
     }

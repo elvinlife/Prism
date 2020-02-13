@@ -53,7 +53,7 @@ pub mod test {
     pub fn generate_random_block(parent: &H256) -> Block { 
         Block {
             header: Header{
-                parent: *parent,
+                parent: parent.clone(),
                 nonce: rand::random::<u32>(),
                 difficulty: Default::default(),
                 timestamp: Default::default(),
