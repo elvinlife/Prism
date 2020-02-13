@@ -95,4 +95,24 @@ mod tests {
         assert_eq!(blockchain.tip(), block.hash());
 
     }
+
+    #[test]
+    fn test_longest_chain() {
+        let mut blockchain = Blockchain::new();
+        let hash_0 = blockchain.tip();
+        let mut block1 = generate_random_block(&hash_0);
+        let mut block2 = generate_random_block(&hash_0);
+        let mut chain_correct = Vec::<H256>::new();
+        chain_correct.push(hash_0);
+        for i in 0..20 {
+            blockchain.insert(&block1);
+            blockchain.insert(&block2);
+            chain_correct.push(block1.hash());
+            block1 = generate_random_block(&block1.hash());
+            block2 = generate_random_block(&block2.hash());
+        }
+        chain_correct.reverse();
+        let chain_to_verify = blockchain.all_blocks_in_longest_chain();
+        assert_eq!(chain_to_verify, chain_correct);
+    } 
 }
