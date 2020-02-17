@@ -7,6 +7,13 @@ use std::time;
 
 use std::thread;
 
+use std::sync::{Arc,Mutex};
+
+use crate::blockchain::{Blockchain};
+use crate::block::{Block, Header, Content};
+use crate::crypto::merkle::{MerkleTree};
+use crate::crypto::hash::{H256, Hashable};
+
 enum ControlSignal {
     Start(u64), // the number controls the lambda of interval between block generation
     Exit,
@@ -23,6 +30,8 @@ pub struct Context {
     control_chan: Receiver<ControlSignal>,
     operating_state: OperatingState,
     server: ServerHandle,
+    blockchain: Arc<Mutex<Blockchain>>,
+    mined_blocks: u64,
 }
 
 #[derive(Clone)]
@@ -31,15 +40,15 @@ pub struct Handle {
     control_chan: Sender<ControlSignal>,
 }
 
-pub fn new(
-    server: &ServerHandle,
-) -> (Context, Handle) {
+pub fn new(server: &ServerHandle, blockchain: &Arc<Mutex<Blockchain>>) -> (Context, Handle) {
     let (signal_chan_sender, signal_chan_receiver) = unbounded();
 
     let ctx = Context {
         control_chan: signal_chan_receiver,
         operating_state: OperatingState::Paused,
         server: server.clone(),
+        blockchain: Arc::clone(blockchain),
+        mined_blocks: 0,
     };
 
     let handle = Handle {
@@ -111,7 +120,36 @@ impl Context {
                 return;
             }
 
-            // TODO: actual mining
+            // TODO: actual mining 
+            if let Ok(mut chain) = self.blockchain.lock(){ 
+                // Get random content.
+                let content = Content::new();
+
+                // Initialize block header.
+                let parent = chain.tip();
+                let timestamp = time::SystemTime::now().duration_since(time::SystemTime::UNIX_EPOCH).unwrap().as_millis();
+                let difficulty: H256 = chain.get_block(&parent).unwrap().header.difficulty;
+                let merkle_root = MerkleTree::new(&content.transactions).root();
+                
+                // Create block with random nonce.
+                let block = Block {
+                    header: Header{
+                        parent: parent,
+                        nonce: rand::random::<u32>(),
+                        difficulty: difficulty,
+                        timestamp: timestamp,
+                        merkle_root: merkle_root,
+                    },
+                    content: content, 
+                };
+
+                // If block hash <= difficulty, block is successfully mined.
+                if block.hash() <= difficulty { 
+                    self.mined_blocks += 1;
+                    println!("{} blocks mined", self.mined_blocks);
+                    chain.insert(&block);
+                }
+            }
 
             if let OperatingState::Run(i) = self.operating_state {
                 if i != 0 {

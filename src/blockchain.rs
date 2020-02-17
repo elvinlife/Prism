@@ -15,7 +15,10 @@ impl Blockchain {
             header: Header{
                 parent: Default::default(),
                 nonce: Default::default(),
-                difficulty: Default::default(),
+                difficulty: [0,0,128,0,0,0,0,0,
+                             0,0,0,0,0,0,0,0,
+                             0,0,0,0,0,0,0,0,
+                             0,0,0,0,0,0,0,0].into(),
                 timestamp: Default::default(),
                 merkle_root: Default::default(),
             },
@@ -44,20 +47,15 @@ impl Blockchain {
         let curr_block_hash = block.hash();
         let prev_block_hash = block.header.parent;
 
+        if let Some(_) = self.blocks.get(&prev_block_hash){
+            self.blocks.insert(curr_block_hash, block.clone());
 
-        match self.blocks.get(&prev_block_hash){
-            Some(prev_block) => {
-                self.blocks.insert(curr_block_hash, block.clone());
+            let new_len: u32 = self.block_len.get(&prev_block_hash).unwrap() + 1; 
+            self.block_len.insert(curr_block_hash, new_len);
 
-                let new_len: u32 = self.block_len.get(&prev_block_hash).unwrap() + 1; 
-                self.block_len.insert(curr_block_hash, new_len);
-
-                if new_len > *self.block_len.get(&self.head).unwrap(){
-                    self.head = curr_block_hash; 
-                }
-            },
-            None => {},
-
+            if new_len > *self.block_len.get(&self.head).unwrap(){
+                self.head = curr_block_hash; 
+            }
         }
         
     }
@@ -65,6 +63,10 @@ impl Blockchain {
     /// Get the last block's hash of the longest chain
     pub fn tip(&self) -> H256 {
         self.head
+    }
+
+    pub fn get_block(&self, hash: &H256) -> Option<&Block> {
+        self.blocks.get(&hash)
     }
 
     /// Get the last block's hash of the longest chain

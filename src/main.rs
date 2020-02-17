@@ -20,6 +20,9 @@ use std::process;
 use std::thread;
 use std::time;
 
+use crate::blockchain::{Blockchain};
+use std::sync::{Arc,Mutex};
+
 fn main() {
     // parse command line arguments
     let matches = clap_app!(Bitcoin =>
@@ -80,9 +83,11 @@ fn main() {
     );
     worker_ctx.start();
 
+    let blockchain = Arc::new(Mutex::new(Blockchain::new()));
     // start the miner
     let (miner_ctx, miner) = miner::new(
         &server,
+        &blockchain,
     );
     miner_ctx.start();
 
