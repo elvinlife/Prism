@@ -7,7 +7,7 @@ In this part of midterm project, you are going to implement the **mining** modul
 ## Repository management and submission
 
 1. We suggest you to continue to work on your repo of midterm project. 
-2. Submit a report in pdf on compass2g. Compass2g will be ready soon. Please don't submit code.
+2. Submit a report in pdf on compass2g. ~~Compass2g will be ready soon~~ Compass2g is ready now. Please don't submit code. Updated: One submission for one team is enough.
 
 ## Code provided
 The following files are related to this assignment.
