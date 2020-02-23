@@ -7,7 +7,7 @@ In this part of midterm project, you are going to implement the **mining** modul
 ## Repository management and submission
 
 1. We suggest you to continue to work on your repo of midterm project. 
-2. Submit a report in pdf on compass2g. Compass2g will be ready soon. Please don't submit code.
+2. Submit a report in pdf on compass2g. ~~Compass2g will be ready soon~~ Compass2g is ready now. Please don't submit code. Updated: One submission for one team is enough.
 
 ## Code provided
 The following files are related to this assignment.
@@ -68,7 +68,7 @@ After you have all these fields and build a block, just check whether the proof-
 ```
 block.hash() <= difficulty
 ```
-Notice that the above code is conceptually the same as *H(nonce|block) < threadhold* in lectures.
+Notice that the above code is conceptually the same as *H(nonce|block) < threshold* in lectures.
 
 If it is satisfied, the block is successfully generated. Congratulations! Just insert it into blockchain, and keep on mining for another block.
 
