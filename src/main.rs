@@ -22,6 +22,7 @@ use std::time;
 
 use crate::blockchain::{Blockchain};
 use std::sync::{Arc,Mutex};
+use log::debug;
 
 fn main() {
     // parse command line arguments
@@ -86,7 +87,7 @@ fn main() {
         &blockchain,
     );
     worker_ctx.start();
-
+    debug!("{} workers start.", p2p_workers);
     
     // start the miner
     let (miner_ctx, miner) = miner::new(
@@ -94,6 +95,7 @@ fn main() {
         &blockchain,
     );
     miner_ctx.start();
+    debug!("miner start");
 
     // connect to known peers
     if let Some(known_peers) = matches.values_of("known_peer") {

@@ -13,6 +13,8 @@ use crate::blockchain::{Blockchain};
 use crate::block::{Block, Header, Content};
 use crate::crypto::merkle::{MerkleTree};
 use crate::crypto::hash::{H256, Hashable};
+use crate::network::message::Message;
+use log::debug;
 
 enum ControlSignal {
     Start(u64), // the number controls the lambda of interval between block generation
@@ -146,8 +148,9 @@ impl Context {
                 // If block hash <= difficulty, block is successfully mined.
                 if block.hash() <= difficulty { 
                     self.mined_blocks += 1;
-                    println!("{} blocks mined", self.mined_blocks);
+                    debug!("new block mined, hash: {:?}", block.hash());
                     chain.insert(&block);
+                    self.server.broadcast(Message::NewBlockHashes(vec![block.hash()]));
                 }
             }
 

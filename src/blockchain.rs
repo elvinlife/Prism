@@ -1,6 +1,7 @@
 use crate::block::{Block, Header, Content};
 use crate::crypto::hash::{H256, Hashable};
 use std::collections::HashMap;
+use log::debug;
 
 pub struct Blockchain {
     blocks: HashMap<H256,Block>,
@@ -15,7 +16,7 @@ impl Blockchain {
             header: Header{
                 parent: Default::default(),
                 nonce: Default::default(),
-                difficulty: [0,0,128,0,0,0,0,0,
+                difficulty: [16,0,0,0,0,0,0,0,
                              0,0,0,0,0,0,0,0,
                              0,0,0,0,0,0,0,0,
                              0,0,0,0,0,0,0,0].into(),
@@ -43,7 +44,7 @@ impl Blockchain {
     }
 
     /// Insert a block into blockchain
-    pub fn insert(&mut self, block: &Block) {
+    pub fn insert(&mut self, block: &Block) -> bool{
         let curr_block_hash = block.hash();
         let prev_block_hash = block.header.parent;
 
@@ -56,8 +57,10 @@ impl Blockchain {
             if new_len > *self.block_len.get(&self.head).unwrap(){
                 self.head = curr_block_hash; 
             }
+            debug!("tip: {:?}", self.head);
+            return true;
         }
-        
+        false
     }
 
     /// Get the last block's hash of the longest chain
