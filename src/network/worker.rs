@@ -11,17 +11,20 @@ pub struct Context {
     msg_chan: channel::Receiver<(Vec<u8>, peer::Handle)>,
     num_worker: usize,
     server: ServerHandle,
+    blockchain: Arc<Mutex<Blockchain>>,
 }
 
 pub fn new(
     num_worker: usize,
     msg_src: channel::Receiver<(Vec<u8>, peer::Handle)>,
     server: &ServerHandle,
+    blockchain: &Arc<Mutex<Blockchain>>,
 ) -> Context {
     Context {
         msg_chan: msg_src,
         num_worker,
         server: server.clone(),
+        blockchain: blockchain.clone(),
     }
 }
 
@@ -49,6 +52,15 @@ impl Context {
                 }
                 Message::Pong(nonce) => {
                     debug!("Pong: {}", nonce);
+                }
+                Message::NewBlockHashes(hashes) => {
+
+                }
+                Message::GetBlocks(hashes) => {
+
+                }
+                Message::Blocks(blocks) => {
+
                 }
             }
         }
