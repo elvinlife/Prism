@@ -7,7 +7,7 @@ use log::{debug, warn};
 use std::thread;
 use std::sync::{Mutex, Arc};
 use crate::{Blockchain, block};
-use crate::crypto::hash::Hashable;
+use crate::crypto::hash::{Hashable, H256};
 
 #[derive(Clone)]
 pub struct Context {
@@ -88,18 +88,31 @@ impl Context {
                 }
                 Message::Blocks(blocks) => {
                     debug!("Blocks: {:?}", blocks);
-                    let mut broadcast_hashes = Vec::new();
+                    let mut broadcast_hashes: Vec<H256> = Vec::new();
+                    for b in &blocks {
+                        self.orphan_blocks.push(b.clone());
+                    }
+                    let mut orphan_index = Vec::new();
                     if let Ok(mut chain) = self.blockchain.lock() {
-                        for b in &blocks {
-                            if chain.insert(b) {
-                                broadcast_hashes.push(b.hash());
+                        loop{
+                            let mut cannot_commit = true;
+                            orphan_index.clear();
+                            for b in &self.orphan_blocks {
+                                if chain.insert(b) {
+                                    cannot_commit = false;
+                                    broadcast_hashes.push(b.hash());
+                                    orphan_index.push(false);
+                                }
+                                else {
+                                    orphan_index.push(true);
+                                }
                             }
-                            else {
-                                debug!("Orphan block inserted, hash: {:?}", b.hash());
-                                self.orphan_blocks.push(b.clone());
+                            if cannot_commit {
+                                break;
                             }
+                            let mut i = 0;
+                            self.orphan_blocks.retain(|_| (orphan_index[i], i+=1).0);
                         }
-                        self.orphan_blocks.retain(|x| chain.insert(&x));
                     }
                     if !broadcast_hashes.is_empty() {
                         self.server.broadcast(Message::NewBlockHashes(broadcast_hashes));
