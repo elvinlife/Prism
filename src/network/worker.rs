@@ -8,6 +8,7 @@ use std::thread;
 use std::sync::{Mutex, Arc};
 use crate::{Blockchain, block};
 use crate::crypto::hash::{Hashable, H256};
+use std::collections::{HashSet,HashMap};
 
 #[derive(Clone)]
 pub struct Context {
@@ -15,7 +16,7 @@ pub struct Context {
     num_worker: usize,
     server: ServerHandle,
     blockchain: Arc<Mutex<Blockchain>>,
-    orphan_blocks: Vec<block::Block>,
+    orphan_blocks: Arc<Mutex<HashMap<H256,block::Block>>>,
 }
 
 pub fn new(
@@ -23,13 +24,14 @@ pub fn new(
     msg_src: channel::Receiver<(Vec<u8>, peer::Handle)>,
     server: &ServerHandle,
     blockchain: &Arc<Mutex<Blockchain>>,
+    orphan_blocks: &Arc<Mutex<HashMap<H256,block::Block>>>,
 ) -> Context {
     Context {
         msg_chan: msg_src,
         num_worker,
         server: server.clone(),
         blockchain: blockchain.clone(),
-        orphan_blocks: vec![]
+        orphan_blocks: orphan_blocks.clone(),
     }
 }
 
@@ -58,6 +60,8 @@ impl Context {
                 Message::Pong(nonce) => {
                     debug!("Pong: {}", nonce);
                 }
+
+                // If a peer advertises that it has a block that we don't have committed, request it from the peer.
                 Message::NewBlockHashes(hashes) => {
                     debug!("NewBlockHashes: {:?}", hashes);
                     let mut claim_hashes = Vec::new();
@@ -72,6 +76,8 @@ impl Context {
                         peer.write(Message::GetBlocks(claim_hashes));    
                     }
                 }
+
+                // If a peer asks us for a block we have committed in our blockchain, give it to them.
                 Message::GetBlocks(hashes) => {
                     debug!("GetBlocks: {:?}", hashes);
                     let mut blocks = Vec::new();
@@ -86,32 +92,41 @@ impl Context {
                         peer.write(Message::Blocks(blocks));
                     }
                 }
+
+                // If we receive a block, check if it can be committed to the blockchain
+                // If it can, commit it and all of its children in the orphan block pool.
+                // If it can't add it to the orphan block pool and request its parent from the peer.  
                 Message::Blocks(blocks) => {
                     debug!("Blocks: {:?}", blocks);
                     let mut broadcast_hashes: Vec<H256> = Vec::new();
-                    for b in &blocks {
-                        self.orphan_blocks.push(b.clone());
-                    }
-                    let mut orphan_index = Vec::new();
-                    if let Ok(mut chain) = self.blockchain.lock() {
-                        loop{
-                            let mut cannot_commit = true;
-                            orphan_index.clear();
-                            for b in &self.orphan_blocks {
-                                if chain.insert(b) {
-                                    cannot_commit = false;
-                                    broadcast_hashes.push(b.hash());
-                                    orphan_index.push(false);
+                    let mut committed_hashes = HashSet::new();
+
+                    if let Ok(mut orphans) = self.orphan_blocks.lock(){
+                        if let Ok(mut chain) = self.blockchain.lock(){
+                            for b in &blocks {
+                                orphans.insert(b.hash(),b.clone());
+                            }
+                            loop{
+                                let mut no_commits = true;
+                                committed_hashes.clear();
+
+                                for (hash,block) in &(*orphans) {
+                                    if chain.insert(block) {
+                                        no_commits = false;
+                                        broadcast_hashes.push(*hash);
+                                        committed_hashes.insert(*hash);
+                                    }
                                 }
-                                else {
-                                    orphan_index.push(true);
+
+                                for hash in &committed_hashes {
+                                    orphans.remove(hash);
+
+                                }
+
+                                if no_commits {
+                                    break;
                                 }
                             }
-                            if cannot_commit {
-                                break;
-                            }
-                            let mut i = 0;
-                            self.orphan_blocks.retain(|_| (orphan_index[i], i+=1).0);
                         }
                     }
                     if !broadcast_hashes.is_empty() {

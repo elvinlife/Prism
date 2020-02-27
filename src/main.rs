@@ -21,8 +21,11 @@ use std::thread;
 use std::time;
 
 use crate::blockchain::{Blockchain};
+use crate::crypto::hash::{H256};
 use std::sync::{Arc,Mutex};
 use log::debug;
+
+use std::collections::{HashMap};
 
 fn main() {
     // parse command line arguments
@@ -71,6 +74,9 @@ fn main() {
     // initialize blockchain
     let blockchain = Arc::new(Mutex::new(Blockchain::new()));
 
+    // initialize mempool for orphaned blocks
+    let orphan_blocks = Arc::new(Mutex::new(HashMap::<H256,block::Block>::new()));
+
     // start the worker
     let p2p_workers = matches
         .value_of("p2p_workers")
@@ -85,6 +91,7 @@ fn main() {
         msg_rx,
         &server,
         &blockchain,
+        &orphan_blocks,
     );
     worker_ctx.start();
     debug!("{} workers start.", p2p_workers);
