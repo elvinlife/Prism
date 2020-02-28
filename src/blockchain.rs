@@ -57,7 +57,7 @@ impl Blockchain {
             if new_len > *self.block_len.get(&self.head).unwrap(){
                 self.head = curr_block_hash; 
             }
-            debug!("tip: {:?}", self.head);
+            debug!("tip: {:?}, len: {:?}, total: {:?}", self.head, new_len, self.blocks.len());
             return true;
         }
         false

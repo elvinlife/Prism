@@ -148,7 +148,7 @@ impl Context {
                 // If block hash <= difficulty, block is successfully mined.
                 if block.hash() <= difficulty { 
                     self.mined_blocks += 1;
-                    debug!("new block mined, hash: {:?}", block.hash());
+                    debug!("new block mined, hash: {:?}, num mined: {:?}", block.hash(), self.mined_blocks);
                     chain.insert(&block);
                     self.server.broadcast(Message::NewBlockHashes(vec![block.hash()]));
                 }
