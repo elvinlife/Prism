@@ -8,7 +8,7 @@ use std::thread;
 use std::sync::{Mutex, Arc};
 use crate::{Blockchain, block};
 use crate::crypto::hash::{Hashable, H256};
-use std::collections::{HashSet,HashMap};
+use std::collections::{HashMap};
 
 #[derive(Clone)]
 pub struct Context {
@@ -61,76 +61,125 @@ impl Context {
                     debug!("Pong: {}", nonce);
                 }
 
-                // If a peer advertises that it has a block that we don't have committed, request it from the peer.
+                // If a peer advertises that it has a block that we don't have, request it from the peer.
                 Message::NewBlockHashes(hashes) => {
-                    debug!("NewBlockHashes: {:?}", hashes);
-                    let mut claim_hashes = Vec::new();
-                    if let Ok(chain) = self.blockchain.lock(){ 
-                        for hash in &hashes {
-                            if chain.get_block(hash).is_none() {
-                                claim_hashes.push(hash.clone());
+                    //debug!("NewBlockHashes: {:?}", hashes);
+                    let mut requested_hashes = Vec::new();
+
+                    if let Ok(orphans) = self.orphan_blocks.lock(){
+                        if let Ok(chain) = self.blockchain.lock(){ 
+                            for hash in &hashes {
+                                if chain.get_block(hash).is_none() && !orphans.contains_key(hash) {
+                                    requested_hashes.push(*hash);
+                                }
                             }
                         }
                     }
-                    if !claim_hashes.is_empty() {
-                        peer.write(Message::GetBlocks(claim_hashes));    
+
+                    if !requested_hashes.is_empty() {
+                        peer.write(Message::GetBlocks(requested_hashes));    
                     }
                 }
 
-                // If a peer asks us for a block we have committed in our blockchain, give it to them.
+                // If a peer asks us for a block we have, give it to them.
                 Message::GetBlocks(hashes) => {
-                    debug!("GetBlocks: {:?}", hashes);
+                    //debug!("GetBlocks: {:?}", hashes);
                     let mut blocks = Vec::new();
-                    if let Ok(chain) = self.blockchain.lock() {
-                        for hash in &hashes {
-                            if let Some(block) = chain.get_block(hash) {
-                                blocks.push(block.clone());
+
+                    if let Ok(orphans) = self.orphan_blocks.lock(){
+                        if let Ok(chain) = self.blockchain.lock() {
+                            for hash in &hashes {
+                                if let Some(block) = chain.get_block(hash) {
+                                    blocks.push(block.clone());
+                                }
+                                else if let Some(block) = orphans.get(hash){
+                                    blocks.push(block.clone());
+                                }
                             }
                         }
                     }
+
                     if !blocks.is_empty() {
                         peer.write(Message::Blocks(blocks));
                     }
                 }
 
-                // If we receive a block, check if it can be committed to the blockchain
+                // If we receive a block, check if we already have it. If so dump it.
+                // Otherwise the block is new. Check if we can commit it.
                 // If it can, commit it and all of its children in the orphan block pool.
-                // If it can't add it to the orphan block pool and request its parent from the peer.  
+                // If it can't add it to the orphan block pool and request its parent from the peer if necessary.
                 Message::Blocks(blocks) => {
-                    debug!("Blocks: {:?}", blocks);
+                    //debug!("Blocks: {:?}", blocks);
                     let mut broadcast_hashes: Vec<H256> = Vec::new();
-                    let mut committed_hashes = HashSet::new();
+                    let mut requested_hashes: Vec<H256> = Vec::new();
 
                     if let Ok(mut orphans) = self.orphan_blocks.lock(){
                         if let Ok(mut chain) = self.blockchain.lock(){
-                            for b in &blocks {
-                                orphans.insert(b.hash(),b.clone());
-                            }
-                            loop{
-                                let mut no_commits = true;
-                                committed_hashes.clear();
 
-                                for (hash,block) in &(*orphans) {
-                                    if chain.insert(block) {
-                                        no_commits = false;
-                                        broadcast_hashes.push(*hash);
-                                        committed_hashes.insert(*hash);
-                                    }
+                            for block in &blocks {
+                                let parent_hash = block.header.parent;
+                                let block_hash = block.hash();
+
+                                // Check if already have block. If so, skip.
+                                if chain.contains_key(&block_hash) || orphans.contains_key(&block_hash){
+                                    continue;
                                 }
 
-                                for hash in &committed_hashes {
-                                    orphans.remove(hash);
+                                // Otherwise block is new. Find out where the parent is.
+                                if chain.contains_key(&parent_hash){
+                                    // Parent in blockchain. Commit as many blocks to the chain as possible.
+                                    orphans.insert(block_hash,block.clone());
 
+                                    let mut committed_hashes = Vec::new();
+                                    loop{
+                                        // Reset everything
+                                        let mut no_commits = true;
+                                        committed_hashes.clear();
+
+                                        // Loop through orphan pool and commit as many blocks as possible.
+                                        for (block_hash, block) in orphans.iter() {
+                                            let parent_hash = block.header.parent;
+
+                                            // Commit if parent in blockchain and nonce is valid.
+                                            if chain.contains_key(&parent_hash)
+                                               && block_hash <= &chain.get_block(&parent_hash).unwrap().header.difficulty {
+                                                chain.insert(&block);
+                                                no_commits = false;
+                                                committed_hashes.push(*block_hash);
+                                                broadcast_hashes.push(*block_hash);
+                                            }
+                                        }
+
+                                        // Clear all committed blocks from orphan pool.
+                                        for hash in &committed_hashes {
+                                            orphans.remove(&hash);
+                                        }
+
+                                        // Repeat until convergence.
+                                        if no_commits {
+                                            break;
+                                        }
+                                    }                                   
                                 }
-
-                                if no_commits {
-                                    break;
+                                else if orphans.contains_key(&parent_hash){
+                                    // Parent is also orphan, So block is orphan, don't request parent.
+                                    orphans.insert(block_hash,block.clone());
+                                }
+                                else{
+                                    // Parent doesn't exist. So block is orphan, request parent.
+                                    orphans.insert(block_hash,block.clone());
+                                    requested_hashes.push(parent_hash);
                                 }
                             }
                         }
                     }
+                    // Announce committed hashes.
                     if !broadcast_hashes.is_empty() {
                         self.server.broadcast(Message::NewBlockHashes(broadcast_hashes));
+                    }
+                    // Get orphan block parents from peer.
+                    if !requested_hashes.is_empty() {
+                        peer.write(Message::GetBlocks(requested_hashes));
                     }
                 }
             }

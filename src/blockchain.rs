@@ -72,6 +72,10 @@ impl Blockchain {
         self.blocks.get(&hash)
     }
 
+    pub fn contains_key(&self, hash: &H256) -> bool{
+        self.blocks.contains_key(&hash)
+    }
+
     /// Get the last block's hash of the longest chain
     #[cfg(any(test, test_utilities))]
     pub fn all_blocks_in_longest_chain(&self) -> Vec<H256> {
