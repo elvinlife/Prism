@@ -32,6 +32,7 @@ Add code to check the PoW validity of a block by checking if:
 
 1. Check if the block's parent exists in your local copy of your blockchain, if the parent exists, add the block to your blockchain.
 2. If this check fails, you need to add the block in an 'orphan buffer'. You may need to create a struct for this.
+3. Updated. If this check fails, also send **GetBlocks** message, containing this parent hash. (This is the same as part 3 instructs.)
 
 #### Orphan block handler
 
