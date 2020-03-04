@@ -9,6 +9,9 @@ use std::sync::{Mutex, Arc};
 use crate::{Blockchain, block};
 use crate::crypto::hash::{Hashable, H256};
 use std::collections::{HashMap};
+use std::time;
+//use std::sync::atomic::{AtomicU128, Ordering, AtomicU32};
+
 
 #[derive(Clone)]
 pub struct Context {
@@ -17,6 +20,8 @@ pub struct Context {
     server: ServerHandle,
     blockchain: Arc<Mutex<Blockchain>>,
     orphan_blocks: Arc<Mutex<HashMap<H256,block::Block>>>,
+    delay_time_sum: Arc<Mutex<u128>>,
+    recv_block_sum: Arc<Mutex<u32>>,
 }
 
 pub fn new(
@@ -25,6 +30,8 @@ pub fn new(
     server: &ServerHandle,
     blockchain: &Arc<Mutex<Blockchain>>,
     orphan_blocks: &Arc<Mutex<HashMap<H256,block::Block>>>,
+    delay_time_sum: &Arc<Mutex<u128>>,
+    recv_block_sum: &Arc<Mutex<u32>>,
 ) -> Context {
     Context {
         msg_chan: msg_src,
@@ -32,6 +39,8 @@ pub fn new(
         server: server.clone(),
         blockchain: blockchain.clone(),
         orphan_blocks: orphan_blocks.clone(),
+        delay_time_sum: Arc::clone(delay_time_sum),
+        recv_block_sum: Arc::clone(recv_block_sum),
     }
 }
 
@@ -109,10 +118,26 @@ impl Context {
                 // If it can, commit it and all of its children in the orphan block pool.
                 // If it can't add it to the orphan block pool and request its parent from the peer if necessary.
                 Message::Blocks(blocks) => {
-                    //debug!("Blocks: {:?}", blocks);
                     let mut broadcast_hashes: Vec<H256> = Vec::new();
-                    let mut requested_hashes: Vec<H256> = Vec::new();
+                    let timestamp_rcv = time::SystemTime::now().duration_since(time::SystemTime::UNIX_EPOCH).unwrap().as_micros();
+                    
+                    {
+                        let mut delay = self.delay_time_sum.lock().unwrap();
+                        let mut num = self.recv_block_sum.lock().unwrap();
+                        for block in &blocks {
+                            *delay += timestamp_rcv - block.header.timestamp;
+                            *num += 1;
+                            broadcast_hashes.push(block.hash());
+                        }
+                        println!("Block recv ave latency: {}", *delay as f64 / *num as f64);
+                    }
 
+                    // Fast relay blocks
+                    if !broadcast_hashes.is_empty() {
+                        self.server.broadcast(Message::NewBlockHashes(broadcast_hashes));
+                    }
+
+                    let mut requested_hashes: Vec<H256> = Vec::new();
                     if let Ok(mut orphans) = self.orphan_blocks.lock(){
                         if let Ok(mut chain) = self.blockchain.lock(){
 
@@ -139,14 +164,12 @@ impl Context {
                                         // Loop through orphan pool and commit as many blocks as possible.
                                         for (block_hash, block) in orphans.iter() {
                                             let parent_hash = block.header.parent;
-
                                             // Commit if parent in blockchain and nonce is valid.
                                             if chain.contains_key(&parent_hash)
                                                && block_hash <= &chain.get_block(&parent_hash).unwrap().header.difficulty {
                                                 chain.insert(&block);
                                                 no_commits = false;
                                                 committed_hashes.push(*block_hash);
-                                                broadcast_hashes.push(*block_hash);
                                             }
                                         }
 
@@ -172,10 +195,6 @@ impl Context {
                                 }
                             }
                         }
-                    }
-                    // Announce committed hashes.
-                    if !broadcast_hashes.is_empty() {
-                        self.server.broadcast(Message::NewBlockHashes(broadcast_hashes));
                     }
                     // Get orphan block parents from peer.
                     if !requested_hashes.is_empty() {
