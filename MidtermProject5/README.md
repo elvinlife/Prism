@@ -28,9 +28,9 @@ You are free to choose any format for transaction structure. We recommend using 
 - UTXO model transaction: input contains the hash of previous transaction and the index; output contains a recipient address and a value. It can support multiple inputs/outputs in a transaction. You can refer to [Bitcoin](https://en.bitcoin.it/wiki/Transaction) transaction but don't need to adopt its complex scripting language.
 - Account based model transaction: it should contain a recipient address, a value, and a account-nonce. It only supports single sender and single receiver. This should be simpler to implement than UTXO model.
 
-Note: address in Bitcoin and Ethereum is a 20-byte array, a.k.a. H160. You should define a struct H160 in *src/crypto/*. The conversion from H256 to H160 is different in Bitcoin and Ethereum. We suggest to use the following simple conversion:
+Note: address in Bitcoin and Ethereum is a 20-byte array, a.k.a. H160. You should define a struct H160 in *src/crypto/*. The conversion from public key to H160 is different in Bitcoin and Ethereum. We suggest to use the following simple conversion:
 
-> first hash the H256, then take the last 20 bytes.
+> first hash the public key, then take the last 20 bytes.
 
 Now it's time to add **Signature** to transaction. You need to convert the **Signature** struct of *ring* to bytes since it is not serializable. You also need to do the same for public key. Then append the public key and the signature to transaction by
 - either create a struct **SignedTransaction** that contains the transaction, the public key, and the signature,
