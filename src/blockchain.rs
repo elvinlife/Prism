@@ -116,7 +116,7 @@ mod tests {
         let mut block2 = generate_random_block(&hash_0);
         let mut chain_correct = Vec::<H256>::new();
         chain_correct.push(hash_0);
-        for i in 0..20 {
+        for _ in 0..20 {
             blockchain.insert(&block1);
             blockchain.insert(&block2);
             chain_correct.push(block1.hash());

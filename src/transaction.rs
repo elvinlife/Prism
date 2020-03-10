@@ -1,13 +1,14 @@
 use serde::{Serialize,Deserialize};
 use ring::signature::{Ed25519KeyPair, Signature, KeyPair, VerificationAlgorithm, EdDSAParameters, UnparsedPublicKey, ED25519};
-use rand::{Rng, distributions::Alphanumeric};
 use crate::crypto::hash::{H256, Hashable};
+use crate::crypto::address::{H160};
 
-
+// Account based model transaction (Ethereum).
 #[derive(Serialize, Deserialize, Debug, Default, Clone)]
 pub struct Transaction {
-    input: String,
-    output: String,
+    recipient_address: H160,
+    value: u64,
+    account_nonce: H256,
 }
 
 impl Hashable for Transaction{
@@ -18,19 +19,25 @@ impl Hashable for Transaction{
     }
 }
 
+// Signed transaction.
+#[derive(Serialize, Deserialize, Debug, Default, Clone)]
+pub struct SignedTransaction {
+    transaction: Transaction,
+    signature: Vec<u8>,
+    public_key: Vec<u8>,
+}
+
 /// Create digital signature of a transaction
 pub fn sign(t: &Transaction, key: &Ed25519KeyPair) -> Signature {
-    let t_bytes = bincode::serialize(t).unwrap();
-    let t_digest = ring::digest::digest(&ring::digest::SHA256, &t_bytes);
-    key.sign(t_digest.as_ref())  
+    let t_hash = t.hash();
+    key.sign(t_hash.as_ref())  
 }
 
 /// Verify digital signature of a transaction, using public key instead of secret key
 pub fn verify(t: &Transaction, public_key: &<Ed25519KeyPair as KeyPair>::PublicKey, signature: &Signature) -> bool {
-    let t_bytes = bincode::serialize(t).unwrap();
-    let t_digest = ring::digest::digest(&ring::digest::SHA256, &t_bytes);
+    let t_hash = t.hash();
     let public_key = UnparsedPublicKey::new(&ED25519, public_key);
-    public_key.verify(t_digest.as_ref(), signature.as_ref()).is_ok()
+    public_key.verify(t_hash.as_ref(), signature.as_ref()).is_ok()
 }
 
 #[cfg(any(test, test_utilities))]
@@ -39,16 +46,20 @@ mod tests {
     use crate::crypto::key_pair;
 
     pub fn generate_random_transaction() -> Transaction {
-        let rand_input = rand::thread_rng().sample_iter(&Alphanumeric).take(10).collect::<String>();
-        let rand_output = rand::thread_rng().sample_iter(&Alphanumeric).take(10).collect::<String>();
-        Transaction { input : rand_input, output: rand_output }
+        Transaction { 
+            recipient_address: rand::random::<[u8; 20]>().into(),
+            value: rand::random(),
+            account_nonce: rand::random::<[u8; 32]>().into(),
+        }
     }
 
     #[test]
     fn sign_verify() {
-        let t = generate_random_transaction();
-        let key = key_pair::random();
-        let signature = sign(&t, &key);
-        assert!(verify(&t, &(key.public_key()), &signature));
+        for _ in 0..20 {
+            let t = generate_random_transaction();
+            let key = key_pair::random();
+            let signature = sign(&t, &key);
+            assert!(verify(&t, &(key.public_key()), &signature));
+        }
     }
 }
