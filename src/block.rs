@@ -1,6 +1,6 @@
 use serde::{Serialize, Deserialize};
 use crate::crypto::hash::{H256, Hashable};
-use crate::transaction::{Transaction};
+use crate::transaction::{SignedTransaction};
 
 #[derive(Serialize, Deserialize, Debug, Default, Clone)]
 pub struct Block {
@@ -11,6 +11,13 @@ pub struct Block {
 impl Hashable for Block {
     fn hash(&self) -> H256 {
         self.header.hash()
+    }
+}
+
+impl Block {
+    #[inline]
+    fn add_tx(mut self, tx: SignedTransaction) {
+        self.content.transactions.push(tx);
     }
 }
 
@@ -33,7 +40,7 @@ impl Hashable for Header{
 
 #[derive(Serialize, Deserialize, Debug, Default, Clone)]
 pub struct Content{
-    pub transactions: Vec<Transaction>,
+    pub transactions: Vec<SignedTransaction>,
 }
 
 impl Content{

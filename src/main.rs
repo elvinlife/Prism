@@ -9,6 +9,7 @@ pub mod crypto;
 pub mod miner;
 pub mod network;
 pub mod transaction;
+pub mod txgenerator;
 
 use clap::clap_app;
 use crossbeam::channel;
@@ -22,10 +23,14 @@ use std::time;
 
 use crate::blockchain::{Blockchain};
 use crate::crypto::hash::{H256};
+use crate::transaction::{SignedTransaction};
+use crate::crypto::key_pair;
+//use crate::crypto::address::{H160};
 use std::sync::{Arc,Mutex};
 use log::debug;
 
 use std::collections::{HashMap};
+use std::collections::LinkedList;
 
 fn main() {
     // parse command line arguments
@@ -77,9 +82,19 @@ fn main() {
     // initialize mempool for orphaned blocks
     let orphan_blocks = Arc::new(Mutex::new(HashMap::<H256,block::Block>::new()));
 
+    // initialize transaction mempool
+    let tx_mempool = Arc::new(Mutex::new(LinkedList::<SignedTransaction>::new()));
+
     // initialize variable to record block delay
     let delay_time_sum = Arc::new(Mutex::new(0));
     let recv_block_sum = Arc::new(Mutex::new(0));
+
+    // start the TXs generator
+    let tx_gen_ctx = txgenerator::new(
+        &server,
+        &tx_mempool
+    );
+    tx_gen_ctx.start();
 
     // start the worker
     let p2p_workers = matches
@@ -106,6 +121,7 @@ fn main() {
     let (miner_ctx, miner) = miner::new(
         &server,
         &blockchain,
+        &tx_mempool,
     );
     miner_ctx.start();
     debug!("miner start");

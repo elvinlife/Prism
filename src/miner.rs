@@ -1,20 +1,17 @@
 use crate::network::server::Handle as ServerHandle;
-
 use log::info;
-
+use log::debug;
 use crossbeam::channel::{unbounded, Receiver, Sender, TryRecvError};
 use std::time;
-
 use std::thread;
-
 use std::sync::{Arc,Mutex};
-
+use std::collections::{LinkedList};
 use crate::blockchain::{Blockchain};
 use crate::block::{Block, Header, Content};
 use crate::crypto::merkle::{MerkleTree};
 use crate::crypto::hash::{H256, Hashable};
 use crate::network::message::Message;
-use log::debug;
+use crate::transaction::SignedTransaction;
 
 enum ControlSignal {
     Start(u64), // the number controls the lambda of interval between block generation
@@ -34,6 +31,7 @@ pub struct Context {
     server: ServerHandle,
     blockchain: Arc<Mutex<Blockchain>>,
     mined_blocks: u64,
+    tx_mempool: Arc<Mutex<LinkedList<SignedTransaction>>>
 }
 
 #[derive(Clone)]
@@ -42,7 +40,11 @@ pub struct Handle {
     control_chan: Sender<ControlSignal>,
 }
 
-pub fn new(server: &ServerHandle, blockchain: &Arc<Mutex<Blockchain>>) -> (Context, Handle) {
+pub fn new(
+    server: &ServerHandle,
+    blockchain: &Arc<Mutex<Blockchain>>,
+    tx_mempool: &Arc<Mutex<LinkedList<SignedTransaction>>>,
+) -> (Context, Handle) {
     let (signal_chan_sender, signal_chan_receiver) = unbounded();
 
     let ctx = Context {
@@ -51,6 +53,7 @@ pub fn new(server: &ServerHandle, blockchain: &Arc<Mutex<Blockchain>>) -> (Conte
         server: server.clone(),
         blockchain: Arc::clone(blockchain),
         mined_blocks: 0,
+        tx_mempool: Arc::clone(tx_mempool),
     };
 
     let handle = Handle {
@@ -170,5 +173,9 @@ impl Context {
                 }
             }
         }
+    }
+
+    fn add_transactions(&mut self, block: &Block) {
+        unimplemented!();
     }
 }

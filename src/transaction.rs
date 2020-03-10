@@ -22,9 +22,17 @@ impl Hashable for Transaction{
 // Signed transaction.
 #[derive(Serialize, Deserialize, Debug, Default, Clone)]
 pub struct SignedTransaction {
-    transaction: Transaction,
-    signature: Vec<u8>,
-    public_key: Vec<u8>,
+    pub transaction: Transaction,
+    pub signature: Vec<u8>,
+    pub public_key: Vec<u8>,
+}
+
+impl Hashable for SignedTransaction{
+    fn hash(&self) -> H256 {
+        let t_bytes = bincode::serialize(&self).unwrap();
+        let t_digest = ring::digest::digest(&ring::digest::SHA256, &t_bytes);
+        t_digest.into()
+    }
 }
 
 /// Create digital signature of a transaction
