@@ -77,7 +77,7 @@ impl Blockchain {
     }
 
     /// Get the last block's hash of the longest chain
-    #[cfg(any(test, test_utilities))]
+    //#[cfg(any(test, test_utilities))]
     pub fn all_blocks_in_longest_chain(&self) -> Vec<H256> {
         let mut longest_chain = Vec::<H256>::new();
 

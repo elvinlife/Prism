@@ -77,6 +77,10 @@ fn main() {
     // initialize mempool for orphaned blocks
     let orphan_blocks = Arc::new(Mutex::new(HashMap::<H256,block::Block>::new()));
 
+    // initialize variable to record block delay
+    let delay_time_sum = Arc::new(Mutex::new(0));
+    let recv_block_sum = Arc::new(Mutex::new(0));
+
     // start the worker
     let p2p_workers = matches
         .value_of("p2p_workers")
@@ -92,6 +96,8 @@ fn main() {
         &server,
         &blockchain,
         &orphan_blocks,
+        &delay_time_sum,
+        &recv_block_sum
     );
     worker_ctx.start();
     debug!("{} workers start.", p2p_workers);

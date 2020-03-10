@@ -119,6 +119,15 @@ impl Context {
                 },
             }
             if let OperatingState::ShutDown = self.operating_state {
+                println!("Wait for extra 3 seconds");
+                thread::sleep(time::Duration::from_secs(3));
+                if let Ok(chain) = self.blockchain.lock() {
+                    let longest_chain = chain.all_blocks_in_longest_chain();
+                    let block: Block = Default::default();
+                    let bytes = bincode::serialize(&block).unwrap();
+                    println!("Serialized block size: {}", bytes.len());
+                    println!("Longest chain: {:?}", longest_chain);
+                }
                 return;
             }
 
@@ -129,7 +138,7 @@ impl Context {
 
                 // Initialize block header.
                 let parent = chain.tip();
-                let timestamp = time::SystemTime::now().duration_since(time::SystemTime::UNIX_EPOCH).unwrap().as_millis();
+                let timestamp = time::SystemTime::now().duration_since(time::SystemTime::UNIX_EPOCH).unwrap().as_micros();
                 let difficulty: H256 = chain.get_block(&parent).unwrap().header.difficulty;
                 let merkle_root = MerkleTree::new(&content.transactions).root();
                 
