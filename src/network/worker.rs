@@ -201,6 +201,18 @@ impl Context {
                         peer.write(Message::GetBlocks(requested_hashes));
                     }
                 }
+
+                Message::NewTransactionHashes(hashes) => {
+                    unimplemented!();
+                }
+
+                Message::GetTransactions(hashes) => {
+                    unimplemented!();
+                }
+
+                Message::Transactions(signed_transactions) => {
+                    unimplemented!();
+                }
             }
         }
     }
