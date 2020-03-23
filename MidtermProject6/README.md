@@ -4,7 +4,7 @@ This is the last part of midterm project, and you are going to finish the Bitcoi
 
 **Due date: 12:30pm, March 26, 2020. Please submit a report on Compass2g and register for a demo slot.**
 
-Please use this google document (need to login Google @ Illinois) to register demo slot. The google form will be ready soon. It will be an online demo.
+Please use [this google document](https://docs.google.com/spreadsheets/d/18ivtB2Q5BAGtLBRYbJ640t23Vjh5gZVOKWVn83fQuxE/edit?usp=sharing) (need to login Google @ Illinois) to register demo slot. **Update: the link is added.** It will be an online demo.
 
 ## Programming
 
