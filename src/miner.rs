@@ -2,16 +2,19 @@ use crate::network::server::Handle as ServerHandle;
 use log::info;
 use log::debug;
 use crossbeam::channel::{unbounded, Receiver, Sender, TryRecvError};
+use ring::signature::{Ed25519KeyPair, Signature, KeyPair, VerificationAlgorithm, EdDSAParameters, UnparsedPublicKey, ED25519};
 use std::time;
 use std::thread;
 use std::sync::{Arc,Mutex};
 use std::collections::{LinkedList};
 use crate::blockchain::{Blockchain};
-use crate::block::{Block, Header, Content};
+use crate::block::{Block, Header, Content, State};
 use crate::crypto::merkle::{MerkleTree};
 use crate::crypto::hash::{H256, Hashable};
+use crate::crypto::key_pair;
+use crate::crypto::address::H160;
 use crate::network::message::Message;
-use crate::transaction::SignedTransaction;
+use crate::transaction::{SignedTransaction, Transaction, verify, sign};
 
 enum ControlSignal {
     Start(u64), // the number controls the lambda of interval between block generation
@@ -31,7 +34,8 @@ pub struct Context {
     server: ServerHandle,
     blockchain: Arc<Mutex<Blockchain>>,
     mined_blocks: u64,
-    tx_mempool: Arc<Mutex<LinkedList<SignedTransaction>>>
+    tx_mempool: Arc<Mutex<LinkedList<SignedTransaction>>>,
+    id: Arc<Identity>,
 }
 
 #[derive(Clone)]
@@ -40,10 +44,28 @@ pub struct Handle {
     control_chan: Sender<ControlSignal>,
 }
 
+pub struct Identity {
+    /// id information about this account
+    pub key_pair: Ed25519KeyPair,
+    pub address: H160,
+}
+
+impl Identity {
+    pub fn new() -> Identity {
+        let _key_pair = key_pair::random();
+        let _address: H160 = ring::digest::digest(&ring::digest::SHA256, _key_pair.public_key().as_ref()).into();
+        Identity {
+            key_pair: _key_pair,
+            address: _address,
+        }
+    }
+}
+
 pub fn new(
     server: &ServerHandle,
     blockchain: &Arc<Mutex<Blockchain>>,
     tx_mempool: &Arc<Mutex<LinkedList<SignedTransaction>>>,
+    id: &Arc<Identity>,
 ) -> (Context, Handle) {
     let (signal_chan_sender, signal_chan_receiver) = unbounded();
 
@@ -54,6 +76,7 @@ pub fn new(
         blockchain: Arc::clone(blockchain),
         mined_blocks: 0,
         tx_mempool: Arc::clone(tx_mempool),
+        id: Arc::clone(id),
     };
 
     let handle = Handle {
@@ -101,6 +124,8 @@ impl Context {
     }
 
     fn miner_loop(&mut self) {
+        // broadcast public key
+        self.server.broadcast(Message::NewAccountAddress((*self.id).address.clone()));
         // main mining loop
         loop {
             // check and react to control signals
@@ -136,13 +161,17 @@ impl Context {
 
             // TODO: actual mining 
             if let Ok(mut chain) = self.blockchain.lock(){ 
-                // Get random content.
-                let content = Content::new();
-
                 // Initialize block header.
                 let parent = chain.tip();
                 let timestamp = time::SystemTime::now().duration_since(time::SystemTime::UNIX_EPOCH).unwrap().as_micros();
                 let difficulty: H256 = chain.get_block(&parent).unwrap().header.difficulty;
+
+                let mut content: Content = Default::default();
+                // Collect transactions to generate content
+                if let Some(state) = chain.get_state(&parent) {
+                    content = self.collect_txs(&state);
+                }
+                let state = chain.get_state(&parent);
                 let merkle_root = MerkleTree::new(&content.transactions).root();
                 
                 // Create block with random nonce.
@@ -175,7 +204,27 @@ impl Context {
         }
     }
 
-    fn add_transactions(&mut self, block: &Block) {
-        unimplemented!();
+    fn collect_txs(&self, state: &State) -> Content {
+        let valid_transactions = vec![];
+        if let Ok(_tx_mempool) = self.tx_mempool.lock() {
+            for tx_signed in _tx_mempool.iter() {
+                let address: H160 = tx_signed.public_key.clone().into();
+                let public_key = UnparsedPublicKey::new(&ED25519, tx_signed.public_key.clone());
+                let tx = tx_signed.transaction.clone();
+                // verification fails
+                if public_key.verify(tx.hash().as_ref(), tx_signed.signature.as_ref()).is_err() {
+                    continue;
+                }
+                // get the peer state
+                if let Some(peer_state) = state.account_state.get(&address) {
+                    // the nonce is incorrect
+                    unimplemented!();
+                }
+            }
+        }
+        let a = Content {
+            transactions: valid_transactions
+        };
+        a
     }
 }

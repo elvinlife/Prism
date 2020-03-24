@@ -213,6 +213,12 @@ impl Context {
                 Message::Transactions(signed_transactions) => {
                     unimplemented!();
                 }
+
+                Message::NewAccountAddress(address) => {
+                    if let Ok(chain) = self.blockchain.lock() {
+
+                    }
+                }
             }
         }
     }

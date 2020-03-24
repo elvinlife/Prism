@@ -6,10 +6,21 @@ use crate::crypto::address::{H160};
 // Account based model transaction (Ethereum).
 #[derive(Serialize, Deserialize, Debug, Default, Clone)]
 pub struct Transaction {
-    recipient_address: H160,
-    value: u64,
-    account_nonce: H256,
+    pub recipient_address: H160,
+    pub value: u64,
+    pub account_nonce: i32,
 }
+
+// UTXO based transaction
+/*
+#[derive(Serialize, Deserialize, Debug, Default, Clone)]
+pub struct Transaction {
+    prev_tx_hash: H256,
+    index: i8,
+    recipient_address: H160,
+    value:  u32,
+}
+*/
 
 impl Hashable for Transaction{
     fn hash(&self) -> H256 {
@@ -54,11 +65,7 @@ mod tests {
     use crate::crypto::key_pair;
 
     pub fn generate_random_transaction() -> Transaction {
-        Transaction { 
-            recipient_address: rand::random::<[u8; 20]>().into(),
-            value: rand::random(),
-            account_nonce: rand::random::<[u8; 32]>().into(),
-        }
+        Default::default()
     }
 
     #[test]

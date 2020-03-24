@@ -25,6 +25,9 @@ use crate::blockchain::{Blockchain};
 use crate::crypto::hash::{H256};
 use crate::transaction::{SignedTransaction};
 use crate::crypto::key_pair;
+use crate::crypto::address::H160;
+use crate::miner::Identity;
+use ring::signature::{Ed25519KeyPair};
 //use crate::crypto::address::{H160};
 use std::sync::{Arc,Mutex};
 use log::debug;
@@ -76,8 +79,11 @@ fn main() {
     let (server_ctx, server) = server::new(p2p_addr, msg_tx).unwrap();
     server_ctx.start().unwrap();
 
+    // initialize public/private key pair
+    let id = Arc::new(Identity::new());
+
     // initialize blockchain
-    let blockchain = Arc::new(Mutex::new(Blockchain::new()));
+    let blockchain = Arc::new(Mutex::new(Blockchain::new((*id).address)));
 
     // initialize mempool for orphaned blocks
     let orphan_blocks = Arc::new(Mutex::new(HashMap::<H256,block::Block>::new()));
@@ -92,7 +98,9 @@ fn main() {
     // start the TXs generator
     let tx_gen_ctx = txgenerator::new(
         &server,
-        &tx_mempool
+        &blockchain,
+        &tx_mempool,
+        &id,
     );
     tx_gen_ctx.start();
 
@@ -122,6 +130,7 @@ fn main() {
         &server,
         &blockchain,
         &tx_mempool,
+        &id,
     );
     miner_ctx.start();
     debug!("miner start");

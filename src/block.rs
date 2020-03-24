@@ -1,6 +1,11 @@
 use serde::{Serialize, Deserialize};
+use std::collections::HashMap;
 use crate::crypto::hash::{H256, Hashable};
 use crate::transaction::{SignedTransaction};
+use crate::crypto::address::H160;
+
+pub static BLOCK_REWARD: u64 = 25;
+pub static BLOCK_CAPACITY: u8 = 4;
 
 #[derive(Serialize, Deserialize, Debug, Default, Clone)]
 pub struct Block {
@@ -16,7 +21,7 @@ impl Hashable for Block {
 
 impl Block {
     #[inline]
-    fn add_tx(mut self, tx: SignedTransaction) {
+    pub fn add_tx(mut self, tx: SignedTransaction) {
         self.content.transactions.push(tx);
     }
 }
@@ -44,11 +49,23 @@ pub struct Content{
 }
 
 impl Content{
-    pub fn new() -> Self {
+    pub fn new(transactions: Vec<SignedTransaction>) -> Self {
         Content{
-            transactions: Default::default(),
+            transactions: transactions,
         }
     }
+}
+
+#[derive(Serialize, Deserialize, Debug, Default, Clone)]
+pub struct State {
+    pub address_list: Vec<H160>,
+    pub account_state: HashMap<H160, AccountState>
+}
+
+#[derive(Serialize, Deserialize, Debug, Default, Clone)]
+pub struct AccountState {
+    pub nonce: i32,
+    pub balance: u64,
 }
 
 
