@@ -6,7 +6,7 @@ use ring::signature::{Ed25519KeyPair, Signature, KeyPair, VerificationAlgorithm,
 use std::time;
 use std::thread;
 use std::sync::{Arc,Mutex};
-use std::collections::{LinkedList};
+use std::collections::{HashMap};
 use crate::blockchain::{Blockchain};
 use crate::block::{Block, Header, Content, State, BLOCK_CAPACITY, BLOCK_REWARD};
 use crate::crypto::merkle::{MerkleTree};
@@ -34,7 +34,7 @@ pub struct Context {
     server: ServerHandle,
     blockchain: Arc<Mutex<Blockchain>>,
     mined_blocks: u64,
-    tx_mempool: Arc<Mutex<LinkedList<SignedTransaction>>>,
+    tx_mempool: Arc<Mutex<HashMap<H256,SignedTransaction>>>,
     id: Arc<Identity>,
 }
 
@@ -64,7 +64,7 @@ impl Identity {
 pub fn new(
     server: &ServerHandle,
     blockchain: &Arc<Mutex<Blockchain>>,
-    tx_mempool: &Arc<Mutex<LinkedList<SignedTransaction>>>,
+    tx_mempool: &Arc<Mutex<HashMap<H256,SignedTransaction>>>,
     id: &Arc<Identity>,
     ) -> (Context, Handle) {
     let (signal_chan_sender, signal_chan_receiver) = unbounded();
@@ -210,7 +210,7 @@ impl Context {
         let mut state = _state.clone();
         let mut split_index = 0;
         if let Ok(_tx_mempool) = self.tx_mempool.lock() {
-            for tx_signed in _tx_mempool.iter() {
+            for tx_signed in _tx_mempool.values() {
                 let address: H160 = tx_signed.public_key.clone().into();
                 let public_key = UnparsedPublicKey::new(&ED25519, tx_signed.public_key.clone());
                 let tx = tx_signed.transaction.clone();

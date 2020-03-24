@@ -89,7 +89,7 @@ fn main() {
     let orphan_blocks = Arc::new(Mutex::new(HashMap::<H256,block::Block>::new()));
 
     // initialize transaction mempool
-    let tx_mempool = Arc::new(Mutex::new(LinkedList::<SignedTransaction>::new()));
+    let tx_mempool = Arc::new(Mutex::new(HashMap::<H256,SignedTransaction>::new()));
 
     // initialize variable to record block delay
     let delay_time_sum = Arc::new(Mutex::new(0));
@@ -119,6 +119,7 @@ fn main() {
         &server,
         &blockchain,
         &orphan_blocks,
+        &tx_mempool,
         &delay_time_sum,
         &recv_block_sum
     );

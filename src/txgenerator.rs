@@ -1,6 +1,6 @@
 use std::thread;
 use std::sync::{Arc, Mutex};
-use std::collections::LinkedList;
+use std::collections::HashMap;
 use ring::signature::{Ed25519KeyPair, KeyPair};
 use std::time;
 
@@ -18,14 +18,14 @@ static SEND_SIZE: usize = 2;
 pub struct Context {
     server: ServerHandle,
     blockchain: Arc<Mutex<Blockchain>>,
-    tx_mempool: Arc<Mutex<LinkedList<SignedTransaction>>>,
+    tx_mempool: Arc<Mutex<HashMap<H256,SignedTransaction>>>,
     id: Arc<Identity>,
 }
 
 pub fn new (
     server: &ServerHandle,
     blockchain: &Arc<Mutex<Blockchain>>,
-    tx_mempool: &Arc<Mutex<LinkedList<SignedTransaction>>>,
+    tx_mempool: &Arc<Mutex<HashMap<H256,SignedTransaction>>>,
     id: &Arc<Identity>,
     ) -> Context {
     let ctx = Context {
