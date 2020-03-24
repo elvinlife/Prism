@@ -8,6 +8,7 @@ use std::thread;
 use std::sync::{Mutex, Arc};
 use crate::{Blockchain, block};
 use crate::crypto::hash::{Hashable, H256};
+use crate::transaction::{SignedTransaction};
 use std::collections::{HashMap};
 use std::time;
 //use std::sync::atomic::{AtomicU128, Ordering, AtomicU32};
@@ -20,6 +21,7 @@ pub struct Context {
     server: ServerHandle,
     blockchain: Arc<Mutex<Blockchain>>,
     orphan_blocks: Arc<Mutex<HashMap<H256,block::Block>>>,
+    tx_mempool: Arc<Mutex<HashMap<H256,SignedTransaction>>>,
     delay_time_sum: Arc<Mutex<u128>>,
     recv_block_sum: Arc<Mutex<u32>>,
 }
@@ -30,6 +32,7 @@ pub fn new(
     server: &ServerHandle,
     blockchain: &Arc<Mutex<Blockchain>>,
     orphan_blocks: &Arc<Mutex<HashMap<H256,block::Block>>>,
+    tx_mempool: &Arc<Mutex<HashMap<H256,SignedTransaction>>>,
     delay_time_sum: &Arc<Mutex<u128>>,
     recv_block_sum: &Arc<Mutex<u32>>,
 ) -> Context {
@@ -39,6 +42,7 @@ pub fn new(
         server: server.clone(),
         blockchain: blockchain.clone(),
         orphan_blocks: orphan_blocks.clone(),
+        tx_mempool: tx_mempool.clone(),
         delay_time_sum: Arc::clone(delay_time_sum),
         recv_block_sum: Arc::clone(recv_block_sum),
     }
@@ -202,12 +206,40 @@ impl Context {
                     }
                 }
 
+                // If a peer advertises that it has a transaction that we don't have, request it from the peer.
                 Message::NewTransactionHashes(hashes) => {
-                    unimplemented!();
+                    //debug!("NewTransactionHashes: {:?}", hashes);
+                    let mut requested_hashes = Vec::new();
+
+                    if let Ok(tx_pool) = self.tx_mempool.lock(){
+                        for hash in &hashes {
+                            if !tx_pool.contains_key(hash) {
+                                requested_hashes.push(*hash);
+                            }
+                        }
+                    }
+
+                    if !requested_hashes.is_empty() {
+                        peer.write(Message::GetTransactions(requested_hashes));    
+                    }
                 }
 
+                // If a peer requests a transaction in our pool, give it to them.
                 Message::GetTransactions(hashes) => {
-                    unimplemented!();
+                    //debug!("GetTransactions: {:?}", hashes);
+                    let mut txs = Vec::new();
+
+                    if let Ok(tx_pool) = self.tx_mempool.lock(){
+                        for hash in &hashes {
+                            if let Some(tx) = tx_pool.get(hash){
+                                txs.push(tx.clone());
+                            }
+                        }
+                    }
+
+                    if !txs.is_empty() {
+                        peer.write(Message::Transactions(txs));
+                    }
                 }
 
                 Message::Transactions(signed_transactions) => {
