@@ -89,8 +89,8 @@ impl Context {
                                 public_key: public_key.as_ref().iter().cloned().collect()
                             };
                             txs_hash_buffer.push(signed_tx.hash());
-                            if let Ok(mut mempool) = self.tx_mempool.lock() {
-                                mempool.push_back(signed_tx);
+                            if let Ok(mut _tx_mempool) = self.tx_mempool.lock() {
+                                _tx_mempool.push_back(signed_tx);
                             }
                         }
                     }

@@ -5,7 +5,7 @@ use crate::transaction::{SignedTransaction};
 use crate::crypto::address::H160;
 
 pub static BLOCK_REWARD: u64 = 25;
-pub static BLOCK_CAPACITY: u8 = 4;
+pub static BLOCK_CAPACITY: usize = 4;
 
 #[derive(Serialize, Deserialize, Debug, Default, Clone)]
 pub struct Block {
@@ -53,6 +53,10 @@ impl Content{
         Content{
             transactions: transactions,
         }
+    }
+
+    pub fn len(&self) -> usize {
+        self.transactions.len()
     }
 }
 

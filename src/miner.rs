@@ -2,13 +2,13 @@ use crate::network::server::Handle as ServerHandle;
 use log::info;
 use log::debug;
 use crossbeam::channel::{unbounded, Receiver, Sender, TryRecvError};
-use ring::signature::{Ed25519KeyPair, Signature, KeyPair, VerificationAlgorithm, EdDSAParameters, UnparsedPublicKey, ED25519};
+use ring::signature::{Ed25519KeyPair, Signature, KeyPair, VerificationAlgorithm, UnparsedPublicKey, ED25519};
 use std::time;
 use std::thread;
 use std::sync::{Arc,Mutex};
 use std::collections::{LinkedList};
 use crate::blockchain::{Blockchain};
-use crate::block::{Block, Header, Content, State};
+use crate::block::{Block, Header, Content, State, BLOCK_CAPACITY, BLOCK_REWARD};
 use crate::crypto::merkle::{MerkleTree};
 use crate::crypto::hash::{H256, Hashable};
 use crate::crypto::key_pair;
@@ -18,7 +18,7 @@ use crate::transaction::{SignedTransaction, Transaction, verify, sign};
 
 enum ControlSignal {
     Start(u64), // the number controls the lambda of interval between block generation
-    Exit,
+        Exit,
 }
 
 enum OperatingState {
@@ -66,7 +66,7 @@ pub fn new(
     blockchain: &Arc<Mutex<Blockchain>>,
     tx_mempool: &Arc<Mutex<LinkedList<SignedTransaction>>>,
     id: &Arc<Identity>,
-) -> (Context, Handle) {
+    ) -> (Context, Handle) {
     let (signal_chan_sender, signal_chan_receiver) = unbounded();
 
     let ctx = Context {
@@ -106,7 +106,7 @@ impl Context {
             .spawn(move || {
                 self.miner_loop();
             })
-            .unwrap();
+        .unwrap();
         info!("Miner initialized into paused mode");
     }
 
@@ -160,38 +160,39 @@ impl Context {
             }
 
             // TODO: actual mining 
-            if let Ok(mut chain) = self.blockchain.lock(){ 
+            if let Ok(mut chain) = self.blockchain.lock(){
                 // Initialize block header.
                 let parent = chain.tip();
                 let timestamp = time::SystemTime::now().duration_since(time::SystemTime::UNIX_EPOCH).unwrap().as_micros();
                 let difficulty: H256 = chain.get_block(&parent).unwrap().header.difficulty;
 
-                let mut content: Content = Default::default();
                 // Collect transactions to generate content
                 if let Some(state) = chain.get_state(&parent) {
-                    content = self.collect_txs(&state);
-                }
-                let state = chain.get_state(&parent);
-                let merkle_root = MerkleTree::new(&content.transactions).root();
-                
-                // Create block with random nonce.
-                let block = Block {
-                    header: Header{
-                        parent: parent,
-                        nonce: rand::random::<u32>(),
-                        difficulty: difficulty,
-                        timestamp: timestamp,
-                        merkle_root: merkle_root,
-                    },
-                    content: content, 
-                };
+                    let (content, new_state) = self.collect_txs(&state);
+                    if content.len() < BLOCK_CAPACITY {
+                        continue;
+                    }
+                    let merkle_root = MerkleTree::new(&content.transactions).root();
 
-                // If block hash <= difficulty, block is successfully mined.
-                if block.hash() <= difficulty { 
-                    self.mined_blocks += 1;
-                    debug!("new block mined, hash: {:?}, num mined: {:?}", block.hash(), self.mined_blocks);
-                    chain.insert(&block);
-                    self.server.broadcast(Message::NewBlockHashes(vec![block.hash()]));
+                    // Create block with random nonce.
+                    let block = Block {
+                        header: Header{
+                            parent: parent,
+                            nonce: rand::random::<u32>(),
+                            difficulty: difficulty,
+                            timestamp: timestamp,
+                            merkle_root: merkle_root,
+                        },
+                        content: content, 
+                    };
+
+                    // If block hash <= difficulty, block is successfully mined.
+                    if block.hash() <= difficulty { 
+                        self.mined_blocks += 1;
+                        debug!("new block mined, hash: {:?}, num mined: {:?}", block.hash(), self.mined_blocks);
+                        chain.insert(&block);
+                        self.server.broadcast(Message::NewBlockHashes(vec![block.hash()]));
+                    }
                 }
             }
 
@@ -204,13 +205,16 @@ impl Context {
         }
     }
 
-    fn collect_txs(&self, state: &State) -> Content {
-        let valid_transactions = vec![];
+    fn collect_txs(&self, _state: &State) -> (Content, State) {
+        let mut valid_transactions = vec![];
+        let mut state = _state.clone();
+        let mut split_index = 0;
         if let Ok(_tx_mempool) = self.tx_mempool.lock() {
             for tx_signed in _tx_mempool.iter() {
                 let address: H160 = tx_signed.public_key.clone().into();
                 let public_key = UnparsedPublicKey::new(&ED25519, tx_signed.public_key.clone());
                 let tx = tx_signed.transaction.clone();
+                split_index += 1;
                 // verification fails
                 if public_key.verify(tx.hash().as_ref(), tx_signed.signature.as_ref()).is_err() {
                     continue;
@@ -218,13 +222,31 @@ impl Context {
                 // get the peer state
                 if let Some(peer_state) = state.account_state.get(&address) {
                     // the nonce is incorrect
-                    unimplemented!();
+                    if peer_state.nonce != (tx.account_nonce + 1) {
+                        continue;
+                    }
+                    // the balance is not enough
+                    if peer_state.balance < tx.value {
+                        continue;
+                    }
+                    // the valid transaction
+                    let mut new_state = peer_state.clone();
+                    new_state.nonce = peer_state.nonce + 1;
+                    new_state.balance = peer_state.balance - tx.value;
+                    state.account_state.insert(address, new_state);
+                    valid_transactions.push(tx_signed.clone());
+                }
+                if valid_transactions.len() == BLOCK_CAPACITY {
+                    break;
                 }
             }
         }
-        let a = Content {
-            transactions: valid_transactions
+        if let Ok(mut _tx_mempool) = self.tx_mempool.lock() {
+            
+        }
+        let content = Content {
+            transactions: valid_transactions,
         };
-        a
+        (content, state)
     }
 }
