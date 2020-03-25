@@ -175,8 +175,8 @@ impl Context {
                     }
 
                     let mut requested_hashes: Vec<H256> = Vec::new();
-                    if let Ok(mut orphans) = self.orphan_blocks.lock(){
-                        if let Ok(mut chain) = self.blockchain.lock(){
+                    if let Ok(mut chain) = self.blockchain.lock(){
+                        if let Ok(mut orphans) = self.orphan_blocks.lock(){
                             for block in &blocks {
                                 let parent_hash = block.header.parent;
                                 let block_hash = block.hash();

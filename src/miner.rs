@@ -184,14 +184,22 @@ impl Context {
                         },
                         content: content, 
                     };
-                    while block.hash() > difficulty {
+                    for _ in 0..100{
                         block.header.nonce = rand::random::<u32>();
+                        if block.hash() < difficulty {
+                            break;
+                        }
                     }
+                    //while block.hash() > difficulty {
+                    //    block.header.nonce = rand::random::<u32>();
+                    //}
                     // If block hash <= difficulty, block is successfully mined.
-                    self.mined_blocks += 1;
-                    debug!("new block mined, hash: {:?}, num mined: {:?}", block.hash(), self.mined_blocks);
-                    chain.insert(&block, &new_state);
-                    self.server.broadcast(Message::NewBlockHashes(vec![block.hash()]));
+                    if block.hash() < difficulty {
+                        self.mined_blocks += 1;
+                        debug!("new block mined, hash: {:?}, num mined: {:?}", block.hash(), self.mined_blocks);
+                        chain.insert(&block, &new_state);
+                        self.server.broadcast(Message::NewBlockHashes(vec![block.hash()]));
+                    }
                 }
             }
 
@@ -205,56 +213,70 @@ impl Context {
     }
 
     fn collect_txs(&self, _state: &State) -> (Content, State) {
-        let mut erase_transactions = vec![];
         let mut valid_transactions = vec![];
         let mut state = _state.clone();
+
         if let Ok(mut _tx_mempool) = self.tx_mempool.lock() {
-            for tx_signed in _tx_mempool.values() {
-                let address: H160 = tx_signed.public_key.clone().into();
-                let public_key = UnparsedPublicKey::new(&ED25519, tx_signed.public_key.clone());
-                let tx = tx_signed.transaction.clone();
-                // verification fails
-                if public_key.verify(tx.hash().as_ref(), tx_signed.signature.as_ref()).is_err() {
-                    erase_transactions.push(tx.hash());
-                    continue;
-                }
-                // get the peer state
-                if let Some(peer_state) = state.account_state.get(&address) {
-                    // the nonce is incorrect
-                    if peer_state.nonce != (tx.account_nonce + 1) {
-                        // only erase txs whose nonce are smaller than the state
-                        if peer_state.nonce <= tx.account_nonce {
-                            erase_transactions.push(tx.hash());
-                        }
-                        continue;
-                    }
-                    // the balance is not enough
-                    if peer_state.balance < tx.value {
+            loop{
+                let mut finished = true;
+                let mut erase_transactions = vec![];
+
+                for tx_signed in _tx_mempool.values() {
+                    let address: H160 = tx_signed.public_key.clone().into();
+                    let public_key = UnparsedPublicKey::new(&ED25519, tx_signed.public_key.clone());
+                    let tx = tx_signed.transaction.clone();
+                    // verification fails
+                    if public_key.verify(tx.hash().as_ref(), tx_signed.signature.as_ref()).is_err() {
                         erase_transactions.push(tx.hash());
                         continue;
                     }
-                    // the valid transaction
-                    let mut new_state = peer_state.clone();
-                    new_state.nonce = peer_state.nonce + 1;
-                    new_state.balance = peer_state.balance - tx.value;
-                    state.account_state.insert(address, new_state);
-                    valid_transactions.push(tx_signed.clone());
+                    // get the peer state
+                    if let Some(peer_state) = state.account_state.get(&address) {
+                        // the nonce is incorrect
+                        if peer_state.nonce != (tx.account_nonce + 1) {
+                            // only erase txs whose nonce are smaller than the state
+                            if peer_state.nonce <= tx.account_nonce {
+                                erase_transactions.push(tx.hash());
+                            }
+                            continue;
+                        }
+                        // the balance is not enough
+                        if peer_state.balance < tx.value {
+                            erase_transactions.push(tx.hash());
+                            continue;
+                        }
+                        // the valid transaction
+                        let mut new_state = peer_state.clone();
+                        new_state.nonce = peer_state.nonce + 1;
+                        new_state.balance = peer_state.balance - tx.value;
+                        state.account_state.insert(address, new_state);
+                        valid_transactions.push(tx_signed.clone());
+                        finished = false;
+                    }
+                    if valid_transactions.len() == BLOCK_CAPACITY {
+                        break;
+                    }
+
                 }
+
+                // remove invalid txs
+                for tx in erase_transactions.iter() {
+                    _tx_mempool.remove(&tx);
+                }
+                // keep valid txs
                 if valid_transactions.len() == BLOCK_CAPACITY {
+                    for tx in valid_transactions.iter() {
+                        _tx_mempool.remove(&tx.hash());
+                    }
+                    break;
+                }
+                // if no more transactions can be added, return
+                if finished {
                     break;
                 }
             }
-            // remove invalid txs
-            for tx in erase_transactions.iter() {
-                _tx_mempool.remove(&tx);
-            }
-            // keep valid txs
-            if valid_transactions.len() == BLOCK_CAPACITY {
-                for tx in valid_transactions.iter() {
-                    _tx_mempool.remove(&tx.hash());
-                }
-            }
         }
+        
         let content = Content {
             transactions: valid_transactions,
         };
