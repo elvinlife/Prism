@@ -261,7 +261,7 @@ impl Context {
                     }
                 }
 
-                // If a peer requests a transaction that we have, give it to them.
+                // If a peer requests a transaction that we have in our pool, give it to them.
                 Message::GetTransactions(hashes) => {
                     //debug!("GetTransactions: {:?}", hashes);
                     let mut txs = Vec::new();
@@ -281,8 +281,9 @@ impl Context {
 
                 // If transaction received, check if we have it. If so dump it
                 // Otherwise transaction is new. Check if it is signed correctly
-                // If so, add it to tx_mempool.
+                // If so, add it to tx_mempool and rebroadcast it.
                 Message::Transactions(signed_transactions) => {
+                    let mut broadcast_hashes: Vec<H256> = Vec::new();
 
                     if let Ok(mut _tx_mempool) = self.tx_mempool.lock(){
                         for tx_signed in signed_transactions {
@@ -297,9 +298,14 @@ impl Context {
                             let public_key = UnparsedPublicKey::new(&ED25519, tx_signed.public_key.clone());
 
                             if public_key.verify(tx.hash().as_ref(), tx_signed.signature.as_ref()).is_ok() {
-                                _tx_mempool.insert(tx_signed.hash(), tx_signed);
+                                _tx_mempool.insert(tx_signed.hash(), tx_signed.clone());
+                                broadcast_hashes.push(tx_signed.hash());
                             }
                         }
+                    }
+
+                    if !broadcast_hashes.is_empty() {
+                        self.server.broadcast(Message::NewTransactionHashes(broadcast_hashes));
                     }
                 }
 
