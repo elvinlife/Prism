@@ -162,7 +162,7 @@ impl Context {
             // TODO: actual mining 
             if let Ok(mut chain) = self.blockchain.lock(){
                 // Initialize block header.
-                let parent = chain.tip();
+                let parent = chain.tip().clone();
                 let timestamp = time::SystemTime::now().duration_since(time::SystemTime::UNIX_EPOCH).unwrap().as_micros();
                 let difficulty: H256 = chain.get_block(&parent).unwrap().header.difficulty;
 

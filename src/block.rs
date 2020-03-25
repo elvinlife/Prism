@@ -72,6 +72,14 @@ pub struct AccountState {
     pub balance: u64,
 }
 
+impl AccountState {
+    pub fn new() -> Self {
+        AccountState {
+            nonce: 0,
+            balance: 25
+        }
+    }
+}
 
 #[cfg(any(test, test_utilities))]
 pub mod test {

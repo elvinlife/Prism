@@ -6,12 +6,13 @@ use log::{debug, warn};
 
 use std::thread;
 use std::sync::{Mutex, Arc};
-use crate::{Blockchain, block::{Block}};
-use crate::crypto::hash::{Hashable, H256};
-use ring::signature::{Ed25519KeyPair, Signature, KeyPair, VerificationAlgorithm, UnparsedPublicKey, ED25519};
-use crate::transaction::{SignedTransaction,verify};
 use std::collections::{HashMap};
 use std::time;
+use crate::{Blockchain, block::{Block, State, AccountState}};
+use crate::crypto::hash::{Hashable, H256};
+use crate::crypto::address::H160;
+use crate::transaction::{SignedTransaction,verify};
+use ring::signature::{UnparsedPublicKey, ED25519};
 //use std::sync::atomic::{AtomicU128, Ordering, AtomicU32};
 
 
@@ -48,6 +49,37 @@ pub fn new(
         recv_block_sum: Arc::clone(recv_block_sum),
     }
 }
+
+ // verify a block wrt the state
+    // If the block is valid, return the updated state
+    fn verify_block(block: &Block, _state: &State) -> Option<State> {
+        let mut txs_map = HashMap::<H160, Vec<SignedTransaction>>::new();
+        let address_list = _state.clone().address_list;
+        let mut state = _state.clone();
+        for address in address_list.iter() {
+            let txs = vec![];
+            txs_map.insert(address.clone(), txs);
+        }
+        for tx in block.content.transactions.iter() {
+            let address: H160 = tx.clone().public_key.into();
+            if let Some(mut _txs) = txs_map.get_mut(&address) {
+                _txs.push(tx.clone());
+            }
+        }
+        // sort it by the nonce
+        for address in address_list.iter() {
+            if let Some(mut _txs) = txs_map.get_mut(address) {
+                _txs.sort_by(|a, b| a.transaction.account_nonce.cmp(&b.transaction.account_nonce));
+                for tx in _txs.iter() {
+                    if !tx.is_valid(&state) {
+                        return None;
+                    }
+                    tx.update_state(&mut state);
+                }
+            }
+        }
+        return Some(state);
+    }
 
 impl Context {
     pub fn start(self) {
@@ -170,10 +202,16 @@ impl Context {
                                             let parent_hash = block.header.parent;
                                             // Commit if parent in blockchain and nonce is valid.
                                             if chain.contains_key(&parent_hash)
-                                               && block_hash <= &chain.get_block(&parent_hash).unwrap().header.difficulty {
-                                                //chain.insert(&block);
-                                                no_commits = false;
-                                                committed_hashes.push(*block_hash);
+                                            && block_hash <= &chain.get_block(&parent_hash).unwrap().header.difficulty {
+                                                let tip_state = chain.get_state(&chain.tip()).unwrap();
+                                                match verify_block(block, tip_state) {
+                                                    Some(new_state) => {
+                                                        no_commits = false;
+                                                        chain.insert(&block, &new_state);
+                                                        committed_hashes.push(*block_hash);
+                                                    }
+                                                    None => {}
+                                                }
                                             }
                                         }
                                         // Clear all committed blocks from orphan pool.
@@ -266,15 +304,17 @@ impl Context {
                 }
 
                 Message::NewAccountAddress(address) => {
-                    if let Ok(chain) = self.blockchain.lock() {
-
+                    if let Ok(mut chain) = self.blockchain.lock() {
+                        let tip_hash = chain.tip().clone();
+                        let mut tip_state = chain.get_state(&tip_hash).unwrap().clone();
+                        if !tip_state.address_list.contains(&address) {
+                            tip_state.address_list.push(address);
+                            tip_state.account_state.insert(address, AccountState::new());
+                        }
+                        chain.update_state(&tip_hash, &tip_state);
                     }
                 }
             }
         }
-    }
-
-    fn is_block_valid(block: &Block) -> bool {
-        unimplemented!()
     }
 }

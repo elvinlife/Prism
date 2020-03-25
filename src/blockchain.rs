@@ -83,16 +83,20 @@ impl Blockchain {
     }
 
     /// Get the last block's hash of the longest chain
-    pub fn tip(&self) -> H256 {
-        self.head
+    pub fn tip(&self) -> &H256 {
+        &self.head
     }
 
     pub fn get_block(&self, hash: &H256) -> Option<&Block> {
         self.blocks.get(&hash)
     }
 
-    pub fn get_state(&self, hash: &H256) -> Option<&State> {
+    pub fn get_state(&self, hash: &H256) -> Option<& State> {
         self.block_states.get(hash)
+    }
+
+    pub fn update_state(&mut self, hash: &H256, state: &State) {
+        self.block_states.insert(hash.clone(), state.clone());
     }
 
     pub fn contains_key(&self, hash: &H256) -> bool{

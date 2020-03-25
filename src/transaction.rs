@@ -48,7 +48,7 @@ impl Hashable for SignedTransaction{
 }
 
 impl SignedTransaction {
-    fn is_valid(&self, state: &State) -> bool {
+    pub fn is_valid(&self, state: &State) -> bool {
         let address: H160 = self.public_key.clone().into();
         if self.is_erasable(state) {
             return false;
@@ -61,7 +61,7 @@ impl SignedTransaction {
         return true;
     }
 
-    fn is_erasable(&self, state: &State) -> bool {
+    pub fn is_erasable(&self, state: &State) -> bool {
         let address: H160 = self.public_key.clone().into();
         let public_key = UnparsedPublicKey::new(&ED25519, self.public_key.clone());
         // verification fails
@@ -82,14 +82,12 @@ impl SignedTransaction {
         return false;
     }
 
-    fn update_state(&self, state: &mut State){
+    pub fn update_state(&self, state: &mut State){
         let address: H160 = self.public_key.clone().into();
-        if let Some(peer_state) = state.account_state.get(&address) {
-            let mut new_peer_state = peer_state.clone();
-            new_peer_state.balance -= self.transaction.value;
-            assert_eq!(new_peer_state.nonce + 1, self.transaction.account_nonce);
-            new_peer_state.nonce += 1;
-            state.account_state.insert(address, new_peer_state);
+        if let Some(peer_state) = state.account_state.get_mut(&address) {
+            assert_eq!(peer_state.nonce + 1, self.transaction.account_nonce);
+            peer_state.balance -= self.transaction.value;
+            peer_state.nonce += 1;
         }
     }
 }
