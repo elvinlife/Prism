@@ -90,7 +90,7 @@ impl Context {
                             };
                             txs_hash_buffer.push(signed_tx.hash());
                             if let Ok(mut _tx_mempool) = self.tx_mempool.lock() {
-                                _tx_mempool.push_back(signed_tx);
+                                _tx_mempool.insert(signed_tx.hash(), signed_tx);
                             }
                         }
                     }

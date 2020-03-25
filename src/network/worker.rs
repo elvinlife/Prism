@@ -8,7 +8,8 @@ use std::thread;
 use std::sync::{Mutex, Arc};
 use crate::{Blockchain, block};
 use crate::crypto::hash::{Hashable, H256};
-use crate::transaction::{SignedTransaction};
+use ring::signature::{Ed25519KeyPair, Signature, KeyPair, VerificationAlgorithm, UnparsedPublicKey, ED25519};
+use crate::transaction::{SignedTransaction,verify};
 use std::collections::{HashMap};
 use std::time;
 //use std::sync::atomic::{AtomicU128, Ordering, AtomicU32};
@@ -224,7 +225,7 @@ impl Context {
                     }
                 }
 
-                // If a peer requests a transaction in our pool, give it to them.
+                // If a peer requests a transaction that we have, give it to them.
                 Message::GetTransactions(hashes) => {
                     //debug!("GetTransactions: {:?}", hashes);
                     let mut txs = Vec::new();
@@ -242,8 +243,28 @@ impl Context {
                     }
                 }
 
+                // If transaction received, check if we have it. If so dump it
+                // Otherwise transaction is new. Check if it is signed correctly
+                // If so, add it to tx_mempool.
                 Message::Transactions(signed_transactions) => {
-                    unimplemented!();
+
+                    if let Ok(mut _tx_mempool) = self.tx_mempool.lock(){
+                        for tx_signed in signed_transactions {
+
+                            // If we already have the transaction, continue.
+                            if _tx_mempool.contains_key(&tx_signed.hash()){
+                                continue;
+                            }
+
+                            // Otherwise, check if it is signed correctly.
+                            let tx = tx_signed.transaction.clone();
+                            let public_key = UnparsedPublicKey::new(&ED25519, tx_signed.public_key.clone());
+
+                            if public_key.verify(tx.hash().as_ref(), tx_signed.signature.as_ref()).is_ok() {
+                                _tx_mempool.insert(tx_signed.hash(), tx_signed);
+                            }
+                        }
+                    }
                 }
 
                 Message::NewAccountAddress(address) => {
