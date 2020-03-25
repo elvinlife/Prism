@@ -70,7 +70,7 @@ impl std::convert::From<H160> for [u8; 20] {
 impl std::convert::From<ring::digest::Digest> for H160 {
     fn from(input: ring::digest::Digest) -> H160 {
         let mut raw_hash: [u8; 20] = [0; 20];
-        raw_hash[0..20].copy_from_slice(input.as_ref());
+        raw_hash[0..20].copy_from_slice(&input.as_ref()[..20]);
         H160(raw_hash)
     }
 }
@@ -78,7 +78,7 @@ impl std::convert::From<ring::digest::Digest> for H160 {
 impl std::convert::From<Vec<u8>> for H160 {
     fn from(input: Vec<u8>) -> H160 {
         let mut raw_hash: [u8; 20] = [0; 20];
-        raw_hash[0..20].copy_from_slice(input.as_ref());
+        raw_hash[0..20].copy_from_slice(&input[..20]);
         H160(raw_hash)
     }
 }
