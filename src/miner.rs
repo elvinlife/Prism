@@ -173,9 +173,8 @@ impl Context {
                         continue;
                     }
                     let merkle_root = MerkleTree::new(&content.transactions).root();
-
                     // Create block with random nonce.
-                    let block = Block {
+                    let mut block = Block {
                         header: Header{
                             parent: parent,
                             nonce: rand::random::<u32>(),
@@ -185,14 +184,14 @@ impl Context {
                         },
                         content: content, 
                     };
-
-                    // If block hash <= difficulty, block is successfully mined.
-                    if block.hash() <= difficulty { 
-                        self.mined_blocks += 1;
-                        debug!("new block mined, hash: {:?}, num mined: {:?}", block.hash(), self.mined_blocks);
-                        chain.insert(&block);
-                        self.server.broadcast(Message::NewBlockHashes(vec![block.hash()]));
+                    while block.hash() > difficulty {
+                        block.header.nonce = rand::random::<u32>();
                     }
+                    // If block hash <= difficulty, block is successfully mined.
+                    self.mined_blocks += 1;
+                    debug!("new block mined, hash: {:?}, num mined: {:?}", block.hash(), self.mined_blocks);
+                    chain.insert(&block, &new_state);
+                    self.server.broadcast(Message::NewBlockHashes(vec![block.hash()]));
                 }
             }
 
@@ -206,27 +205,32 @@ impl Context {
     }
 
     fn collect_txs(&self, _state: &State) -> (Content, State) {
+        let mut erase_transactions = vec![];
         let mut valid_transactions = vec![];
         let mut state = _state.clone();
-        let mut split_index = 0;
-        if let Ok(_tx_mempool) = self.tx_mempool.lock() {
+        if let Ok(mut _tx_mempool) = self.tx_mempool.lock() {
             for tx_signed in _tx_mempool.values() {
                 let address: H160 = tx_signed.public_key.clone().into();
                 let public_key = UnparsedPublicKey::new(&ED25519, tx_signed.public_key.clone());
                 let tx = tx_signed.transaction.clone();
-                split_index += 1;
                 // verification fails
                 if public_key.verify(tx.hash().as_ref(), tx_signed.signature.as_ref()).is_err() {
+                    erase_transactions.push(tx.hash());
                     continue;
                 }
                 // get the peer state
                 if let Some(peer_state) = state.account_state.get(&address) {
                     // the nonce is incorrect
                     if peer_state.nonce != (tx.account_nonce + 1) {
+                        // only erase txs whose nonce are smaller than the state
+                        if peer_state.nonce <= tx.account_nonce {
+                            erase_transactions.push(tx.hash());
+                        }
                         continue;
                     }
                     // the balance is not enough
                     if peer_state.balance < tx.value {
+                        erase_transactions.push(tx.hash());
                         continue;
                     }
                     // the valid transaction
@@ -240,9 +244,16 @@ impl Context {
                     break;
                 }
             }
-        }
-        if let Ok(mut _tx_mempool) = self.tx_mempool.lock() {
-            
+            // remove invalid txs
+            for tx in erase_transactions.iter() {
+                _tx_mempool.remove(&tx);
+            }
+            // keep valid txs
+            if valid_transactions.len() == BLOCK_CAPACITY {
+                for tx in valid_transactions.iter() {
+                    _tx_mempool.remove(&tx.hash());
+                }
+            }
         }
         let content = Content {
             transactions: valid_transactions,

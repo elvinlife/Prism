@@ -60,8 +60,8 @@ impl Blockchain {
         }
     }
 
-    /// Insert a block into blockchain
-    pub fn insert(&mut self, block: &Block) -> bool{
+    /// Insert a block & the state into blockchain
+    pub fn insert(&mut self, block: &Block, state: &State) -> bool{
         let curr_block_hash = block.hash();
         let prev_block_hash = block.header.parent;
 
@@ -70,6 +70,8 @@ impl Blockchain {
 
             let new_len: u32 = self.block_len.get(&prev_block_hash).unwrap() + 1; 
             self.block_len.insert(curr_block_hash, new_len);
+
+            self.block_states.insert(curr_block_hash, state.clone());
 
             if new_len > *self.block_len.get(&self.head).unwrap(){
                 self.head = curr_block_hash; 
@@ -138,8 +140,8 @@ mod tests {
         let mut chain_correct = Vec::<H256>::new();
         chain_correct.push(hash_0);
         for _ in 0..20 {
-            blockchain.insert(&block1);
-            blockchain.insert(&block2);
+            blockchain.insert(&block1, Default::default());
+            blockchain.insert(&block2, Default::default());
             chain_correct.push(block1.hash());
             block1 = generate_random_block(&block1.hash());
             block2 = generate_random_block(&block2.hash());

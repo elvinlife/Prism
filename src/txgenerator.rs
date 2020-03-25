@@ -54,7 +54,7 @@ impl Context {
                 self.server.broadcast(Message::NewTransactionHashes(txs_hash_buffer.clone()));
                 txs_hash_buffer.clear();
             }
-            if let Ok(mut chain) = self.blockchain.lock(){
+            if let Ok(chain) = self.blockchain.lock(){
                 let tip_hash = chain.tip().hash();
                 if let Some(state) = chain.get_state(&tip_hash) {
                     // get the latest state of my account
@@ -90,7 +90,7 @@ impl Context {
                             };
                             txs_hash_buffer.push(signed_tx.hash());
                             if let Ok(mut _tx_mempool) = self.tx_mempool.lock() {
-                                _tx_mempool.push_back(signed_tx);
+                                _tx_mempool.insert(signed_tx.hash(), signed_tx);
                             }
                         }
                     }

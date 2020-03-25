@@ -6,7 +6,7 @@ use log::{debug, warn};
 
 use std::thread;
 use std::sync::{Mutex, Arc};
-use crate::{Blockchain, block};
+use crate::{Blockchain, block::{Block}};
 use crate::crypto::hash::{Hashable, H256};
 use crate::transaction::{SignedTransaction};
 use std::collections::{HashMap};
@@ -20,7 +20,7 @@ pub struct Context {
     num_worker: usize,
     server: ServerHandle,
     blockchain: Arc<Mutex<Blockchain>>,
-    orphan_blocks: Arc<Mutex<HashMap<H256,block::Block>>>,
+    orphan_blocks: Arc<Mutex<HashMap<H256,Block>>>,
     tx_mempool: Arc<Mutex<HashMap<H256,SignedTransaction>>>,
     delay_time_sum: Arc<Mutex<u128>>,
     recv_block_sum: Arc<Mutex<u32>>,
@@ -31,7 +31,7 @@ pub fn new(
     msg_src: channel::Receiver<(Vec<u8>, peer::Handle)>,
     server: &ServerHandle,
     blockchain: &Arc<Mutex<Blockchain>>,
-    orphan_blocks: &Arc<Mutex<HashMap<H256,block::Block>>>,
+    orphan_blocks: &Arc<Mutex<HashMap<H256,Block>>>,
     tx_mempool: &Arc<Mutex<HashMap<H256,SignedTransaction>>>,
     delay_time_sum: &Arc<Mutex<u128>>,
     recv_block_sum: &Arc<Mutex<u32>>,
@@ -144,7 +144,6 @@ impl Context {
                     let mut requested_hashes: Vec<H256> = Vec::new();
                     if let Ok(mut orphans) = self.orphan_blocks.lock(){
                         if let Ok(mut chain) = self.blockchain.lock(){
-
                             for block in &blocks {
                                 let parent_hash = block.header.parent;
                                 let block_hash = block.hash();
@@ -171,12 +170,11 @@ impl Context {
                                             // Commit if parent in blockchain and nonce is valid.
                                             if chain.contains_key(&parent_hash)
                                                && block_hash <= &chain.get_block(&parent_hash).unwrap().header.difficulty {
-                                                chain.insert(&block);
+                                                //chain.insert(&block);
                                                 no_commits = false;
                                                 committed_hashes.push(*block_hash);
                                             }
                                         }
-
                                         // Clear all committed blocks from orphan pool.
                                         for hash in &committed_hashes {
                                             orphans.remove(&hash);
@@ -253,5 +251,9 @@ impl Context {
                 }
             }
         }
+    }
+
+    fn is_block_valid(block: &Block) -> bool {
+        unimplemented!()
     }
 }
