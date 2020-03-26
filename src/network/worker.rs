@@ -61,7 +61,7 @@ pub fn new(
             txs_map.insert(address.clone(), txs);
         }
         for tx in block.content.transactions.iter() {
-            let address: H160 = tx.clone().public_key.into();
+            let address: H160 = ring::digest::digest(&ring::digest::SHA256, tx.public_key.as_ref()).into();
             if let Some(mut _txs) = txs_map.get_mut(&address) {
                 _txs.push(tx.clone());
             }

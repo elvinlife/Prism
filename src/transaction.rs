@@ -49,7 +49,7 @@ impl Hashable for SignedTransaction{
 
 impl SignedTransaction {
     pub fn is_valid(&self, state: &State) -> bool {
-        let address: H160 = self.public_key.clone().into();
+        let address: H160 = ring::digest::digest(&ring::digest::SHA256, self.public_key.as_ref()).into();
         if self.is_erasable(state) {
             return false;
         }
@@ -62,7 +62,7 @@ impl SignedTransaction {
     }
 
     pub fn is_erasable(&self, state: &State) -> bool {
-        let address: H160 = self.public_key.clone().into();
+        let address: H160 = ring::digest::digest(&ring::digest::SHA256, self.public_key.as_ref()).into();
         let public_key = UnparsedPublicKey::new(&ED25519, self.public_key.clone());
         // verification fails
         if public_key.verify(self.transaction.hash().as_ref(), self.signature.as_ref()).is_err() {
@@ -83,7 +83,7 @@ impl SignedTransaction {
     }
 
     pub fn update_state(&self, state: &mut State){
-        let address: H160 = self.public_key.clone().into();
+        let address: H160 = ring::digest::digest(&ring::digest::SHA256, self.public_key.as_ref()).into();
         if let Some(peer_state) = state.account_state.get_mut(&address) {
             assert_eq!(peer_state.nonce + 1, self.transaction.account_nonce);
             peer_state.balance -= self.transaction.value;

@@ -1,6 +1,5 @@
 use serde::{Serialize, Deserialize};
 use crate::crypto::hash::H256;
-use crate::crypto::address::H160;
 use crate::block::Block;
 use crate::transaction::SignedTransaction;
 

@@ -168,6 +168,7 @@ impl Context {
                     if content.len() < BLOCK_CAPACITY {
                         continue;
                     }
+                    debug!("miner collected txs: {:?}", content.len());
                     let merkle_root = MerkleTree::new(&content.transactions).root();
                     // Create block with random nonce.
                     let mut block = Block {
@@ -218,7 +219,7 @@ impl Context {
                 let mut erase_transactions = vec![];
 
                 for tx_signed in _tx_mempool.values() {
-                    let address: H160 = tx_signed.public_key.clone().into();
+                    let address: H160 = ring::digest::digest(&ring::digest::SHA256, tx_signed.public_key.as_ref()).into();
                     let public_key = UnparsedPublicKey::new(&ED25519, tx_signed.public_key.clone());
                     let tx = tx_signed.transaction.clone();
                     // verification fails
@@ -229,9 +230,9 @@ impl Context {
                     // get the peer state
                     if let Some(peer_state) = state.account_state.get(&address) {
                         // the nonce is incorrect
-                        if peer_state.nonce != (tx.account_nonce + 1) {
+                        if tx.account_nonce != peer_state.nonce+1 {
                             // only erase txs whose nonce are smaller than the state
-                            if peer_state.nonce <= tx.account_nonce {
+                            if tx.account_nonce <= peer_state.nonce {
                                 erase_transactions.push(tx.hash());
                             }
                             continue;

@@ -75,13 +75,6 @@ impl std::convert::From<ring::digest::Digest> for H160 {
     }
 }
 
-impl std::convert::From<Vec<u8>> for H160 {
-    fn from(input: Vec<u8>) -> H160 {
-        let mut raw_hash: [u8; 20] = [0; 20];
-        raw_hash[0..20].copy_from_slice(&input[..20]);
-        H160(raw_hash)
-    }
-}
 
 impl Ord for H160 {
     fn cmp(&self, other: &H160) -> std::cmp::Ordering {

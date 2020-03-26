@@ -3,14 +3,16 @@ use std::sync::{Arc, Mutex};
 use std::collections::HashMap;
 use ring::signature::{Ed25519KeyPair, KeyPair};
 use std::time;
+use rand::Rng;
 use log::{info, debug};
 use crossbeam::channel::{unbounded, Receiver, Sender, TryRecvError};
 use crate::transaction::{SignedTransaction, Transaction, sign};
 use crate::network::server::Handle as ServerHandle;
 use crate::network::message::Message;
 use crate::crypto::hash::{Hashable, H256};
+use crate::crypto::address::H160;
 use crate::miner::{Identity, OperatingState, ControlSignal, Handle};
-use crate::blockchain::Blockchain;
+use crate::blockchain::{Blockchain};
 
 static GEN_INTERVAL: u64 = 100;
 static SEND_SIZE: usize = 1;
@@ -107,7 +109,6 @@ impl Context {
                     if let Some(self_state) = state.account_state.get(&self_address) {
                         let balance = self_state.balance;
                         let mut nonce = self_state.nonce;
-                        let num_peer = state.address_list.len() - 1;
                         // already generate transactions for this block, skip
                         if last_nonce == nonce {
                             let interval = time::Duration::from_micros(GEN_INTERVAL);
@@ -117,28 +118,30 @@ impl Context {
                         last_nonce = nonce;
                         // generate transactions for this block
                         // simply send 1/(2*num_peer) * balance to all other peers
-                        for peer_address in state.address_list.iter() {
-                            // skip myself
-                            if peer_address == &self_address {
+                        let mut peer_address: Vec<H160> = Vec::new();
+                        for address in state.address_list.iter() {
+                            if address == &self_address {
                                 continue;
                             }
-                            let tx = Transaction {
-                                recipient_address: peer_address.clone(),
-                                value: balance as u64 / (2 * num_peer as u64),
-                                account_nonce: nonce
-                            };
-                            nonce += 1;
-                            let signature = sign(&tx, &(*self.id).key_pair);
-                            let signed_tx = SignedTransaction {
-                                transaction: tx,
-                                signature: signature.as_ref().iter().cloned().collect(),
-                                public_key: public_key.as_ref().iter().cloned().collect()
-                            };
-                            txs_hash_buffer.push(signed_tx.hash());
-                            if let Ok(mut _tx_mempool) = self.tx_mempool.lock() {
-                                debug!("insert from local: sender_pub: {:?}, tx: {:?}", signed_tx.public_key, signed_tx.transaction.clone());
-                                _tx_mempool.insert(signed_tx.hash(), signed_tx);
-                            }
+                            peer_address.push(address.clone());
+                        }
+                        let mut rng = rand::thread_rng();
+                        let receiver = peer_address[rng.gen_range(0, peer_address.len())];
+                        let tx = Transaction {
+                            recipient_address: receiver,
+                            value: balance as u64 / 2,
+                            account_nonce: nonce+1
+                        };
+                        let signature = sign(&tx, &(*self.id).key_pair);
+                        let signed_tx = SignedTransaction {
+                            transaction: tx,
+                            signature: signature.as_ref().iter().cloned().collect(),
+                            public_key: public_key.as_ref().iter().cloned().collect()
+                        };
+                        txs_hash_buffer.push(signed_tx.hash());
+                        if let Ok(mut _tx_mempool) = self.tx_mempool.lock() {
+                            debug!("insert from local: sender_pub: {:?}, tx: {:?}", signed_tx.public_key, signed_tx.transaction.clone());
+                            _tx_mempool.insert(signed_tx.hash(), signed_tx);
                         }
                     }
                 }
