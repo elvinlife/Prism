@@ -1,6 +1,8 @@
 use crate::block::{Block, Header, Content, State, BLOCK_REWARD, AccountState};
 use crate::crypto::hash::{H256, Hashable};
 use crate::crypto::address::H160;
+use crate::crypto::key_pair;
+use ring::signature::KeyPair;
 use std::collections::HashMap;
 use log::debug;
 
@@ -13,7 +15,7 @@ pub struct Blockchain {
 
 impl Blockchain {
     /// Create a new blockchain, only containing the genesis block
-    pub fn new(self_address: H160) -> Self {
+    pub fn new() -> Self {
         let genesis_block = Block {
             header: Header{
                 parent: Default::default(),
@@ -30,14 +32,19 @@ impl Blockchain {
             },
         };
 
-        let self_state = AccountState {
-            balance: BLOCK_REWARD,
-            nonce: 0,
-        };
+        let mut address_list = Vec::new();
         let mut account_state: HashMap<H160, AccountState> = HashMap::new();
-        account_state.insert(self_address, self_state);
+        for i in 0..3 {
+            let key_pair = key_pair::frombyte(i as u8);
+            let address: H160 = ring::digest::digest(&ring::digest::SHA256, key_pair.public_key().as_ref()).into();
+            address_list.push(address);
+            account_state.insert(address, AccountState{
+                balance: BLOCK_REWARD,
+                nonce: 0,
+            });
+        }
         let genesis_state = State {
-            address_list: vec!(self_address),
+            address_list: address_list,
             account_state: account_state,
         };
 

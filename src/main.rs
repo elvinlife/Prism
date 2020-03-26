@@ -80,10 +80,20 @@ fn main() {
     server_ctx.start().unwrap();
 
     // initialize public/private key pair
-    let id = Arc::new(Identity::new());
+    let id: Arc<Identity>;
+    let p2p_addr_str = matches.value_of("peer_addr").unwrap();
+    if p2p_addr_str == "127.0.0.1:6000" {
+        id = Arc::new(Identity::new(0 as u8));
+    }
+    else if p2p_addr_str == "127.0.0.1:6001" {
+        id = Arc::new(Identity::new(1 as u8));
+    }
+    else {
+        id = Arc::new(Identity::new(2 as u8));
+    }
 
     // initialize blockchain
-    let blockchain = Arc::new(Mutex::new(Blockchain::new((*id).address)));
+    let blockchain = Arc::new(Mutex::new(Blockchain::new()));
 
     // initialize mempool for orphaned blocks
     let orphan_blocks = Arc::new(Mutex::new(HashMap::<H256,block::Block>::new()));

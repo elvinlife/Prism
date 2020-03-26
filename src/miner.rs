@@ -51,8 +51,8 @@ pub struct Identity {
 }
 
 impl Identity {
-    pub fn new() -> Identity {
-        let _key_pair = key_pair::random();
+    pub fn new(randbyte: u8) -> Identity {
+        let _key_pair = key_pair::frombyte(randbyte);
         let _address: H160 = ring::digest::digest(&ring::digest::SHA256, _key_pair.public_key().as_ref()).into();
         Identity {
             key_pair: _key_pair,
