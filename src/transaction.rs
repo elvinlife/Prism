@@ -84,10 +84,13 @@ impl SignedTransaction {
 
     pub fn update_state(&self, state: &mut State){
         let address: H160 = ring::digest::digest(&ring::digest::SHA256, self.public_key.as_ref()).into();
-        if let Some(peer_state) = state.account_state.get_mut(&address) {
-            assert_eq!(peer_state.nonce + 1, self.transaction.account_nonce);
-            peer_state.balance -= self.transaction.value;
-            peer_state.nonce += 1;
+        if let Some(sender_state) = state.account_state.get_mut(&address) {   
+            assert_eq!(sender_state.nonce + 1, self.transaction.account_nonce);
+            sender_state.balance -= self.transaction.value;
+            sender_state.nonce += 1;
+        }
+        if let Some(receiver_state) = state.account_state.get_mut(&self.transaction.recipient_address) {
+            receiver_state.balance += self.transaction.value;
         }
     }
 }

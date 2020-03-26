@@ -242,10 +242,7 @@ impl Context {
                             continue;
                         }
                         // the valid transaction
-                        let mut new_state = peer_state.clone();
-                        new_state.nonce = peer_state.nonce + 1;
-                        new_state.balance = peer_state.balance - tx.value;
-                        state.account_state.insert(address, new_state);
+                        tx_signed.update_state(&mut state);
                         valid_transactions.push(tx_signed.clone());
                         finished = false;
                     }

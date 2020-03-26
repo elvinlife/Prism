@@ -83,7 +83,15 @@ impl Blockchain {
             if new_len > *self.block_len.get(&self.head).unwrap(){
                 self.head = curr_block_hash; 
             }
-            debug!("tip: {:?}, len: {:?}, total: {:?}", self.head, new_len, self.blocks.len());
+        
+            let mut sum = 0;
+            for address in state.address_list.iter() {
+                if let Some(account) = state.account_state.get(address) {
+                    sum += account.balance;
+                }
+            }
+            debug!("tip: {:?}, len: {:?}, total: {:?}, balance_sum: {:?}", self.head, new_len, self.blocks.len(), sum);
+
             return true;
         }
         false
