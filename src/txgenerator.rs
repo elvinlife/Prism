@@ -143,9 +143,11 @@ impl Context {
                         //txs_hash_buffer.push(signed_tx.hash());
 
                         if let Ok(mut _tx_mempool) = self.tx_mempool.lock() {
-                            debug!("insert from local: sender_pub: {:?}, tx: {:?}", signed_tx.public_key, signed_tx.transaction.clone());
+                            //debug!("insert from local: sender_pub: {:?}, tx: {:?}", signed_tx.public_key, signed_tx.transaction.clone());
                             _tx_mempool.insert(signed_tx.hash(), signed_tx.clone());
-                            self.server.broadcast(Message::NewTransactionHashes(vec![signed_tx.hash()]));
+                            self.server.broadcast(Message::Transactions(vec![signed_tx]));
+                            //debug!("tx_pool size: {:?}", _tx_mempool.len());
+                            //self.server.broadcast(Message::NewTransactionHashes(vec![signed_tx.hash()]));
                         }
                     }
                 }

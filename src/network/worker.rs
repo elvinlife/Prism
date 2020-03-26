@@ -110,44 +110,52 @@ impl Context {
                 // If a peer advertises that it has a block that we don't have, request it from the peer.
                 Message::NewBlockHashes(hashes) => {
                     //debug!("NewBlockHashes: {:?}", hashes);
-                    let mut requested_hashes = Vec::new();
+                    //let mut requested_hashes = Vec::new();
 
-                    if let Ok(orphans) = self.orphan_blocks.lock(){
+                    for hash in &hashes {
                         if let Ok(chain) = self.blockchain.lock(){ 
-                            for hash in &hashes {
+                            if let Ok(orphans) = self.orphan_blocks.lock(){
                                 if chain.get_block(hash).is_none() && !orphans.contains_key(hash) {
-                                    requested_hashes.push(*hash);
+                                    //requested_hashes.push(*hash);
+                                    //peer.write(Message::GetBlocks(vec![*hash]));
+                                    self.server.broadcast(Message::GetBlocks(vec![*hash]));
                                 }
                             }
                         }
                     }
 
+                    /*
                     if !requested_hashes.is_empty() {
                         peer.write(Message::GetBlocks(requested_hashes));    
                     }
+                    */
                 }
 
                 // If a peer asks us for a block we have, give it to them.
                 Message::GetBlocks(hashes) => {
                     //debug!("GetBlocks: {:?}", hashes);
-                    let mut blocks = Vec::new();
+                    //let mut blocks = Vec::new();
 
-                    if let Ok(orphans) = self.orphan_blocks.lock(){
+                    for hash in &hashes {
                         if let Ok(chain) = self.blockchain.lock() {
-                            for hash in &hashes {
+                            if let Ok(orphans) = self.orphan_blocks.lock(){
                                 if let Some(block) = chain.get_block(hash) {
-                                    blocks.push(block.clone());
+                                    //blocks.push(block.clone());
+                                    peer.write(Message::Blocks(vec![block.clone()]));
                                 }
                                 else if let Some(block) = orphans.get(hash){
-                                    blocks.push(block.clone());
+                                    //blocks.push(block.clone());
+                                    peer.write(Message::Blocks(vec![block.clone()]));
                                 }
                             }
                         }
                     }
 
+                    /*
                     if !blocks.is_empty() {
                         peer.write(Message::Blocks(blocks));
                     }
+                    */
                 }
 
                 // If we receive a block, check if we already have it. If so dump it.
@@ -157,7 +165,7 @@ impl Context {
                 Message::Blocks(blocks) => {
                     //debug!("Blocks: {:?}", blocks);
 
-                    let mut broadcast_hashes: Vec<H256> = Vec::new();
+                    //let mut broadcast_hashes: Vec<H256> = Vec::new();
                     let timestamp_rcv = time::SystemTime::now().duration_since(time::SystemTime::UNIX_EPOCH).unwrap().as_micros();
                     
                     {
@@ -166,20 +174,24 @@ impl Context {
                         for block in &blocks {
                             *delay += timestamp_rcv - block.header.timestamp;
                             *num += 1;
-                            broadcast_hashes.push(block.hash());
+                            //broadcast_hashes.push(block.hash());
+                            self.server.broadcast(Message::NewBlockHashes(vec![block.hash()]));
                         }
                         //println!("Block recv ave latency: {}", *delay as f64 / *num as f64);
                     }
 
                     // Fast relay blocks
+                    /*
                     if !broadcast_hashes.is_empty() {
                         self.server.broadcast(Message::NewBlockHashes(broadcast_hashes));
                     }
+                    */
 
-                    let mut requested_hashes: Vec<H256> = Vec::new();
-                    if let Ok(mut chain) = self.blockchain.lock(){
-                        if let Ok(mut orphans) = self.orphan_blocks.lock(){
-                            for block in &blocks {
+                    //let mut requested_hashes: Vec<H256> = Vec::new();
+                    for block in &blocks {
+                        if let Ok(mut chain) = self.blockchain.lock(){
+                            if let Ok(mut orphans) = self.orphan_blocks.lock(){
+
                                 let parent_hash = block.header.parent;
                                 let block_hash = block.hash();
 
@@ -205,16 +217,24 @@ impl Context {
                                             // Commit if parent in blockchain and nonce is valid.
                                             if chain.contains_key(&parent_hash)
                                             && block_hash <= &chain.get_block(&parent_hash).unwrap().header.difficulty {
-                                                let tip_state = chain.get_state(&chain.tip()).unwrap();
-                                                match verify_block(block, tip_state) {
+                                                let parent_state = chain.get_state(&parent_hash).unwrap();
+                                                match verify_block(block, parent_state) {
                                                     Some(new_state) => {
-                                                        //debug!("Block {:?} verified.", block);
                                                         no_commits = false;
                                                         chain.insert(&block, &new_state);
+
+                                                        // If added block is not stale, drain its txns from the tx_mempool.
+                                                        if parent_hash == *chain.tip(){
+                                                            if let Ok(mut _tx_mempool) = self.tx_mempool.lock() {
+                                                                for tx in block.content.transactions.iter() {
+                                                                    _tx_mempool.remove(&tx.hash());
+                                                                }
+                                                            }
+                                                        }
+
                                                         committed_hashes.push(*block_hash);
                                                     }
                                                     None => {
-                                                        //debug!("Block {:?} failed to verify.", block);
                                                     }
                                                 }
                                             }
@@ -237,50 +257,61 @@ impl Context {
                                 else{
                                     // Parent doesn't exist. So block is orphan, request parent.
                                     orphans.insert(block_hash,block.clone());
-                                    requested_hashes.push(parent_hash);
+                                    //requested_hashes.push(parent_hash);
+                                    peer.write(Message::GetBlocks(vec![parent_hash]));
                                 }
                             }
                         }
                     }
                     // Get orphan block parents from peer.
+                    /*
                     if !requested_hashes.is_empty() {
                         peer.write(Message::GetBlocks(requested_hashes));
                     }
+                    */
                 }
 
                 // If a peer advertises that it has a transaction that we don't have, request it from the peer.
                 Message::NewTransactionHashes(hashes) => {
                     //debug!("message: NewTransactionHashes: {:?}", hashes);
-                    let mut requested_hashes = Vec::new();
+                    //let mut requested_hashes = Vec::new();
 
-                    if let Ok(tx_pool) = self.tx_mempool.lock(){
-                        for hash in &hashes {
+                    for hash in &hashes {
+                        if let Ok(tx_pool) = self.tx_mempool.lock(){
                             if !tx_pool.contains_key(hash) {
-                                requested_hashes.push(*hash);
+                                //requested_hashes.push(*hash);
+                                //peer.write(Message::GetTransactions(vec![hash.clone()]));
+                                self.server.broadcast(Message::GetTransactions(vec![hash.clone()]));
                             }
                         }
                     }
+
+                    /*
                     if !requested_hashes.is_empty() {
                         peer.write(Message::GetTransactions(requested_hashes));    
                     }
+                    */
                 }
 
                 // If a peer requests a transaction that we have in our pool, give it to them.
                 Message::GetTransactions(hashes) => {
                     //debug!("message: GetTransactions: {:?}", hashes);
-                    let mut txs = Vec::new();
+                    //let mut txs = Vec::new();
 
-                    if let Ok(tx_pool) = self.tx_mempool.lock(){
-                        for hash in &hashes {
+                    for hash in &hashes {
+                        if let Ok(tx_pool) = self.tx_mempool.lock(){
                             if let Some(tx) = tx_pool.get(hash){
-                                txs.push(tx.clone());
+                                //txs.push(tx.clone());
+                                peer.write(Message::Transactions(vec![tx.clone()]));
                             }
                         }
                     }
 
+                    /*
                     if !txs.is_empty() {
                         peer.write(Message::Transactions(txs));
                     }
+                    */
                 }
 
                 // If transaction received, check if we have it. If so dump it
@@ -288,31 +319,32 @@ impl Context {
                 // If so, add it to tx_mempool and rebroadcast it.
                 Message::Transactions(signed_transactions) => {
                     //debug!("message: Transactions: {:?}", signed_transactions);
-                    let mut broadcast_hashes: Vec<H256> = Vec::new();
 
-                    if let Ok(mut _tx_mempool) = self.tx_mempool.lock(){
-                        for tx_signed in signed_transactions {
+                    for tx_signed in signed_transactions {
 
-                            // If we already have the transaction, continue.
-                            if _tx_mempool.contains_key(&tx_signed.hash()){
-                                continue;
+                        // Check if it is signed correctly. If not ignore it.
+                        let tx = tx_signed.transaction.clone();
+                        let public_key = UnparsedPublicKey::new(&ED25519, tx_signed.public_key.clone());
+                        if public_key.verify(tx.hash().as_ref(), tx_signed.signature.as_ref()).is_ok() {
+
+                            // If this is a new transaction, insert it and rebroadcast it.
+                            if let Ok(mut _tx_mempool) = self.tx_mempool.lock(){
+                                if !_tx_mempool.contains_key(&tx_signed.hash()){
+                                    //debug!("insert from message: sender_pub: {:?}, tx: {:?}", tx_signed.public_key, tx_signed.transaction.clone());
+                                    _tx_mempool.insert(tx_signed.hash(), tx_signed.clone());
+                                    self.server.broadcast(Message::Transactions(vec![tx_signed]));
+                                    //debug!("tx_pool size: {:?}", _tx_mempool.len());
+                                }
                             }
 
-                            // Otherwise, check if it is signed correctly.
-                            let tx = tx_signed.transaction.clone();
-                            let public_key = UnparsedPublicKey::new(&ED25519, tx_signed.public_key.clone());
-
-                            if public_key.verify(tx.hash().as_ref(), tx_signed.signature.as_ref()).is_ok() {
-                                debug!("insert from message: sender_pub: {:?}, tx: {:?}", tx_signed.public_key, tx_signed.transaction.clone());
-                                _tx_mempool.insert(tx_signed.hash(), tx_signed.clone());
-                                broadcast_hashes.push(tx_signed.hash());
-                            }
                         }
                     }
 
+                    /*
                     if !broadcast_hashes.is_empty() {
                         self.server.broadcast(Message::NewTransactionHashes(broadcast_hashes));
                     }
+                    */
                 }
             }
         }

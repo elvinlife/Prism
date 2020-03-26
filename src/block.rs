@@ -5,7 +5,7 @@ use crate::transaction::{SignedTransaction};
 use crate::crypto::address::H160;
 
 pub static BLOCK_REWARD: u64 = 25;
-pub static BLOCK_CAPACITY: usize = 3;
+pub static BLOCK_CAPACITY: usize = 5;
 
 #[derive(Serialize, Deserialize, Debug, Default, Clone)]
 pub struct Block {

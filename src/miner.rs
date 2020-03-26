@@ -171,10 +171,10 @@ impl Context {
                 // Collect transactions to generate content
                 if let Some(state) = chain.get_state(&parent) {
                     let (content, new_state) = self.collect_txs(&state);
-                    if content.len() < BLOCK_CAPACITY {
+                    if content.len() == 0 {
                         continue;
                     }
-                    debug!("miner collected txs: {:?}", content.len());
+                    //debug!("\r miner collected txs: {:?}", content.len());
                     let merkle_root = MerkleTree::new(&content.transactions).root();
                     // Create block with random nonce.
                     let mut block = Block {
@@ -185,22 +185,31 @@ impl Context {
                             timestamp: timestamp,
                             merkle_root: merkle_root,
                         },
-                        content: content, 
+                        content: content.clone(), 
                     };
-                    for _ in 0..100{
+                    /*
+                    for _ in 0..1{
                         block.header.nonce = rand::random::<u32>();
                         if block.hash() < difficulty {
                             break;
                         }
                     }
-                    //while block.hash() > difficulty {
-                    //    block.header.nonce = rand::random::<u32>();
-                    //}
+                    */
                     // If block hash <= difficulty, block is successfully mined.
                     if block.hash() < difficulty {
+                        debug!("mined new block. hash: {:?}, num transactions: {:?}, num blocks mined: {:?}", 
+                            block.hash(), 
+                            content.len(),
+                            self.mined_blocks);
                         self.mined_blocks += 1;
-                        debug!("new block mined, hash: {:?}, num mined: {:?}", block.hash(), self.mined_blocks);
                         chain.insert(&block, &new_state);
+
+                        if let Ok(mut _tx_mempool) = self.tx_mempool.lock() {
+                            for tx in content.transactions {
+                                _tx_mempool.remove(&tx.hash());
+                            }
+                        }
+
                         self.server.broadcast(Message::NewBlockHashes(vec![block.hash()]));
                     }
                 }
@@ -256,6 +265,7 @@ impl Context {
                 for tx in erase_transactions.iter() {
                     _tx_mempool.remove(&tx);
                 }
+                /*
                 // keep valid txs
                 if valid_transactions.len() == BLOCK_CAPACITY {
                     for tx in valid_transactions.iter() {
@@ -263,6 +273,7 @@ impl Context {
                     }
                     break;
                 }
+                */
                 // if no more transactions can be added, return
                 if finished {
                     break;
