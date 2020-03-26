@@ -3,14 +3,13 @@ use std::sync::{Arc, Mutex};
 use std::collections::HashMap;
 use ring::signature::{Ed25519KeyPair, KeyPair};
 use std::time;
-
+use log::debug;
 use crate::transaction::{SignedTransaction, Transaction, sign};
 use crate::network::server::Handle as ServerHandle;
 use crate::network::message::Message;
 use crate::crypto::hash::{Hashable, H256};
 use crate::miner::Identity;
 use crate::blockchain::Blockchain;
-use crate::block::State;
 
 static GEN_INTERVAL: u64 = 100;
 static SEND_SIZE: usize = 2;
@@ -90,6 +89,7 @@ impl Context {
                             };
                             txs_hash_buffer.push(signed_tx.hash());
                             if let Ok(mut _tx_mempool) = self.tx_mempool.lock() {
+                                debug!("insert: sender_pub: {:?}, tx: {:?}", signed_tx.public_key, signed_tx.transaction.clone());
                                 _tx_mempool.insert(signed_tx.hash(), signed_tx);
                             }
                         }

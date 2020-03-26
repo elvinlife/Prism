@@ -24,16 +24,12 @@ use std::time;
 use crate::blockchain::{Blockchain};
 use crate::crypto::hash::{H256};
 use crate::transaction::{SignedTransaction};
-use crate::crypto::key_pair;
-use crate::crypto::address::H160;
 use crate::miner::Identity;
-use ring::signature::{Ed25519KeyPair};
 //use crate::crypto::address::{H160};
 use std::sync::{Arc,Mutex};
 use log::debug;
 
 use std::collections::{HashMap};
-use std::collections::LinkedList;
 
 fn main() {
     // parse command line arguments

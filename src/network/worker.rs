@@ -298,6 +298,7 @@ impl Context {
                             let public_key = UnparsedPublicKey::new(&ED25519, tx_signed.public_key.clone());
 
                             if public_key.verify(tx.hash().as_ref(), tx_signed.signature.as_ref()).is_ok() {
+                                debug!("insert: sender_pub: {:?}, tx: {:?}", tx_signed.public_key, tx_signed.transaction.clone());
                                 _tx_mempool.insert(tx_signed.hash(), tx_signed.clone());
                                 broadcast_hashes.push(tx_signed.hash());
                             }
