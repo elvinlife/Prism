@@ -154,6 +154,12 @@ impl Context {
                 }
                 return;
             }
+            if let OperatingState::Run(i) = self.operating_state {
+                if i != 0 {
+                    let interval = time::Duration::from_micros(i as u64);
+                    thread::sleep(interval);
+                }
+            }
 
             // TODO: actual mining 
             if let Ok(mut chain) = self.blockchain.lock(){
@@ -197,13 +203,6 @@ impl Context {
                         chain.insert(&block, &new_state);
                         self.server.broadcast(Message::NewBlockHashes(vec![block.hash()]));
                     }
-                }
-            }
-
-            if let OperatingState::Run(i) = self.operating_state {
-                if i != 0 {
-                    let interval = time::Duration::from_micros(i as u64);
-                    thread::sleep(interval);
                 }
             }
         }

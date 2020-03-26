@@ -14,7 +14,7 @@ use crate::crypto::address::H160;
 use crate::miner::{Identity, OperatingState, ControlSignal, Handle};
 use crate::blockchain::{Blockchain};
 
-static GEN_INTERVAL: u64 = 100;
+static GEN_INTERVAL: u64 = 5000000;
 static SEND_SIZE: usize = 1;
 
 pub struct Context {
@@ -98,10 +98,12 @@ impl Context {
                     Err(TryRecvError::Disconnected) => panic!("Miner control channel detached"),
                 },
             }
+            /*
             if txs_hash_buffer.len() >= SEND_SIZE {
                 self.server.broadcast(Message::NewTransactionHashes(txs_hash_buffer.clone()));
                 txs_hash_buffer.clear();
             }
+            */
             if let Ok(chain) = self.blockchain.lock(){
                 let tip_hash = chain.tip();
                 if let Some(state) = chain.get_state(&tip_hash) {
@@ -110,12 +112,12 @@ impl Context {
                         let balance = self_state.balance;
                         let mut nonce = self_state.nonce;
                         // already generate transactions for this block, skip
-                        if last_nonce == nonce {
-                            let interval = time::Duration::from_micros(GEN_INTERVAL);
-                            thread::sleep(interval);
-                            continue;
-                        }
-                        last_nonce = nonce;
+                        // if last_nonce == nonce {
+                        //     let interval = time::Duration::from_micros(GEN_INTERVAL);
+                        //     thread::sleep(interval);
+                        //     continue;
+                        // }
+                        // last_nonce = nonce;
                         // generate transactions for this block
                         // simply send 1/(2*num_peer) * balance to all other peers
                         let mut peer_address: Vec<H160> = Vec::new();
@@ -138,10 +140,12 @@ impl Context {
                             signature: signature.as_ref().iter().cloned().collect(),
                             public_key: public_key.as_ref().iter().cloned().collect()
                         };
-                        txs_hash_buffer.push(signed_tx.hash());
+                        //txs_hash_buffer.push(signed_tx.hash());
+
                         if let Ok(mut _tx_mempool) = self.tx_mempool.lock() {
                             debug!("insert from local: sender_pub: {:?}, tx: {:?}", signed_tx.public_key, signed_tx.transaction.clone());
-                            _tx_mempool.insert(signed_tx.hash(), signed_tx);
+                            _tx_mempool.insert(signed_tx.hash(), signed_tx.clone());
+                            self.server.broadcast(Message::NewTransactionHashes(vec![signed_tx.hash()]));
                         }
                     }
                 }

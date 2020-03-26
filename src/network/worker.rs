@@ -155,6 +155,8 @@ impl Context {
                 // If it can, commit it and all of its children in the orphan block pool.
                 // If it can't add it to the orphan block pool and request its parent from the peer if necessary.
                 Message::Blocks(blocks) => {
+                    //debug!("Blocks: {:?}", blocks);
+
                     let mut broadcast_hashes: Vec<H256> = Vec::new();
                     let timestamp_rcv = time::SystemTime::now().duration_since(time::SystemTime::UNIX_EPOCH).unwrap().as_micros();
                     
@@ -166,7 +168,7 @@ impl Context {
                             *num += 1;
                             broadcast_hashes.push(block.hash());
                         }
-                        println!("Block recv ave latency: {}", *delay as f64 / *num as f64);
+                        //println!("Block recv ave latency: {}", *delay as f64 / *num as f64);
                     }
 
                     // Fast relay blocks
@@ -206,11 +208,14 @@ impl Context {
                                                 let tip_state = chain.get_state(&chain.tip()).unwrap();
                                                 match verify_block(block, tip_state) {
                                                     Some(new_state) => {
+                                                        //debug!("Block {:?} verified.", block);
                                                         no_commits = false;
                                                         chain.insert(&block, &new_state);
                                                         committed_hashes.push(*block_hash);
                                                     }
-                                                    None => {}
+                                                    None => {
+                                                        //debug!("Block {:?} failed to verify.", block);
+                                                    }
                                                 }
                                             }
                                         }
