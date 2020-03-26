@@ -219,12 +219,13 @@ impl Context {
 
     fn collect_txs(&self, _state: &State) -> (Content, State) {
         let mut valid_transactions = vec![];
+        let mut erase_transactions = vec![];
         let mut state = _state.clone();
 
         if let Ok(mut _tx_mempool) = self.tx_mempool.lock() {
             loop{
                 let mut finished = true;
-                let mut erase_transactions = vec![];
+                erase_transactions.clear();
 
                 for tx_signed in _tx_mempool.values() {
                     let address: H160 = ring::digest::digest(&ring::digest::SHA256, tx_signed.public_key.as_ref()).into();
@@ -263,7 +264,7 @@ impl Context {
 
                 // remove invalid txs
                 for tx in erase_transactions.iter() {
-                    _tx_mempool.remove(&tx);
+                    _tx_mempool.remove(&tx.hash());
                 }
                 /*
                 // keep valid txs

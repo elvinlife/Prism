@@ -13,9 +13,12 @@ use crate::crypto::hash::{Hashable, H256};
 use crate::crypto::address::H160;
 use crate::miner::{Identity, OperatingState, ControlSignal, Handle};
 use crate::blockchain::{Blockchain};
+use rand::seq::IteratorRandom;
+use rand::thread_rng;
 
 static GEN_INTERVAL: u64 = 5000000;
 static SEND_SIZE: usize = 1;
+pub static TX_MEMPOOL_CAPACITY: usize = 10;
 
 pub struct Context {
     server: ServerHandle,
@@ -144,6 +147,13 @@ impl Context {
 
                         if let Ok(mut _tx_mempool) = self.tx_mempool.lock() {
                             //debug!("insert from local: sender_pub: {:?}, tx: {:?}", signed_tx.public_key, signed_tx.transaction.clone());
+                            if _tx_mempool.len() >= TX_MEMPOOL_CAPACITY{
+                                let random_key = {
+                                    let mut rng = thread_rng();
+                                    _tx_mempool.keys().choose(&mut rng).unwrap().clone()
+                                };
+                                _tx_mempool.remove(&random_key);
+                            }
                             _tx_mempool.insert(signed_tx.hash(), signed_tx.clone());
                             self.server.broadcast(Message::Transactions(vec![signed_tx]));
                             //debug!("tx_pool size: {:?}", _tx_mempool.len());

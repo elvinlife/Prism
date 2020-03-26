@@ -13,6 +13,9 @@ use crate::crypto::hash::{Hashable, H256};
 use crate::crypto::address::H160;
 use crate::transaction::{SignedTransaction,verify};
 use ring::signature::{UnparsedPublicKey, ED25519};
+use rand::seq::IteratorRandom;
+use rand::thread_rng;
+use crate::txgenerator::{TX_MEMPOOL_CAPACITY};
 //use std::sync::atomic::{AtomicU128, Ordering, AtomicU32};
 
 
@@ -331,9 +334,16 @@ impl Context {
                             if let Ok(mut _tx_mempool) = self.tx_mempool.lock(){
                                 if !_tx_mempool.contains_key(&tx_signed.hash()){
                                     //debug!("insert from message: sender_pub: {:?}, tx: {:?}", tx_signed.public_key, tx_signed.transaction.clone());
+                                    if _tx_mempool.len() >= TX_MEMPOOL_CAPACITY{
+                                        let random_key = {
+                                            let mut rng = thread_rng();
+                                            _tx_mempool.keys().choose(&mut rng).unwrap().clone()
+                                        };
+                                        _tx_mempool.remove(&random_key);
+                                    }
                                     _tx_mempool.insert(tx_signed.hash(), tx_signed.clone());
                                     self.server.broadcast(Message::Transactions(vec![tx_signed]));
-                                    //debug!("tx_pool size: {:?}", _tx_mempool.len());
+                                    debug!("tx_pool size: {:?}", _tx_mempool.len());
                                 }
                             }
 
