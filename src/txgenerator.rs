@@ -3,19 +3,22 @@ use std::sync::{Arc, Mutex};
 use std::collections::HashMap;
 use ring::signature::{Ed25519KeyPair, KeyPair};
 use std::time;
-use log::debug;
+use log::{info, debug};
+use crossbeam::channel::{unbounded, Receiver, Sender, TryRecvError};
 use crate::transaction::{SignedTransaction, Transaction, sign};
 use crate::network::server::Handle as ServerHandle;
 use crate::network::message::Message;
 use crate::crypto::hash::{Hashable, H256};
-use crate::miner::Identity;
+use crate::miner::{Identity, OperatingState, ControlSignal, Handle};
 use crate::blockchain::Blockchain;
 
 static GEN_INTERVAL: u64 = 100;
-static SEND_SIZE: usize = 2;
+static SEND_SIZE: usize = 1;
 
 pub struct Context {
     server: ServerHandle,
+    control_chan: Receiver<ControlSignal>,
+    operating_state: OperatingState,
     blockchain: Arc<Mutex<Blockchain>>,
     tx_mempool: Arc<Mutex<HashMap<H256,SignedTransaction>>>,
     id: Arc<Identity>,
@@ -26,35 +29,79 @@ pub fn new (
     blockchain: &Arc<Mutex<Blockchain>>,
     tx_mempool: &Arc<Mutex<HashMap<H256,SignedTransaction>>>,
     id: &Arc<Identity>,
-    ) -> Context {
+    ) -> (Context, Handle) {
+    let (signal_chan_sender, signal_chan_receiver) = unbounded();
     let ctx = Context {
+        control_chan: signal_chan_receiver,
+        operating_state: OperatingState::Paused,
         server: server.clone(),
         blockchain: Arc::clone(blockchain),
         tx_mempool: Arc::clone(tx_mempool),
         id: Arc::clone(id),
     };
-    ctx
+
+    let handle = Handle {
+        control_chan: signal_chan_sender,
+    };
+
+    (ctx, handle)
 }
 
 impl Context {
-    pub fn start(self) {
-        thread::spawn(move || {
-            self.gen_loop();
-        });
+    pub fn start(mut self) {
+        thread::Builder::new()
+            .name("txgenerator".to_string())
+            .spawn(move || {
+                self.gen_loop();
+            })
+        .unwrap();
+        info!("Txgenerator initialized into paused mode");
     }
 
-    pub fn gen_loop(self) {
+    fn handle_control_signal(&mut self, signal: ControlSignal) {
+        match signal {
+            ControlSignal::Exit => {
+                info!("TXgenerator shutting down");
+                self.operating_state = OperatingState::ShutDown;
+            }
+            ControlSignal::Start(i) => {
+                info!("TXgenerator starting in continuous mode with lambda {}", i);
+                self.operating_state = OperatingState::Run(i);
+            }
+        }
+    }
+
+    pub fn gen_loop(&mut self) {
         let mut txs_hash_buffer: Vec<H256> = Vec::new();
-        let public_key = (*self.id).key_pair.public_key();
-        let self_address = (*self.id).address;
+        let _id = self.id.clone();
+        let public_key = (*_id).key_pair.public_key();
+        let self_address = (*_id).address;
         let mut last_nonce = -1;
         loop {
-            if txs_hash_buffer.len() == SEND_SIZE {
+            // check and react to control signals
+            match self.operating_state {
+                OperatingState::Paused => {
+                    let signal = self.control_chan.recv().unwrap();
+                    self.handle_control_signal(signal);
+                    continue;
+                }
+                OperatingState::ShutDown => {
+                    return;
+                }
+                _ => match self.control_chan.try_recv() {
+                    Ok(signal) => {
+                        self.handle_control_signal(signal);
+                    }
+                    Err(TryRecvError::Empty) => {}
+                    Err(TryRecvError::Disconnected) => panic!("Miner control channel detached"),
+                },
+            }
+            if txs_hash_buffer.len() >= SEND_SIZE {
                 self.server.broadcast(Message::NewTransactionHashes(txs_hash_buffer.clone()));
                 txs_hash_buffer.clear();
             }
             if let Ok(chain) = self.blockchain.lock(){
-                let tip_hash = chain.tip().hash();
+                let tip_hash = chain.tip();
                 if let Some(state) = chain.get_state(&tip_hash) {
                     // get the latest state of my account
                     if let Some(self_state) = state.account_state.get(&self_address) {
@@ -89,7 +136,7 @@ impl Context {
                             };
                             txs_hash_buffer.push(signed_tx.hash());
                             if let Ok(mut _tx_mempool) = self.tx_mempool.lock() {
-                                debug!("insert: sender_pub: {:?}, tx: {:?}", signed_tx.public_key, signed_tx.transaction.clone());
+                                debug!("insert from local: sender_pub: {:?}, tx: {:?}", signed_tx.public_key, signed_tx.transaction.clone());
                                 _tx_mempool.insert(signed_tx.hash(), signed_tx);
                             }
                         }

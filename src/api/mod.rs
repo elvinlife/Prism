@@ -1,5 +1,5 @@
 use serde::Serialize;
-use crate::miner::Handle as MinerHandle;
+use crate::miner::Handle as Handle;
 use crate::network::server::Handle as NetworkServerHandle;
 use crate::network::message::Message;
 
@@ -13,7 +13,8 @@ use url::Url;
 
 pub struct Server {
     handle: HTTPServer,
-    miner: MinerHandle,
+    miner: Handle,
+    generator: Handle,
     network: NetworkServerHandle,
 }
 
@@ -39,18 +40,21 @@ macro_rules! respond_result {
 impl Server {
     pub fn start(
         addr: std::net::SocketAddr,
-        miner: &MinerHandle,
+        miner: &Handle,
+        generator: &Handle,
         network: &NetworkServerHandle,
     ) {
         let handle = HTTPServer::http(&addr).unwrap();
         let server = Self {
             handle,
             miner: miner.clone(),
+            generator: generator.clone(),
             network: network.clone(),
         };
         thread::spawn(move || {
             for req in server.handle.incoming_requests() {
                 let miner = server.miner.clone();
+                let generator = server.generator.clone();
                 let network = server.network.clone();
                 thread::spawn(move || {
                     // a valid url requires a base
@@ -85,10 +89,12 @@ impl Server {
                                 }
                             };
                             miner.start(lambda);
+                            generator.start(lambda);
                             respond_result!(req, true, "ok");
                         }
                         "/miner/stop" => {
                             miner.exit();
+                            generator.exit();
                             respond_result!(req, true, "exit");
                         }
                         "/network/ping" => {

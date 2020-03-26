@@ -16,6 +16,4 @@ pub enum Message {
     NewTransactionHashes(Vec<H256>),
     GetTransactions(Vec<H256>),
     Transactions(Vec<SignedTransaction>),
-
-    NewAccountAddress(H160),
 }

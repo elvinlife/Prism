@@ -1,6 +1,5 @@
 use crate::network::server::Handle as ServerHandle;
-use log::info;
-use log::debug;
+use log::{info, debug};
 use crossbeam::channel::{unbounded, Receiver, Sender, TryRecvError};
 use ring::signature::{Ed25519KeyPair, Signature, KeyPair, VerificationAlgorithm, UnparsedPublicKey, ED25519};
 use std::time;
@@ -16,12 +15,12 @@ use crate::crypto::address::H160;
 use crate::network::message::Message;
 use crate::transaction::{SignedTransaction, Transaction, verify, sign};
 
-enum ControlSignal {
+pub enum ControlSignal {
     Start(u64), // the number controls the lambda of interval between block generation
         Exit,
 }
 
-enum OperatingState {
+pub enum OperatingState {
     Paused,
     Run(u64),
     ShutDown,
@@ -41,7 +40,7 @@ pub struct Context {
 #[derive(Clone)]
 pub struct Handle {
     /// Channel for sending signal to the miner thread
-    control_chan: Sender<ControlSignal>,
+    pub control_chan: Sender<ControlSignal>,
 }
 
 pub struct Identity {
@@ -68,7 +67,6 @@ pub fn new(
     id: &Arc<Identity>,
     ) -> (Context, Handle) {
     let (signal_chan_sender, signal_chan_receiver) = unbounded();
-
     let ctx = Context {
         control_chan: signal_chan_receiver,
         operating_state: OperatingState::Paused,
@@ -124,8 +122,6 @@ impl Context {
     }
 
     fn miner_loop(&mut self) {
-        // broadcast public key
-        self.server.broadcast(Message::NewAccountAddress((*self.id).address.clone()));
         // main mining loop
         loop {
             // check and react to control signals

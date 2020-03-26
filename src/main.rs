@@ -102,7 +102,7 @@ fn main() {
     let recv_block_sum = Arc::new(Mutex::new(0));
 
     // start the TXs generator
-    let tx_gen_ctx = txgenerator::new(
+    let (tx_gen_ctx, generator) = txgenerator::new(
         &server,
         &blockchain,
         &tx_mempool,
@@ -180,6 +180,7 @@ fn main() {
     ApiServer::start(
         api_addr,
         &miner,
+        &generator,
         &server,
     );
 

@@ -245,7 +245,7 @@ impl Context {
 
                 // If a peer advertises that it has a transaction that we don't have, request it from the peer.
                 Message::NewTransactionHashes(hashes) => {
-                    //debug!("NewTransactionHashes: {:?}", hashes);
+                    //debug!("message: NewTransactionHashes: {:?}", hashes);
                     let mut requested_hashes = Vec::new();
 
                     if let Ok(tx_pool) = self.tx_mempool.lock(){
@@ -255,7 +255,6 @@ impl Context {
                             }
                         }
                     }
-
                     if !requested_hashes.is_empty() {
                         peer.write(Message::GetTransactions(requested_hashes));    
                     }
@@ -263,7 +262,7 @@ impl Context {
 
                 // If a peer requests a transaction that we have in our pool, give it to them.
                 Message::GetTransactions(hashes) => {
-                    //debug!("GetTransactions: {:?}", hashes);
+                    //debug!("message: GetTransactions: {:?}", hashes);
                     let mut txs = Vec::new();
 
                     if let Ok(tx_pool) = self.tx_mempool.lock(){
@@ -283,6 +282,7 @@ impl Context {
                 // Otherwise transaction is new. Check if it is signed correctly
                 // If so, add it to tx_mempool and rebroadcast it.
                 Message::Transactions(signed_transactions) => {
+                    //debug!("message: Transactions: {:?}", signed_transactions);
                     let mut broadcast_hashes: Vec<H256> = Vec::new();
 
                     if let Ok(mut _tx_mempool) = self.tx_mempool.lock(){
@@ -298,7 +298,7 @@ impl Context {
                             let public_key = UnparsedPublicKey::new(&ED25519, tx_signed.public_key.clone());
 
                             if public_key.verify(tx.hash().as_ref(), tx_signed.signature.as_ref()).is_ok() {
-                                debug!("insert: sender_pub: {:?}, tx: {:?}", tx_signed.public_key, tx_signed.transaction.clone());
+                                debug!("insert from message: sender_pub: {:?}, tx: {:?}", tx_signed.public_key, tx_signed.transaction.clone());
                                 _tx_mempool.insert(tx_signed.hash(), tx_signed.clone());
                                 broadcast_hashes.push(tx_signed.hash());
                             }
@@ -307,18 +307,6 @@ impl Context {
 
                     if !broadcast_hashes.is_empty() {
                         self.server.broadcast(Message::NewTransactionHashes(broadcast_hashes));
-                    }
-                }
-
-                Message::NewAccountAddress(address) => {
-                    if let Ok(mut chain) = self.blockchain.lock() {
-                        let tip_hash = chain.tip().clone();
-                        let mut tip_state = chain.get_state(&tip_hash).unwrap().clone();
-                        if !tip_state.address_list.contains(&address) {
-                            tip_state.address_list.push(address);
-                            tip_state.account_state.insert(address, AccountState::new());
-                        }
-                        chain.update_state(&tip_hash, &tip_state);
                     }
                 }
             }
