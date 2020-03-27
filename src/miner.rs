@@ -167,9 +167,12 @@ impl Context {
                 // Collect transactions to generate content
                 if let Some(state) = chain.get_state(&parent) {
                     let (content, new_state) = self.collect_txs(&state);
-                    if content.len() < BLOCK_CAPACITY {
+                    if content.len() == 0 {
                         continue;
                     }
+                    //if content.len() < BLOCK_CAPACITY {
+                    //    continue;
+                    //}
                     //debug!("\r miner collected txs: {:?}", content.len());
                     let merkle_root = MerkleTree::new(&content.transactions).root();
                     // Create block with random nonce.
@@ -184,7 +187,7 @@ impl Context {
                         content: content.clone(), 
                     };
 
-                    for _ in 0..100{
+                    for _ in 0..1{
                         block.header.nonce = rand::random::<u32>();
                         if block.hash() < difficulty {
                             break;
@@ -193,7 +196,7 @@ impl Context {
 
                     // If block hash <= difficulty, block is successfully mined.
                     if block.hash() < difficulty {
-                        info!("Mined a new block: hash: {:?}, num transactions: {:?}, num blocks mined: {:?}", 
+                        info!("Mined a new block: hash: {:#?}, num transactions: {:#?}, num blocks mined: {:#?}", 
                             block.hash(), 
                             content.len(),
                             self.mined_blocks);
@@ -262,15 +265,7 @@ impl Context {
                 for tx in erase_transactions.iter() {
                     _tx_mempool.remove(&tx.hash());
                 }
-                /*
-                // keep valid txs
-                if valid_transactions.len() == BLOCK_CAPACITY {
-                    for tx in valid_transactions.iter() {
-                        _tx_mempool.remove(&tx.hash());
-                    }
-                    break;
-                }
-                */
+
                 // if no more transactions can be added, return
                 if finished {
                     break;

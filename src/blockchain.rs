@@ -86,8 +86,8 @@ impl Blockchain {
                 self.head = curr_block_hash; 
             }
 
-            info!("Insert new block, block_hash: {:?}, state: {:?}; tip_hash: {:?}, longest_chain_len: {:?}",
-                block.hash(), state.account_state, self.tip(), self.block_len.get(self.tip()).unwrap());
+            info!("New block_hash: {:?} \r\n total blocks: {:?}, longest_chain_len: {:?}, \r\n Blockchain: tip_hash: {:?}, tip state: {:#?}; ",
+                block.hash(), self.blocks.len(), self.block_len.get(self.tip()).unwrap(), self.tip(), state.account_state);
             return true;
         }
         false

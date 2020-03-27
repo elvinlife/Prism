@@ -17,7 +17,6 @@ use rand::seq::IteratorRandom;
 use rand::thread_rng;
 
 static GEN_INTERVAL: u64 = 5000000;
-static SEND_SIZE: usize = 1;
 pub static TX_MEMPOOL_CAPACITY: usize = 10;
 
 pub struct Context {
@@ -144,7 +143,7 @@ impl Context {
                         };
                         //txs_hash_buffer.push(signed_tx.hash());
 
-                        info!("Generate Tx: {:?}", signed_tx.transaction);
+                        //info!("Generate Tx: {:#?}", signed_tx.transaction);
                         if let Ok(mut _tx_mempool) = self.tx_mempool.lock() {
                             if _tx_mempool.len() >= TX_MEMPOOL_CAPACITY{
                                 let random_key = {
