@@ -1,10 +1,10 @@
-use crate::block::{Block, Header, Content, State, BLOCK_REWARD, AccountState};
+use crate::block::{Block, Header, Content, State, INIT_COINS, AccountState};
 use crate::crypto::hash::{H256, Hashable};
 use crate::crypto::address::H160;
 use crate::crypto::key_pair;
 use ring::signature::KeyPair;
 use std::collections::HashMap;
-use log::debug;
+use log::info;
 
 pub struct Blockchain {
     blocks: HashMap<H256,Block>,
@@ -39,10 +39,12 @@ impl Blockchain {
             let address: H160 = ring::digest::digest(&ring::digest::SHA256, key_pair.public_key().as_ref()).into();
             address_list.push(address);
             account_state.insert(address, AccountState{
-                balance: BLOCK_REWARD,
+                balance: INIT_COINS,
                 nonce: 0,
             });
         }
+        info!("ICO: address0: {:?}, balance: {}; address1: {:?}, balance: {}; address2: {:?}, balance: {}", 
+            address_list[0], INIT_COINS, address_list[1], INIT_COINS, address_list[2], INIT_COINS);
         let genesis_state = State {
             address_list: address_list,
             account_state: account_state,
@@ -83,15 +85,9 @@ impl Blockchain {
             if new_len > *self.block_len.get(&self.head).unwrap(){
                 self.head = curr_block_hash; 
             }
-        
-            let mut sum = 0;
-            for address in state.address_list.iter() {
-                if let Some(account) = state.account_state.get(address) {
-                    sum += account.balance;
-                }
-            }
-            debug!("tip: {:?}, len: {:?}, total: {:?}, balance_sum: {:?}", self.head, new_len, self.blocks.len(), sum);
 
+            info!("Insert new block, block_hash: {:?}, state: {:?}; tip_hash: {:?}, longest_chain_len: {:?}",
+                block.hash(), state.account_state, self.tip(), self.block_len.get(self.tip()).unwrap());
             return true;
         }
         false

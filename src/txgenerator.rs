@@ -81,7 +81,6 @@ impl Context {
         let _id = self.id.clone();
         let public_key = (*_id).key_pair.public_key();
         let self_address = (*_id).address;
-        let mut last_nonce = -1;
         loop {
             // check and react to control signals
             match self.operating_state {
@@ -113,7 +112,7 @@ impl Context {
                     // get the latest state of my account
                     if let Some(self_state) = state.account_state.get(&self_address) {
                         let balance = self_state.balance;
-                        let mut nonce = self_state.nonce;
+                        let nonce = self_state.nonce;
                         // already generate transactions for this block, skip
                         // if last_nonce == nonce {
                         //     let interval = time::Duration::from_micros(GEN_INTERVAL);
@@ -145,8 +144,8 @@ impl Context {
                         };
                         //txs_hash_buffer.push(signed_tx.hash());
 
+                        info!("Generate Tx: {:?}", signed_tx.transaction);
                         if let Ok(mut _tx_mempool) = self.tx_mempool.lock() {
-                            //debug!("insert from local: sender_pub: {:?}, tx: {:?}", signed_tx.public_key, signed_tx.transaction.clone());
                             if _tx_mempool.len() >= TX_MEMPOOL_CAPACITY{
                                 let random_key = {
                                     let mut rng = thread_rng();

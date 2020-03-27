@@ -1,19 +1,19 @@
 use crate::network::server::Handle as ServerHandle;
-use log::{info, debug};
+use log::{info};
 use crossbeam::channel::{unbounded, Receiver, Sender, TryRecvError};
-use ring::signature::{Ed25519KeyPair, Signature, KeyPair, VerificationAlgorithm, UnparsedPublicKey, ED25519};
+use ring::signature::{Ed25519KeyPair, KeyPair, UnparsedPublicKey, ED25519};
 use std::time;
 use std::thread;
 use std::sync::{Arc,Mutex};
 use std::collections::{HashMap};
 use crate::blockchain::{Blockchain};
-use crate::block::{Block, Header, Content, State, BLOCK_CAPACITY, BLOCK_REWARD};
+use crate::block::{Block, Header, Content, State, BLOCK_CAPACITY};
 use crate::crypto::merkle::{MerkleTree};
 use crate::crypto::hash::{H256, Hashable};
 use crate::crypto::key_pair;
 use crate::crypto::address::H160;
 use crate::network::message::Message;
-use crate::transaction::{SignedTransaction, Transaction, verify, sign};
+use crate::transaction::{SignedTransaction};
 
 pub enum ControlSignal {
     Start(u64), // the number controls the lambda of interval between block generation
@@ -143,14 +143,10 @@ impl Context {
                 },
             }
             if let OperatingState::ShutDown = self.operating_state {
-                println!("Wait for extra 3 seconds");
                 thread::sleep(time::Duration::from_secs(3));
                 if let Ok(chain) = self.blockchain.lock() {
                     let longest_chain = chain.all_blocks_in_longest_chain();
-                    let block: Block = Default::default();
-                    let bytes = bincode::serialize(&block).unwrap();
-                    println!("Serialized block size: {}", bytes.len());
-                    println!("Longest chain: {:?}", longest_chain);
+                    info!("Exit, Longest chain: {:?}", longest_chain);
                 }
                 return;
             }
@@ -171,7 +167,7 @@ impl Context {
                 // Collect transactions to generate content
                 if let Some(state) = chain.get_state(&parent) {
                     let (content, new_state) = self.collect_txs(&state);
-                    if content.len() == 0 {
+                    if content.len() < BLOCK_CAPACITY {
                         continue;
                     }
                     //debug!("\r miner collected txs: {:?}", content.len());
@@ -187,17 +183,17 @@ impl Context {
                         },
                         content: content.clone(), 
                     };
-                    /*
-                    for _ in 0..1{
+
+                    for _ in 0..100{
                         block.header.nonce = rand::random::<u32>();
                         if block.hash() < difficulty {
                             break;
                         }
                     }
-                    */
+
                     // If block hash <= difficulty, block is successfully mined.
                     if block.hash() < difficulty {
-                        debug!("mined new block. hash: {:?}, num transactions: {:?}, num blocks mined: {:?}", 
+                        info!("Mined a new block: hash: {:?}, num transactions: {:?}, num blocks mined: {:?}", 
                             block.hash(), 
                             content.len(),
                             self.mined_blocks);

@@ -2,7 +2,7 @@ use super::message::Message;
 use super::peer;
 use crate::network::server::Handle as ServerHandle;
 use crossbeam::channel;
-use log::{debug, warn};
+use log::{debug, warn, info};
 
 use std::thread;
 use std::sync::{Mutex, Arc};
@@ -16,8 +16,6 @@ use ring::signature::{UnparsedPublicKey, ED25519};
 use rand::seq::IteratorRandom;
 use rand::thread_rng;
 use crate::txgenerator::{TX_MEMPOOL_CAPACITY};
-//use std::sync::atomic::{AtomicU128, Ordering, AtomicU32};
-
 
 #[derive(Clone)]
 pub struct Context {
@@ -166,8 +164,6 @@ impl Context {
                 // If it can, commit it and all of its children in the orphan block pool.
                 // If it can't add it to the orphan block pool and request its parent from the peer if necessary.
                 Message::Blocks(blocks) => {
-                    //debug!("Blocks: {:?}", blocks);
-
                     //let mut broadcast_hashes: Vec<H256> = Vec::new();
                     let timestamp_rcv = time::SystemTime::now().duration_since(time::SystemTime::UNIX_EPOCH).unwrap().as_micros();
                     
@@ -189,9 +185,12 @@ impl Context {
                         self.server.broadcast(Message::NewBlockHashes(broadcast_hashes));
                     }
                     */
-
                     //let mut requested_hashes: Vec<H256> = Vec::new();
                     for block in &blocks {
+                        info!("Received a block: hash: {:?}, num transactions: {:?}", 
+                            block.hash(),
+                            block.content.len(),
+                        );
                         if let Ok(mut chain) = self.blockchain.lock(){
                             if let Ok(mut orphans) = self.orphan_blocks.lock(){
 
@@ -324,7 +323,7 @@ impl Context {
                     //debug!("message: Transactions: {:?}", signed_transactions);
 
                     for tx_signed in signed_transactions {
-
+                        info!("Receive Tx: {:?}", tx_signed.transaction.clone());
                         // Check if it is signed correctly. If not ignore it.
                         let tx = tx_signed.transaction.clone();
                         let public_key = UnparsedPublicKey::new(&ED25519, tx_signed.public_key.clone());
@@ -343,7 +342,7 @@ impl Context {
                                     }
                                     _tx_mempool.insert(tx_signed.hash(), tx_signed.clone());
                                     self.server.broadcast(Message::Transactions(vec![tx_signed]));
-                                    debug!("tx_pool size: {:?}", _tx_mempool.len());
+                                    //debug!("tx_pool size: {:?}", _tx_mempool.len());
                                 }
                             }
 

@@ -4,8 +4,8 @@ use crate::crypto::hash::{H256, Hashable};
 use crate::transaction::{SignedTransaction};
 use crate::crypto::address::H160;
 
-pub static BLOCK_REWARD: u64 = 25;
-pub static BLOCK_CAPACITY: usize = 5;
+pub static INIT_COINS: u64 = 25;
+pub static BLOCK_CAPACITY: usize = 3;
 
 #[derive(Serialize, Deserialize, Debug, Default, Clone)]
 pub struct Block {

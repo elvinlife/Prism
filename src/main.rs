@@ -130,7 +130,6 @@ fn main() {
         &recv_block_sum
     );
     worker_ctx.start();
-    debug!("{} workers start.", p2p_workers);
     
     // start the miner
     let (miner_ctx, miner) = miner::new(
@@ -140,7 +139,6 @@ fn main() {
         &id,
     );
     miner_ctx.start();
-    debug!("miner start");
 
     // connect to known peers
     if let Some(known_peers) = matches.values_of("known_peer") {
