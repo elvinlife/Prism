@@ -22,6 +22,7 @@ We use Piazza for discussion.
 
 ## Final Project
 - [Team formation](https://forms.gle/4xMyhubpTPCVmF3f8). Please form teams of 4. Combination of two teams from midterm project is recommended. Illinois login is required to fill this form. Due date 12:30PM, Mar 24, 2020.
+- [List of projects](FinalProject)
 
 ## Policy
 Submissions later than due date will get 0 points.
