@@ -2,7 +2,7 @@
 
 This is the last part of midterm project, and you are going to finish the Bitcoin client. You need to maintain a state for the ledger that the blockchain creates and add all the necessary checks related to it. 
 
-**Due date: 12:30pm, March 26, 2020. Please submit a report on Compass2g and register for a demo slot.**
+**Due date: 12:30pm, ~~March 26~~ March 27, 2020. Please submit a report on Compass2g and register for a demo slot.**
 
 Please use [this google document](https://docs.google.com/spreadsheets/d/18ivtB2Q5BAGtLBRYbJ640t23Vjh5gZVOKWVn83fQuxE/edit?usp=sharing) (need to login Google @ Illinois) to register demo slot. **Update: the link is added.** It will be an online demo.
 
