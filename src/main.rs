@@ -78,14 +78,30 @@ fn main() {
     // initialize public/private key pair
     let id: Arc<Identity>;
     let p2p_addr_str = matches.value_of("peer_addr").unwrap();
+
     if p2p_addr_str == "127.0.0.1:6000" {
         id = Arc::new(Identity::new(0 as u8));
     }
     else if p2p_addr_str == "127.0.0.1:6001" {
         id = Arc::new(Identity::new(1 as u8));
     }
-    else {
+    else if p2p_addr_str == "127.0.0.1:6002" {
         id = Arc::new(Identity::new(2 as u8));
+    }
+    else if p2p_addr_str == "127.0.0.1:6003" {
+        id = Arc::new(Identity::new(3 as u8));
+    }
+    else if p2p_addr_str == "127.0.0.1:6004" {
+        id = Arc::new(Identity::new(4 as u8));
+    }
+    else if p2p_addr_str == "127.0.0.1:6005" {
+        id = Arc::new(Identity::new(5 as u8));
+    }
+    else if p2p_addr_str == "127.0.0.1:6006" {
+        id = Arc::new(Identity::new(6 as u8));
+    }
+    else {
+        id = Arc::new(Identity::new(7 as u8));
     }
 
     // initialize blockchain

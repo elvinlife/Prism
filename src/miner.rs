@@ -187,7 +187,7 @@ impl Context {
                         content: content.clone(), 
                     };
 
-                    for _ in 0..100{
+                    for _ in 0..1000{
                         block.header.nonce = rand::random::<u32>();
                         if block.hash() < difficulty {
                             break;
@@ -256,6 +256,7 @@ impl Context {
                         finished = false;
                     }
                     if valid_transactions.len() == BLOCK_CAPACITY {
+                        finished = true;
                         break;
                     }
 

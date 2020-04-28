@@ -20,7 +20,7 @@ impl Blockchain {
             header: Header{
                 parent: Default::default(),
                 nonce: Default::default(),
-                difficulty: H256::from([16,0,0,0,0,0,0,0,
+                difficulty: H256::from([0,8,0,0,0,0,0,0,
                                         0,0,0,0,0,0,0,0,
                                         0,0,0,0,0,0,0,0,
                                         0,0,0,0,0,0,0,0]),
@@ -34,7 +34,7 @@ impl Blockchain {
 
         let mut address_list = Vec::new();
         let mut account_state: HashMap<H160, AccountState> = HashMap::new();
-        for i in 0..3 {
+        for i in 0..8 {
             let key_pair = key_pair::frombyte(i as u8);
             let address: H160 = ring::digest::digest(&ring::digest::SHA256, key_pair.public_key().as_ref()).into();
             address_list.push(address);
