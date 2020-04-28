@@ -170,9 +170,9 @@ impl Context {
                     if content.len() == 0 {
                         continue;
                     }
-                    //if content.len() < BLOCK_CAPACITY {
-                    //    continue;
-                    //}
+                    if content.len() < BLOCK_CAPACITY {
+                        continue;
+                    }
                     //debug!("\r miner collected txs: {:?}", content.len());
                     let merkle_root = MerkleTree::new(&content.transactions).root();
                     // Create block with random nonce.
@@ -187,7 +187,7 @@ impl Context {
                         content: content.clone(), 
                     };
 
-                    for _ in 0..1{
+                    for _ in 0..100{
                         block.header.nonce = rand::random::<u32>();
                         if block.hash() < difficulty {
                             break;

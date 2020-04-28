@@ -56,7 +56,7 @@ impl Blockchain {
         _blocks.insert(head,genesis_block);
 
         let mut _block_len: HashMap<H256,u32> = HashMap::new();
-        _block_len.insert(head,0);
+        _block_len.insert(head,1);
 
         let mut _block_state: HashMap<H256, State> = HashMap::new();
         _block_state.insert(head, genesis_state);

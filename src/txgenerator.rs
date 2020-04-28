@@ -16,7 +16,7 @@ use crate::blockchain::{Blockchain};
 use rand::seq::IteratorRandom;
 use rand::thread_rng;
 
-static GEN_INTERVAL: u64 = 5000000;
+static GEN_INTERVAL: u64 = 1000;
 pub static TX_MEMPOOL_CAPACITY: usize = 10;
 
 pub struct Context {
