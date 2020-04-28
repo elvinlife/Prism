@@ -1,0 +1,5063 @@
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on build directory
+warning: unused import: `AccountState`
+  --> src/network/worker.rs:11:47
+   |
+11 | use crate::{Blockchain, block::{Block, State, AccountState}};
+   |                                               ^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` on by default
+
+warning: unused import: `verify`
+  --> src/network/worker.rs:14:44
+   |
+14 | use crate::transaction::{SignedTransaction,verify};
+   |                                            ^^^^^^
+
+warning: unused import: `Ed25519KeyPair`
+ --> src/txgenerator.rs:4:23
+  |
+4 | use ring::signature::{Ed25519KeyPair, KeyPair};
+  |                       ^^^^^^^^^^^^^^
+
+warning: unused import: `debug`
+ --> src/txgenerator.rs:7:17
+  |
+7 | use log::{info, debug};
+  |                 ^^^^^
+
+warning: unused import: `Sender`
+ --> src/txgenerator.rs:8:47
+  |
+8 | use crossbeam::channel::{unbounded, Receiver, Sender, TryRecvError};
+  |                                               ^^^^^^
+
+warning: unused import: `log::debug`
+  --> src/main.rs:30:5
+   |
+30 | use log::debug;
+   |     ^^^^^^^^^^
+
+warning: unused variable: `txs_hash_buffer`
+  --> src/txgenerator.rs:79:17
+   |
+79 |         let mut txs_hash_buffer: Vec<H256> = Vec::new();
+   |                 ^^^^^^^^^^^^^^^ help: consider prefixing with an underscore: `_txs_hash_buffer`
+   |
+   = note: `#[warn(unused_variables)]` on by default
+
+warning: variable does not need to be mutable
+  --> src/txgenerator.rs:79:13
+   |
+79 |         let mut txs_hash_buffer: Vec<H256> = Vec::new();
+   |             ----^^^^^^^^^^^^^^^
+   |             |
+   |             help: remove this `mut`
+   |
+   = note: `#[warn(unused_mut)]` on by default
+
+warning: field is never read: `id`
+  --> src/miner.rs:37:5
+   |
+37 |     id: Arc<Identity>,
+   |     ^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` on by default
+
+    Finished dev [unoptimized + debuginfo] target(s) in 0.21s
+     Running `target/debug/bitcoin -vvv --p2p '127.0.0.1:6000' --api '127.0.0.1:7000'`
+[0m[33mINFO - P2P server listening at 127.0.0.1:6000
+[0m[0m[33mINFO - ICO: address0: 139e..26e0, balance: 25; address1: 3475..a4b5, balance: 25; address2: 6a38..caac, balance: 25
+[0m[0m[33mINFO - Txgenerator initialized into paused mode
+[0m[0m[33mINFO - Miner initialized into paused mode
+[0m[0m[36mDEBUG - Server listening on 127.0.0.1:7000
+[0m[0m[33mINFO - API server listening at 127.0.0.1:7000
+[0m[0m[36mDEBUG - Running accept thread
+[0m[0m[36mDEBUG - New incoming connection from 127.0.0.1:50443
+[0m[0m[33mINFO - Connected to incoming peer 127.0.0.1:50443
+[0m[0m[36mDEBUG - New incoming connection from 127.0.0.1:50449
+[0m[0m[33mINFO - Connected to incoming peer 127.0.0.1:50449
+[0m[0m[36mDEBUG - New incoming connection from 127.0.0.1:50453
+[0m[0m[33mINFO - Connected to incoming peer 127.0.0.1:50453
+[0m[0m[33m[0m[33mINFO - TXgenerator starting in continuous mode with lambda 10000
+[0m[0m[33mINFO - TXgenerator starting in continuous mode with lambda 10000
+[0mINFO - Miner starting in continuous mode with lambda 10000
+[0m[0m[33mINFO - Miner starting in continuous mode with lambda 10000
+[0m[0m[33mINFO - TXgenerator starting in continuous mode with lambda 10000
+[0m[0m[33mINFO - Mined a new block: hash: 0000..1fc4, num transactions: 3, num blocks mined: 0
+[0m[0m[33mINFO - New block_hash: 0000..1fc4 
+ total blocks: 2, longest_chain_len: 2, 
+ Blockchain: tip_hash: 0000..1fc4, tip state: {
+    7245..63a7: AccountState {
+        nonce: 0,
+        balance: 25,
+    },
+    3475..a4b5: AccountState {
+        nonce: 0,
+        balance: 25,
+    },
+    fe81..11ef: AccountState {
+        nonce: 0,
+        balance: 37,
+    },
+    139e..26e0: AccountState {
+        nonce: 1,
+        balance: 13,
+    },
+    7599..2bf6: AccountState {
+        nonce: 1,
+        balance: 13,
+    },
+    b62e..3078: AccountState {
+        nonce: 0,
+        balance: 25,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 0,
+        balance: 37,
+    },
+    6a38..caac: AccountState {
+        nonce: 1,
+        balance: 25,
+    },
+}; 
+[0m[0m[33mINFO - Miner starting in continuous mode with lambda 10000
+[0m[0m[33mINFO - TXgenerator starting in continuous mode with lambda 10000
+[0m[0m[33mINFO - Miner starting in continuous mode with lambda 10000
+[0m[0m[33mINFO - TXgenerator starting in continuous mode with lambda 10000
+[0m[0m[33mINFO - Miner starting in continuous mode with lambda 10000
+[0m[0m[33mINFO - TXgenerator starting in continuous mode with lambda 10000
+[0m[0m[33mINFO - Miner starting in continuous mode with lambda 10000
+[0m[0m[33mINFO - Received a block: hash: 0000..8e70, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..8e70, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..8e70 
+ total blocks: 3, longest_chain_len: 3, 
+ Blockchain: tip_hash: 0000..8e70, tip state: {
+    7245..63a7: AccountState {
+        nonce: 0,
+        balance: 25,
+    },
+    3475..a4b5: AccountState {
+        nonce: 0,
+        balance: 25,
+    },
+    fe81..11ef: AccountState {
+        nonce: 1,
+        balance: 31,
+    },
+    139e..26e0: AccountState {
+        nonce: 2,
+        balance: 19,
+    },
+    7599..2bf6: AccountState {
+        nonce: 1,
+        balance: 25,
+    },
+    b62e..3078: AccountState {
+        nonce: 1,
+        balance: 13,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 0,
+        balance: 37,
+    },
+    6a38..caac: AccountState {
+        nonce: 1,
+        balance: 25,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..8e70, num transactions: 3
+[0m[33mINFO - Received a block: hash: 0000..8e70, num transactions: 3
+[0m[0m[0m[33mINFO - Received a block: hash: 0000..8834, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..8834, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..8834 
+ total blocks: 4, longest_chain_len: 4, 
+ Blockchain: tip_hash: 0000..8834, tip state: {
+    7245..63a7: AccountState {
+        nonce: 1,
+        balance: 13,
+    },
+    3475..a4b5: AccountState {
+        nonce: 0,
+        balance: 37,
+    },
+    fe81..11ef: AccountState {
+        nonce: 1,
+        balance: 31,
+    },
+    139e..26e0: AccountState {
+        nonce: 2,
+        balance: 19,
+    },
+    7599..2bf6: AccountState {
+        nonce: 2,
+        balance: 13,
+    },
+    b62e..3078: AccountState {
+        nonce: 1,
+[0m[33m        balance: 13,
+INFO - Received a block: hash: 0000..8834, num transactions: 3
+[0m    },
+    c5b9..a57b: AccountState {
+        nonce: 0,
+        balance: 61,
+    },
+    6a38..caac: AccountState {
+        nonce: 2,
+        balance: 13,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..8834, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..28bb, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..28bb, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..28bb, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..28bb, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..28bb 
+ total blocks: 5, longest_chain_len: 5, 
+ Blockchain: tip_hash: 0000..28bb, tip state: {
+    7245..63a7: AccountState {
+        nonce: 1,
+        balance: 43,
+    },
+    3475..a4b5: AccountState {
+        nonce: 1,
+        balance: 25,
+    },
+    fe81..11ef: AccountState {
+        nonce: 1,
+        balance: 52,
+    },
+    139e..26e0: AccountState {
+        nonce: 3,
+        balance: 10,
+    },
+    7599..2bf6: AccountState {
+        nonce: 2,
+        balance: 13,
+    },
+    b62e..3078: AccountState {
+        nonce: 1,
+        balance: 13,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 1,
+        balance: 31,
+    },
+    6a38..caac: AccountState {
+        nonce: 2,
+        balance: 13,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..28bb, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..28bb, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..28bb, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..28bb, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..28bb, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..28bb, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..28bb, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..28bb, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..0feb, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..0feb, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..0feb 
+ total blocks: 6, longest_chain_len: 6, 
+ Blockchain: tip_hash: 0000..0feb, tip state: {
+    7245..63a7: AccountState {
+        nonce: 1,
+        balance: 43,
+    },
+    3475..a4b5: AccountState {
+        nonce: 1,
+        balance: 31,
+    },
+    fe81..11ef: AccountState {
+        nonce: 2,
+        balance: 37,
+    },
+    139e..26e0: AccountState {
+        nonce: 3,
+        balance: 10,
+    },
+    7599..2bf6: AccountState {
+        nonce: 2,
+        balance: 34,
+    },
+    b62e..3078: AccountState {
+        nonce: 2,
+        balance: 7,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 1,
+        balance: 31,
+    },
+    6a38..caac: AccountState {
+        nonce: 3,
+        balance: 7,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..0feb, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..0feb, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..6fa8, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..6fa8, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..6fa8, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..6fa8 
+ total blocks: 7, longest_chain_len: 6, 
+ Blockchain: tip_hash: 0000..0feb, tip state: {
+    7245..63a7: AccountState {
+        nonce: 2,
+        balance: 27,
+    },
+    3475..a4b5: AccountState {
+        nonce: 2,
+        balance: 13,
+    },
+    fe81..11ef: AccountState {
+        nonce: 1,
+        balance: 85,
+    },
+    139e..26e0: AccountState {
+        nonce: 4,
+        balance: 5,
+    },
+    7599..2bf6: AccountState {
+        nonce: 2,
+        balance: 13,
+    },
+    b62e..3078: AccountState {
+        nonce: 1,
+        balance: 13,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 1,
+        balance: 31,
+    },
+    6a38..caac: AccountState {
+        nonce: 2,
+        balance: 13,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..6fa8, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..6fa8, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..6fa8, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..6fa8, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..6fa8, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..6fa8, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..2899, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..2899 
+ total blocks: 8, longest_chain_len: 7, 
+ Blockchain: tip_hash: 0000..2899, tip state: {
+    7245..63a7: AccountState {
+        nonce: 2,
+        balance: 27,
+    },
+    3475..a4b5: AccountState {
+        nonce: 2,
+        balance: 13,
+    },
+    fe81..11ef: AccountState {
+        nonce: 1,
+        balance: 94,
+    },
+    139e..26e0: AccountState {
+        nonce: 4,
+        balance: 5,
+    },
+    7599..2bf6: AccountState {
+        nonce: 2,
+        balance: 13,
+    },
+    b62e..3078: AccountState {
+        nonce: 1,
+        balance: 13,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 2,
+        balance: 16,
+    },
+    6a38..caac: AccountState {
+        nonce: 4,
+        balance: 19,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..c8b8, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..c8b8, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..c8b8, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..14cc, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..c8b8 
+ total blocks: 9, longest_chain_len: 8, 
+ Blockchain: tip_hash: 0000..c8b8, tip state: {
+    7245..63a7: AccountState {
+        nonce: 2,
+        balance: 27,
+    },
+    3475..a4b5: AccountState {
+        nonce: 3,
+        balance: 7,
+    },
+    fe81..11ef: AccountState {
+        nonce: 2,
+        balance: 47,
+    },
+    139e..26e0: AccountState {
+        nonce: 5,
+        balance: 3,
+    },
+    7599..2bf6: AccountState {
+        nonce: 2,
+        balance: 13,
+    },
+    b62e..3078: AccountState {
+        nonce: 1,
+        balance: 13,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 2,
+        balance: 69,
+    },
+    6a38..caac: AccountState {
+        nonce: 4,
+        balance: 21,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..14cc, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..c8b8, num transactions: 3
+[0m[33m[0mINFO - Received a block: hash: 0000..14cc, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..14cc 
+ total blocks: 10, longest_chain_len: 8, 
+ Blockchain: tip_hash: 0000..c8b8, tip state: {
+    7245..63a7: AccountState {
+        nonce: 2,
+        balance: 74,
+    },
+    3475..a4b5: AccountState {
+        nonce: 2,
+        balance: 33,
+    },
+    fe81..11ef: AccountState {
+        nonce: 3,
+        balance: 29,
+    },
+    139e..26e0: AccountState {
+        nonce: 5,
+        balance: 3,
+    },
+    7599..2bf6: AccountState {
+        nonce: 2,
+        balance: 13,
+    },
+    b62e..3078: AccountState {
+        nonce: 1,
+        balance: 13,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 2,
+        balance: 16,
+    },
+    6a38..caac: AccountState {
+        nonce: 4,
+        balance: 19,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..14cc, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..14cc, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..14cc, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..14cc, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..c8b8, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..c8b8, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..14cc, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..14cc, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..c8b8, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..14cc, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..14cc, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..14cc, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..c8b8, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..14cc, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..14cc, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..c8b8, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..c8b8, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..14cc, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..14cc, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..14cc, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..c8b8, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..14cc, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..14cc, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..c8b8, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..14cc, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..14cc, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..49d3, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..49d3 
+ total blocks: 11, longest_chain_len: 9, 
+ Blockchain: tip_hash: 0000..49d3, tip state: {
+    7245..63a7: AccountState {
+        nonce: 2,
+        balance: 27,
+    },
+    3475..a4b5: AccountState {
+        nonce: 4,
+        balance: 4,
+    },
+    fe81..11ef: AccountState {
+        nonce: 2,
+        balance: 47,
+    },
+    139e..26e0: AccountState {
+        nonce: 5,
+        balance: 12,
+    },
+    7599..2bf6: AccountState {
+        nonce: 2,
+        balance: 16,
+    },
+    b62e..3078: AccountState {
+        nonce: 2,
+        balance: 7,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 2,
+        balance: 75,
+    },
+    6a38..caac: AccountState {
+        nonce: 5,
+        balance: 12,
+    },
+}; 
+[0m[0m[33mINFO - Mined a new block: hash: 0000..cd92, num transactions: 3, num blocks mined: 1
+[0m[0m[33mINFO - New block_hash: 0000..cd92 
+ total blocks: 12, longest_chain_len: 10, 
+ Blockchain: tip_hash: 0000..cd92, tip state: {
+    7245..63a7: AccountState {
+        nonce: 3,
+        balance: 14,
+    },
+    3475..a4b5: AccountState {
+        nonce: 5,
+        balance: 8,
+    },
+    fe81..11ef: AccountState {
+        nonce: 2,
+        balance: 47,
+    },
+    139e..26e0: AccountState {
+        nonce: 5,
+        balance: 12,
+    },
+    7599..2bf6: AccountState {
+        nonce: 3,
+        balance: 23,
+    },
+    b62e..3078: AccountState {
+        nonce: 2,
+        balance: 7,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 2,
+        balance: 77,
+    },
+    6a38..caac: AccountState {
+        nonce: 5,
+        balance: 12,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..4907, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..4907 
+ total blocks: 13, longest_chain_len: 11, 
+ Blockchain: tip_hash: 0000..4907, tip state: {
+    7245..63a7: AccountState {
+        nonce: 3,
+        balance: 14,
+    },
+    3475..a4b5: AccountState {
+        nonce: 5,
+        balance: 8,
+    },
+    fe81..11ef: AccountState {
+        nonce: 4,
+        balance: 15,
+    },
+    139e..26e0: AccountState {
+        nonce: 5,
+        balance: 34,
+    },
+    7599..2bf6: AccountState {
+        nonce: 3,
+        balance: 23,
+    },
+    b62e..3078: AccountState {
+        nonce: 2,
+        balance: 25,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 3,
+        balance: 69,
+    },
+    6a38..caac: AccountState {
+        nonce: 5,
+        balance: 12,
+    },
+}; 
+[0m[0m[33m[0m[33mINFO - Received a block: hash: 0000..cfad, num transactions: 3
+INFO - Received a block: hash: 0000..cfad, num transactions: 3
+[0m[0m[0m[33mINFO - Received a block: hash: 0000..cfad, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..cfad 
+ total blocks: 14, longest_chain_len: 12, 
+ Blockchain: tip_hash: 0000..cfad, tip state: {
+    7245..63a7: AccountState {
+        nonce: 3,
+        balance: 14,
+    },
+    3475..a4b5: AccountState {
+        nonce: 5,
+        balance: 19,
+    },
+    fe81..11ef: AccountState {
+        nonce: 5,
+        balance: 11,
+    },
+    139e..26e0: AccountState {
+        nonce: 5,
+        balance: 34,
+    },
+    7599..2bf6: AccountState {
+        nonce: 4,
+        balance: 19,
+    },
+    b62e..3078: AccountState {
+        nonce: 3,
+        balance: 22,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 3,
+        balance: 69,
+    },
+    6a38..caac: AccountState {
+        nonce: 5,
+        balance: 12,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..cfad, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..cfad, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..cfad, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..cfad, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..cfad, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..cfad, num transactions: 3
+[0m[0m[33mINFO - Mined a new block: hash: 0000..4e05, num transactions: 3, num blocks mined: 2
+[0m[0m[33mINFO - New block_hash: 0000..4e05 
+ total blocks: 15, longest_chain_len: 13, 
+ Blockchain: tip_hash: 0000..4e05, tip state: {
+    7245..63a7: AccountState {
+        nonce: 3,
+        balance: 14,
+    },
+    3475..a4b5: AccountState {
+        nonce: 6,
+        balance: 38,
+    },
+    fe81..11ef: AccountState {
+        nonce: 5,
+        balance: 11,
+    },
+    139e..26e0: AccountState {
+        nonce: 6,
+        balance: 21,
+    },
+    7599..2bf6: AccountState {
+        nonce: 4,
+        balance: 19,
+    },
+    b62e..3078: AccountState {
+        nonce: 3,
+        balance: 22,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 3,
+        balance: 69,
+    },
+    6a38..caac: AccountState {
+        nonce: 6,
+        balance: 6,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..abaa, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..abaa 
+ total blocks: 16, longest_chain_len: 13, 
+ Blockchain: tip_hash: 0000..4e05, tip state: {
+    7245..63a7: AccountState {
+        nonce: 3,
+        balance: 14,
+    },
+    3475..a4b5: AccountState {
+        nonce: 5,
+        balance: 19,
+    },
+    fe81..11ef: AccountState {
+        nonce: 6,
+        balance: 23,
+    },
+    139e..26e0: AccountState {
+        nonce: 6,
+        balance: 17,
+    },
+    7599..2bf6: AccountState {
+        nonce: 4,
+        balance: 35,
+    },
+    b62e..3078: AccountState {
+        nonce: 4,
+        balance: 11,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 3,
+        balance: 69,
+    },
+    6a38..caac: AccountState {
+        nonce: 5,
+        balance: 12,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..9483, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..9483, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..9483, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..9483, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..9483 
+ total blocks: 17, longest_chain_len: 14, 
+ Blockchain: tip_hash: 0000..9483, tip state: {
+    7245..63a7: AccountState {
+        nonce: 4,
+        balance: 7,
+    },
+    3475..a4b5: AccountState {
+        nonce: 6,
+        balance: 38,
+    },
+    fe81..11ef: AccountState {
+        nonce: 5,
+        balance: 14,
+    },
+    139e..26e0: AccountState {
+        nonce: 6,
+        balance: 21,
+    },
+    7599..2bf6: AccountState {
+        nonce: 4,
+        balance: 19,
+    },
+    b62e..3078: AccountState {
+        nonce: 4,
+        balance: 11,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 3,
+        balance: 87,
+    },
+    6a38..caac: AccountState {
+        nonce: 7,
+        balance: 3,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..9483, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..9483, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..9483, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..c072, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..c072, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..c072 
+ total blocks: 18, longest_chain_len: 15, 
+ Blockchain: tip_hash: 0000..c072, tip state: {
+    7245..63a7: AccountState {
+        nonce: 5,
+        balance: 4,
+    },
+    3475..a4b5: AccountState {
+        nonce: 6,
+        balance: 55,
+    },
+    fe81..11ef: AccountState {
+        nonce: 6,
+        balance: 9,
+    },
+    139e..26e0: AccountState {
+        nonce: 6,
+        balance: 21,
+    },
+    7599..2bf6: AccountState {
+        nonce: 5,
+        balance: 2,
+    },
+    b62e..3078: AccountState {
+        nonce: 4,
+        balance: 11,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 3,
+        balance: 92,
+    },
+    6a38..caac: AccountState {
+        nonce: 7,
+        balance: 6,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..c072, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..c072, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..f360, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..f360 
+ total blocks: 19, longest_chain_len: 16, 
+ Blockchain: tip_hash: 0000..f360, tip state: {
+    7245..63a7: AccountState {
+        nonce: 5,
+        balance: 4,
+    },
+    3475..a4b5: AccountState {
+        nonce: 6,
+        balance: 94,
+    },
+    fe81..11ef: AccountState {
+        nonce: 6,
+        balance: 9,
+    },
+    139e..26e0: AccountState {
+        nonce: 6,
+        balance: 21,
+    },
+    7599..2bf6: AccountState {
+        nonce: 5,
+        balance: 2,
+    },
+    b62e..3078: AccountState {
+        nonce: 5,
+        balance: 6,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 4,
+        balance: 59,
+    },
+    6a38..caac: AccountState {
+        nonce: 8,
+        balance: 5,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..f360, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..f360, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..f360, num transactions: 3
+[0m[0m[33mINFO - Mined a new block: hash: 0000..b873, num transactions: 3, num blocks mined: 3
+[0m[0m[33mINFO - New block_hash: 0000..b873 
+ total blocks: 20, longest_chain_len: 17, 
+ Blockchain: tip_hash: 0000..b873, tip state: {
+    7245..63a7: AccountState {
+        nonce: 5,
+        balance: 4,
+    },
+    3475..a4b5: AccountState {
+        nonce: 7,
+        balance: 79,
+    },
+    fe81..11ef: AccountState {
+        nonce: 7,
+        balance: 24,
+    },
+    139e..26e0: AccountState {
+        nonce: 7,
+        balance: 11,
+    },
+    7599..2bf6: AccountState {
+        nonce: 5,
+        balance: 2,
+    },
+    b62e..3078: AccountState {
+        nonce: 5,
+        balance: 6,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 4,
+        balance: 59,
+    },
+    6a38..caac: AccountState {
+        nonce: 8,
+        balance: 15,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..d288, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..d288 
+ total blocks: 21, longest_chain_len: 18, 
+ Blockchain: tip_hash: 0000..d288, tip state: {
+    7245..63a7: AccountState {
+        nonce: 6,
+        balance: 41,
+    },
+    3475..a4b5: AccountState {
+        nonce: 8,
+        balance: 42,
+    },
+    fe81..11ef: AccountState {
+        nonce: 7,
+        balance: 24,
+    },
+    139e..26e0: AccountState {
+        nonce: 7,
+        balance: 11,
+    },
+    7599..2bf6: AccountState {
+        nonce: 6,
+        balance: 1,
+    },
+    b62e..3078: AccountState {
+        nonce: 5,
+        balance: 7,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 4,
+        balance: 59,
+    },
+    6a38..caac: AccountState {
+        nonce: 8,
+        balance: 15,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..8790, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..8790, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..8790, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..8790 
+ total blocks: 22, longest_chain_len: 19, 
+ Blockchain: tip_hash: 0000..8790, tip state: {
+    7245..63a7: AccountState {
+        nonce: 6,
+        balance: 41,
+    },
+    3475..a4b5: AccountState {
+        nonce: 8,
+        balance: 54,
+    },
+    fe81..11ef: AccountState {
+        nonce: 8,
+        balance: 12,
+    },
+    139e..26e0: AccountState {
+        nonce: 7,
+        balance: 11,
+    },
+    7599..2bf6: AccountState {
+        nonce: 6,
+        balance: 8,
+    },
+    b62e..3078: AccountState {
+        nonce: 6,
+        balance: 4,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 4,
+        balance: 59,
+    },
+    6a38..caac: AccountState {
+        nonce: 9,
+        balance: 11,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..8790, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..8790, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..8790, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..8790, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..8790, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..8790, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..8790, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..8790, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..8790, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..8790, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..1c15, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..1c15 
+ total blocks: 23, longest_chain_len: 20, 
+ Blockchain: tip_hash: 0000..1c15, tip state: {
+    7245..63a7: AccountState {
+        nonce: 6,
+        balance: 41,
+    },
+    3475..a4b5: AccountState {
+        nonce: 9,
+        balance: 33,
+    },
+    fe81..11ef: AccountState {
+        nonce: 8,
+        balance: 12,
+    },
+    139e..26e0: AccountState {
+        nonce: 8,
+        balance: 6,
+    },
+    7599..2bf6: AccountState {
+        nonce: 6,
+        balance: 37,
+    },
+    b62e..3078: AccountState {
+        nonce: 6,
+        balance: 4,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 5,
+        balance: 56,
+    },
+    6a38..caac: AccountState {
+        nonce: 9,
+        balance: 11,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..e055, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..e055, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..e055, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..e055 
+ total blocks: 24, longest_chain_len: 21, 
+ Blockchain: tip_hash: 0000..e055, tip state: {
+    7245..63a7: AccountState {
+        nonce: 7,
+        balance: 21,
+    },
+    3475..a4b5: AccountState {
+        nonce: 10,
+        balance: 35,
+    },
+    fe81..11ef: AccountState {
+        nonce: 8,
+        balance: 12,
+    },
+    139e..26e0: AccountState {
+        nonce: 8,
+        balance: 22,
+    },
+    7599..2bf6: AccountState {
+        nonce: 7,
+        balance: 19,
+    },
+    b62e..3078: AccountState {
+        nonce: 6,
+        balance: 4,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 5,
+        balance: 76,
+    },
+    6a38..caac: AccountState {
+        nonce: 9,
+        balance: 11,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..e055, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..e055, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..e055, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..e055, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..e055, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..e055, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..0d0a, num transactions: 3
+[0m[33m[0mINFO - Received a block: hash: 0000..0d0a, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..0d0a, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..0d0a, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..0d0a 
+ total blocks: 25, longest_chain_len: 22, 
+ Blockchain: tip_hash: 0000..0d0a, tip state: {
+    7245..63a7: AccountState {
+        nonce: 7,
+        balance: 21,
+    },
+    3475..a4b5: AccountState {
+        nonce: 10,
+        balance: 40,
+    },
+    fe81..11ef: AccountState {
+        nonce: 9,
+        balance: 6,
+    },
+    139e..26e0: AccountState {
+        nonce: 8,
+        balance: 56,
+    },
+    7599..2bf6: AccountState {
+        nonce: 7,
+        balance: 19,
+    },
+    b62e..3078: AccountState {
+        nonce: 6,
+        balance: 4,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 6,
+        balance: 48,
+    },
+    6a38..caac: AccountState {
+        nonce: 10,
+        balance: 6,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..0d0a, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..c6e2, num transactions: 3
+[0m[0m[33m[0m[33mINFO - Received a block: hash: 0000..0d0a, num transactions: 3
+INFO - Received a block: hash: 0000..0d0a, num transactions: 3
+[0m[0m[0m[33mINFO - Received a block: hash: 0000..0d0a, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..c6e2 
+ total blocks: 26, longest_chain_len: 22, 
+ Blockchain: tip_hash: 0000..0d0a, tip state: {
+    7245..63a7: AccountState {
+        nonce: 7,
+        balance: 32,
+    },
+    3475..a4b5: AccountState {
+        nonce: 10,
+        balance: 35,
+    },
+    fe81..11ef: AccountState {
+        nonce: 8,
+        balance: 50,
+    },
+    139e..26e0: AccountState {
+        nonce: 9,
+        balance: 11,
+    },
+    7599..2bf6: AccountState {
+        nonce: 7,
+        balance: 19,
+    },
+    b62e..3078: AccountState {
+        nonce: 6,
+        balance: 9,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 6,
+        balance: 38,
+    },
+    6a38..caac: AccountState {
+        nonce: 10,
+        balance: 6,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..0d0a, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..0d0a, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..0d0a, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..0d0a, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..0d0a, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..0d0a, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..0d0a, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..0d0a, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..0d0a, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..0d0a, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..0d0a, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..0d0a, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..0d0a, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..0d0a, num transactions: 3
+[0m[33mINFO - Received a block: hash: 0000..0d0a, num transactions: 3
+[0m[0m[0m[33mINFO - Received a block: hash: 0000..0d0a, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..1e19, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..1e19, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..1e19, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..1e19 
+ total blocks: 27, longest_chain_len: 23, 
+ Blockchain: tip_hash: 0000..1e19, tip state: {
+    7245..63a7: AccountState {
+        nonce: 8,
+        balance: 11,
+    },
+    3475..a4b5: AccountState {
+        nonce: 11,
+        balance: 23,
+    },
+    fe81..11ef: AccountState {
+        nonce: 9,
+        balance: 6,
+    },
+    139e..26e0: AccountState {
+        nonce: 8,
+        balance: 56,
+    },
+    7599..2bf6: AccountState {
+        nonce: 7,
+        balance: 19,
+    },
+    b62e..3078: AccountState {
+        nonce: 7,
+        balance: 29,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 6,
+        balance: 48,
+    },
+    6a38..caac: AccountState {
+        nonce: 10,
+        balance: 8,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..1e19, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..1e19, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..1e19, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..1e19, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..8a8c, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..8a8c 
+ total blocks: 28, longest_chain_len: 24, 
+ Blockchain: tip_hash: 0000..8a8c, tip state: {
+    7245..63a7: AccountState {
+        nonce: 8,
+        balance: 11,
+    },
+    3475..a4b5: AccountState {
+        nonce: 12,
+        balance: 12,
+    },
+    fe81..11ef: AccountState {
+        nonce: 10,
+        balance: 3,
+    },
+    139e..26e0: AccountState {
+        nonce: 8,
+        balance: 56,
+    },
+    7599..2bf6: AccountState {
+        nonce: 8,
+        balance: 10,
+    },
+    b62e..3078: AccountState {
+        nonce: 7,
+        balance: 43,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 6,
+        balance: 48,
+    },
+    6a38..caac: AccountState {
+        nonce: 10,
+        balance: 17,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..d2d6, num transactions: 3
+[0m[33m[0mINFO - Received a block: hash: 0000..d2d6, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..d2d6, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..d2d6, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..d2d6 
+ total blocks: 29, longest_chain_len: 25, 
+ Blockchain: tip_hash: 0000..d2d6, tip state: {
+    7245..63a7: AccountState {
+        nonce: 9,
+        balance: 20,
+    },
+    3475..a4b5: AccountState {
+        nonce: 12,
+        balance: 12,
+    },
+    fe81..11ef: AccountState {
+        nonce: 10,
+        balance: 31,
+    },
+    139e..26e0: AccountState {
+        nonce: 9,
+        balance: 28,
+    },
+    7599..2bf6: AccountState {
+        nonce: 8,
+        balance: 15,
+    },
+    b62e..3078: AccountState {
+        nonce: 8,
+        balance: 29,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 6,
+        balance: 48,
+    },
+    6a38..caac: AccountState {
+        nonce: 10,
+        balance: 17,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..d2d6, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..d2d6, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..fa0b, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..fa0b, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..fa0b, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..fa0b, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..fa0b 
+ total blocks: 30, longest_chain_len: 26, 
+ Blockchain: tip_hash: 0000..fa0b, tip state: {
+    7245..63a7: AccountState {
+        nonce: 9,
+        balance: 20,
+    },
+    3475..a4b5: AccountState {
+        nonce: 13,
+        balance: 30,
+    },
+    fe81..11ef: AccountState {
+        nonce: 10,
+        balance: 31,
+    },
+    139e..26e0: AccountState {
+        nonce: 9,
+        balance: 42,
+    },
+    7599..2bf6: AccountState {
+        nonce: 8,
+        balance: 15,
+    },
+    b62e..3078: AccountState {
+        nonce: 8,
+        balance: 29,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 7,
+        balance: 24,
+    },
+    6a38..caac: AccountState {
+        nonce: 11,
+        balance: 9,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..fa0b, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..fa0b, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..fa0b, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..fa0b, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..fa0b, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..25ef, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..25ef, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..25ef, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..25ef, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..25ef 
+ total blocks: 31, longest_chain_len: 27, 
+ Blockchain: tip_hash: 0000..25ef, tip state: {
+    7245..63a7: AccountState {
+        nonce: 10,
+        balance: 10,
+    },
+    3475..a4b5: AccountState {
+        nonce: 13,
+        balance: 51,
+    },
+    fe81..11ef: AccountState {
+        nonce: 10,
+        balance: 31,
+    },
+    139e..26e0: AccountState {
+        nonce: 10,
+        balance: 21,
+    },
+    7599..2bf6: AccountState {
+        nonce: 9,
+        balance: 8,
+    },
+    b62e..3078: AccountState {
+        nonce: 8,
+        balance: 46,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 7,
+        balance: 24,
+    },
+    6a38..caac: AccountState {
+        nonce: 11,
+        balance: 9,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..25ef, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..25ef, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..25ef, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..25ef, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..25ef, num transactions: 3
+[0m[0m[33mINFO - Mined a new block: hash: 0000..c0fd, num transactions: 3, num blocks mined: 4
+[0m[0m[33mINFO - New block_hash: 0000..c0fd 
+ total blocks: 32, longest_chain_len: 28, 
+ Blockchain: tip_hash: 0000..c0fd, tip state: {
+    7245..63a7: AccountState {
+        nonce: 10,
+        balance: 10,
+    },
+    3475..a4b5: AccountState {
+        nonce: 13,
+        balance: 51,
+    },
+    fe81..11ef: AccountState {
+        nonce: 11,
+        balance: 30,
+    },
+    139e..26e0: AccountState {
+        nonce: 10,
+        balance: 21,
+    },
+    7599..2bf6: AccountState {
+        nonce: 9,
+        balance: 8,
+    },
+    b62e..3078: AccountState {
+        nonce: 9,
+        balance: 59,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 8,
+        balance: 12,
+    },
+    6a38..caac: AccountState {
+        nonce: 11,
+        balance: 9,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..230a, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..230a, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..230a 
+ total blocks: 33, longest_chain_len: 28, 
+ Blockchain: tip_hash: 0000..c0fd, tip state: {
+    7245..63a7: AccountState {
+        nonce: 10,
+        balance: 10,
+    },
+    3475..a4b5: AccountState {
+        nonce: 13,
+        balance: 51,
+    },
+    fe81..11ef: AccountState {
+        nonce: 11,
+        balance: 30,
+    },
+    139e..26e0: AccountState {
+        nonce: 10,
+        balance: 21,
+    },
+    7599..2bf6: AccountState {
+        nonce: 9,
+        balance: 26,
+    },
+    b62e..3078: AccountState {
+        nonce: 9,
+        balance: 33,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 7,
+        balance: 24,
+    },
+    6a38..caac: AccountState {
+        nonce: 12,
+        balance: 5,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..230a, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..230a, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..d98f, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..d98f 
+ total blocks: 34, longest_chain_len: 29, 
+ Blockchain: tip_hash: 0000..d98f, tip state: {
+    7245..63a7: AccountState {
+        nonce: 11,
+        balance: 5,
+    },
+    3475..a4b5: AccountState {
+        nonce: 13,
+        balance: 51,
+    },
+    fe81..11ef: AccountState {
+        nonce: 11,
+        balance: 59,
+    },
+    139e..26e0: AccountState {
+        nonce: 11,
+        balance: 11,
+    },
+    7599..2bf6: AccountState {
+        nonce: 9,
+        balance: 18,
+    },
+    b62e..3078: AccountState {
+        nonce: 10,
+        balance: 35,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 8,
+        balance: 12,
+    },
+    6a38..caac: AccountState {
+        nonce: 11,
+        balance: 9,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..abc8, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..abc8 
+ total blocks: 35, longest_chain_len: 30, 
+ Blockchain: tip_hash: 0000..abc8, tip state: {
+    7245..63a7: AccountState {
+        nonce: 11,
+        balance: 5,
+    },
+    3475..a4b5: AccountState {
+        nonce: 14,
+        balance: 36,
+    },
+    fe81..11ef: AccountState {
+        nonce: 12,
+        balance: 44,
+    },
+    139e..26e0: AccountState {
+        nonce: 11,
+        balance: 26,
+    },
+    7599..2bf6: AccountState {
+        nonce: 10,
+        balance: 9,
+    },
+    b62e..3078: AccountState {
+        nonce: 10,
+        balance: 35,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 8,
+        balance: 36,
+    },
+    6a38..caac: AccountState {
+        nonce: 11,
+        balance: 9,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..c337, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..c337, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..c337 
+ total blocks: 36, longest_chain_len: 30, 
+ Blockchain: tip_hash: 0000..abc8, tip state: {
+    7245..63a7: AccountState {
+        nonce: 11,
+        balance: 5,
+    },
+    3475..a4b5: AccountState {
+        nonce: 13,
+        balance: 51,
+    },
+    fe81..11ef: AccountState {
+        nonce: 12,
+        balance: 57,
+    },
+    139e..26e0: AccountState {
+        nonce: 11,
+        balance: 11,
+    },
+    7599..2bf6: AccountState {
+        nonce: 10,
+        balance: 20,
+    },
+    b62e..3078: AccountState {
+        nonce: 11,
+        balance: 18,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 8,
+        balance: 29,
+    },
+    6a38..caac: AccountState {
+        nonce: 11,
+        balance: 9,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..c337, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..c337, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..9055, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..9055 
+ total blocks: 37, longest_chain_len: 31, 
+ Blockchain: tip_hash: 0000..9055, tip state: {
+    7245..63a7: AccountState {
+        nonce: 12,
+        balance: 5,
+    },
+    3475..a4b5: AccountState {
+        nonce: 14,
+        balance: 40,
+    },
+    fe81..11ef: AccountState {
+        nonce: 12,
+        balance: 44,
+    },
+    139e..26e0: AccountState {
+        nonce: 11,
+        balance: 26,
+    },
+    7599..2bf6: AccountState {
+        nonce: 10,
+        balance: 9,
+    },
+    b62e..3078: AccountState {
+        nonce: 10,
+        balance: 35,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 8,
+        balance: 36,
+    },
+    6a38..caac: AccountState {
+        nonce: 13,
+        balance: 5,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..9abf, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..9abf 
+ total blocks: 38, longest_chain_len: 32, 
+ Blockchain: tip_hash: 0000..9abf, tip state: {
+    7245..63a7: AccountState {
+        nonce: 12,
+        balance: 5,
+    },
+    3475..a4b5: AccountState {
+        nonce: 14,
+        balance: 40,
+    },
+    fe81..11ef: AccountState {
+        nonce: 13,
+        balance: 22,
+    },
+    139e..26e0: AccountState {
+        nonce: 12,
+        balance: 13,
+    },
+    7599..2bf6: AccountState {
+        nonce: 10,
+        balance: 9,
+    },
+    b62e..3078: AccountState {
+        nonce: 10,
+        balance: 41,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 9,
+        balance: 52,
+    },
+    6a38..caac: AccountState {
+        nonce: 13,
+        balance: 18,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..9abf, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..9abf, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..795e, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..795e, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..795e 
+ total blocks: 39, longest_chain_len: 33, 
+ Blockchain: tip_hash: 0000..795e, tip state: {
+    7245..63a7: AccountState {
+        nonce: 13,
+        balance: 23,
+    },
+    3475..a4b5: AccountState {
+        nonce: 15,
+        balance: 20,
+    },
+    fe81..11ef: AccountState {
+        nonce: 13,
+        balance: 22,
+    },
+    139e..26e0: AccountState {
+        nonce: 12,
+        balance: 13,
+    },
+    7599..2bf6: AccountState {
+        nonce: 10,
+        balance: 11,
+    },
+    b62e..3078: AccountState {
+        nonce: 11,
+        balance: 24,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 9,
+        balance: 69,
+    },
+    6a38..caac: AccountState {
+        nonce: 13,
+        balance: 18,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..9abf, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..795e, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..795e, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..795e, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..795e, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..795e, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..795e, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..795e, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..a1fa, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..a1fa 
+ total blocks: 40, longest_chain_len: 34, 
+ Blockchain: tip_hash: 0000..a1fa, tip state: {
+    7245..63a7: AccountState {
+        nonce: 13,
+        balance: 57,
+    },
+    3475..a4b5: AccountState {
+        nonce: 15,
+        balance: 20,
+    },
+    fe81..11ef: AccountState {
+        nonce: 14,
+        balance: 11,
+    },
+    139e..26e0: AccountState {
+        nonce: 13,
+        balance: 18,
+    },
+    7599..2bf6: AccountState {
+        nonce: 10,
+        balance: 11,
+    },
+    b62e..3078: AccountState {
+        nonce: 11,
+        balance: 30,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 10,
+        balance: 35,
+    },
+    6a38..caac: AccountState {
+        nonce: 13,
+        balance: 18,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..591a, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..591a 
+ total blocks: 41, longest_chain_len: 35, 
+ Blockchain: tip_hash: 0000..591a, tip state: {
+    7245..63a7: AccountState {
+        nonce: 13,
+        balance: 61,
+    },
+    3475..a4b5: AccountState {
+        nonce: 15,
+        balance: 20,
+    },
+    fe81..11ef: AccountState {
+        nonce: 14,
+        balance: 11,
+    },
+    139e..26e0: AccountState {
+        nonce: 14,
+        balance: 18,
+    },
+    7599..2bf6: AccountState {
+        nonce: 11,
+        balance: 7,
+    },
+    b62e..3078: AccountState {
+        nonce: 11,
+        balance: 39,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 10,
+        balance: 35,
+    },
+    6a38..caac: AccountState {
+        nonce: 14,
+        balance: 9,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..1249, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..1249, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..1249, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..1249, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..1249 
+ total blocks: 42, longest_chain_len: 35, 
+ Blockchain: tip_hash: 0000..591a, tip state: {
+    7245..63a7: AccountState {
+        nonce: 13,
+        balance: 57,
+    },
+    3475..a4b5: AccountState {
+        nonce: 15,
+        balance: 20,
+    },
+    fe81..11ef: AccountState {
+        nonce: 14,
+        balance: 20,
+    },
+    139e..26e0: AccountState {
+        nonce: 14,
+        balance: 30,
+    },
+    7599..2bf6: AccountState {
+        nonce: 11,
+        balance: 7,
+    },
+    b62e..3078: AccountState {
+        nonce: 11,
+        balance: 30,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 11,
+        balance: 18,
+    },
+    6a38..caac: AccountState {
+        nonce: 13,
+        balance: 18,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..1249, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..1249, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..1249, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..1249, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..1249, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..1249, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..1249, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..1249, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..1249, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..1249, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..1249, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..1249, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..1249, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..1249, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..1249, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..1249, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..1249, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..1249, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..1249, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..1249, num transactions: 3
+[0m[0m[33mINFO - Mined a new block: hash: 0000..7098, num transactions: 3, num blocks mined: 5
+[0m[0m[33mINFO - New block_hash: 0000..7098 
+ total blocks: 43, longest_chain_len: 36, 
+ Blockchain: tip_hash: 0000..7098, tip state: {
+    7245..63a7: AccountState {
+        nonce: 14,
+        balance: 50,
+    },
+    3475..a4b5: AccountState {
+        nonce: 16,
+        balance: 21,
+    },
+    fe81..11ef: AccountState {
+        nonce: 14,
+        balance: 33,
+    },
+    139e..26e0: AccountState {
+        nonce: 14,
+        balance: 18,
+    },
+    7599..2bf6: AccountState {
+        nonce: 11,
+        balance: 7,
+    },
+    b62e..3078: AccountState {
+        nonce: 12,
+        balance: 27,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 10,
+        balance: 35,
+    },
+    6a38..caac: AccountState {
+        nonce: 14,
+        balance: 9,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..bbd6, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..bbd6, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..bbd6, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..bbd6, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..bbd6 
+ total blocks: 44, longest_chain_len: 37, 
+ Blockchain: tip_hash: 0000..bbd6, tip state: {
+    7245..63a7: AccountState {
+        nonce: 14,
+        balance: 50,
+    },
+    3475..a4b5: AccountState {
+        nonce: 17,
+        balance: 11,
+    },
+    fe81..11ef: AccountState {
+        nonce: 14,
+        balance: 56,
+    },
+    139e..26e0: AccountState {
+        nonce: 15,
+        balance: 9,
+    },
+    7599..2bf6: AccountState {
+        nonce: 11,
+        balance: 16,
+    },
+    b62e..3078: AccountState {
+        nonce: 13,
+        balance: 14,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 10,
+        balance: 35,
+    },
+    6a38..caac: AccountState {
+        nonce: 14,
+        balance: 9,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..bbd6, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..bbd6, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..bbd6, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..bbd6, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..bbd6, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..bbd6, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..bbd6, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..bbd6, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..bbd6, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..bbd6, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..bbd6, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..6269, num transactions: 3
+[0m[33m[0mINFO - Received a block: hash: 0000..6269, num transactions: 3
+[0m[33m[0mINFO - Received a block: hash: 0000..6269, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..6269, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..6269 
+ total blocks: 45, longest_chain_len: 38, 
+ Blockchain: tip_hash: 0000..6269, tip state: {
+    7245..63a7: AccountState {
+        nonce: 15,
+        balance: 25,
+    },
+    3475..a4b5: AccountState {
+        nonce: 17,
+        balance: 11,
+    },
+    fe81..11ef: AccountState {
+        nonce: 15,
+        balance: 68,
+    },
+    139e..26e0: AccountState {
+        nonce: 15,
+        balance: 34,
+    },
+    7599..2bf6: AccountState {
+        nonce: 11,
+        balance: 21,
+    },
+    b62e..3078: AccountState {
+        nonce: 13,
+        balance: 14,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 11,
+        balance: 18,
+    },
+    6a38..caac: AccountState {
+        nonce: 14,
+        balance: 9,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..6269, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..6269, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..6269, num transactions: 3
+[0m[0m[33m[0m[33mINFO - Received a block: hash: 0000..6269, num transactions: 3
+INFO - Received a block: hash: 0000..6269, num transactions: 3
+[0m[0m[0m[33mINFO - Received a block: hash: 0000..6269, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..6269, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..6269, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..6269, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..6269, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..6269, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..6269, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..6269, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..6269, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..6269, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..6269, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..6269, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..6269, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..3507, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..3507 
+ total blocks: 46, longest_chain_len: 39, 
+ Blockchain: tip_hash: 0000..3507, tip state: {
+    7245..63a7: AccountState {
+        nonce: 15,
+        balance: 30,
+    },
+    3475..a4b5: AccountState {
+        nonce: 18,
+        balance: 18,
+    },
+    fe81..11ef: AccountState {
+        nonce: 15,
+        balance: 68,
+    },
+    139e..26e0: AccountState {
+        nonce: 15,
+        balance: 34,
+    },
+    7599..2bf6: AccountState {
+        nonce: 12,
+        balance: 18,
+    },
+    b62e..3078: AccountState {
+        nonce: 13,
+        balance: 14,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 12,
+        balance: 9,
+    },
+    6a38..caac: AccountState {
+        nonce: 14,
+        balance: 9,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..70da, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..70da, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..70da, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..70da 
+ total blocks: 47, longest_chain_len: 39, 
+ Blockchain: tip_hash: 0000..3507, tip state: {
+    7245..63a7: AccountState {
+        nonce: 16,
+        balance: 13,
+    },
+    3475..a4b5: AccountState {
+        nonce: 17,
+        balance: 15,
+    },
+    fe81..11ef: AccountState {
+        nonce: 15,
+        balance: 71,
+    },
+    139e..26e0: AccountState {
+        nonce: 15,
+        balance: 34,
+    },
+    7599..2bf6: AccountState {
+        nonce: 12,
+        balance: 18,
+    },
+    b62e..3078: AccountState {
+        nonce: 13,
+        balance: 26,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 11,
+        balance: 18,
+    },
+    6a38..caac: AccountState {
+        nonce: 15,
+        balance: 5,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..70da, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..70da, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..70da, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..5ed1, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..5ed1, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..5ed1, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..5ed1, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..5ed1 
+ total blocks: 48, longest_chain_len: 40, 
+ Blockchain: tip_hash: 0000..5ed1, tip state: {
+    7245..63a7: AccountState {
+        nonce: 17,
+        balance: 7,
+    },
+    3475..a4b5: AccountState {
+        nonce: 18,
+        balance: 10,
+    },
+    fe81..11ef: AccountState {
+        nonce: 15,
+        balance: 71,
+    },
+    139e..26e0: AccountState {
+        nonce: 15,
+        balance: 40,
+    },
+    7599..2bf6: AccountState {
+        nonce: 12,
+        balance: 18,
+    },
+    b62e..3078: AccountState {
+        nonce: 14,
+        balance: 19,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 11,
+        balance: 25,
+    },
+    6a38..caac: AccountState {
+        nonce: 15,
+        balance: 10,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..5ed1, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..5ed1, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..5ed1, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..5ed1, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..5ed1, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..5ed1, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..5ed1, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..5ed1, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..5ed1, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..5ed1, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..5ed1, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..5ed1, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..5ed1, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..5ed1, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..82cd, num transactions: 3
+[0m[0m[33m[0m[33mINFO - New block_hash: 0000..82cd 
+INFO - Received a block: hash: 0000..82cd, num transactions: 3
+[0m total blocks: 49, longest_chain_len: 40, 
+ Blockchain: tip_hash: 0000..5ed1, tip state: {
+    7245..63a7: AccountState {
+        nonce: 15,
+        balance: 30,
+    },
+    3475..a4b5: AccountState {
+        nonce: 18,
+        balance: 18,
+    },
+    fe81..11ef: AccountState {
+        nonce: 16,
+        balance: 34,
+    },
+    139e..26e0: AccountState {
+        nonce: 16,
+        balance: 17,
+    },
+    7599..2bf6: AccountState {
+        nonce: 12,
+        balance: 39,
+    },
+    b62e..3078: AccountState {
+        nonce: 13,
+        balance: 48,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 12,
+        balance: 9,
+    },
+    6a38..caac: AccountState {
+        nonce: 15,
+        balance: 5,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..82cd, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..82cd, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..42ea, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..42ea, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..42ea, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..42ea, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..42ea 
+ total blocks: 50, longest_chain_len: 41, 
+ Blockchain: tip_hash: 0000..42ea, tip state: {
+    7245..63a7: AccountState {
+        nonce: 17,
+        balance: 24,
+    },
+    3475..a4b5: AccountState {
+        nonce: 18,
+        balance: 44,
+    },
+    fe81..11ef: AccountState {
+        nonce: 16,
+        balance: 37,
+    },
+    139e..26e0: AccountState {
+        nonce: 16,
+        balance: 32,
+    },
+    7599..2bf6: AccountState {
+        nonce: 12,
+        balance: 18,
+    },
+    b62e..3078: AccountState {
+        nonce: 14,
+        balance: 19,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 12,
+        balance: 16,
+    },
+    6a38..caac: AccountState {
+        nonce: 15,
+        balance: 10,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..42ea, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..42ea, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..42ea, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..42ea, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..42ea, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..42ea, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..42ea, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..42ea, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..42ea, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..42ea, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..cc69, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..cc69 
+ total blocks: 51, longest_chain_len: 42, 
+ Blockchain: tip_hash: 0000..cc69, tip state: {
+    7245..63a7: AccountState {
+        nonce: 17,
+        balance: 24,
+    },
+    3475..a4b5: AccountState {
+        nonce: 19,
+        balance: 22,
+    },
+    fe81..11ef: AccountState {
+        nonce: 17,
+        balance: 19,
+    },
+    139e..26e0: AccountState {
+        nonce: 16,
+        balance: 50,
+    },
+    7599..2bf6: AccountState {
+        nonce: 13,
+        balance: 31,
+    },
+    b62e..3078: AccountState {
+        nonce: 14,
+        balance: 19,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 12,
+        balance: 16,
+    },
+    6a38..caac: AccountState {
+        nonce: 15,
+        balance: 19,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..a581, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..a581 
+ total blocks: 52, longest_chain_len: 43, 
+ Blockchain: tip_hash: 0000..a581, tip state: {
+    7245..63a7: AccountState {
+        nonce: 17,
+        balance: 33,
+    },
+    3475..a4b5: AccountState {
+        nonce: 20,
+        balance: 11,
+    },
+    fe81..11ef: AccountState {
+        nonce: 17,
+        balance: 19,
+    },
+    139e..26e0: AccountState {
+        nonce: 17,
+        balance: 34,
+    },
+    7599..2bf6: AccountState {
+        nonce: 13,
+        balance: 42,
+    },
+    b62e..3078: AccountState {
+        nonce: 14,
+        balance: 19,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 12,
+        balance: 16,
+    },
+    6a38..caac: AccountState {
+        nonce: 16,
+        balance: 26,
+    },
+}; 
+[0m[0m[33mINFO - Mined a new block: hash: 0000..7c73, num transactions: 3, num blocks mined: 6
+[0m[0m[33mINFO - New block_hash: 0000..7c73 
+ total blocks: 53, longest_chain_len: 44, 
+ Blockchain: tip_hash: 0000..7c73, tip state: {
+    7245..63a7: AccountState {
+        nonce: 18,
+        balance: 30,
+    },
+    3475..a4b5: AccountState {
+        nonce: 20,
+        balance: 11,
+    },
+    fe81..11ef: AccountState {
+        nonce: 18,
+        balance: 10,
+    },
+    139e..26e0: AccountState {
+        nonce: 17,
+        balance: 46,
+    },
+    7599..2bf6: AccountState {
+        nonce: 14,
+        balance: 27,
+    },
+    b62e..3078: AccountState {
+        nonce: 14,
+        balance: 19,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 12,
+        balance: 16,
+    },
+    6a38..caac: AccountState {
+        nonce: 16,
+        balance: 41,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..07f3, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..07f3, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..07f3, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..07f3, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..07f3 
+ total blocks: 54, longest_chain_len: 45, 
+ Blockchain: tip_hash: 0000..07f3, tip state: {
+    7245..63a7: AccountState {
+        nonce: 18,
+        balance: 38,
+    },
+    3475..a4b5: AccountState {
+        nonce: 21,
+        balance: 6,
+    },
+    fe81..11ef: AccountState {
+        nonce: 18,
+        balance: 10,
+    },
+    139e..26e0: AccountState {
+        nonce: 18,
+        balance: 29,
+    },
+    7599..2bf6: AccountState {
+        nonce: 14,
+        balance: 27,
+    },
+    b62e..3078: AccountState {
+        nonce: 14,
+        balance: 36,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 13,
+        balance: 13,
+    },
+    6a38..caac: AccountState {
+        nonce: 16,
+        balance: 41,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..07f3, num transactions: 3
+[0m[33m[0m[0m[33mINFO - Received a block: hash: 0000..07f3, num transactions: 3
+INFO - Received a block: hash: 0000..07f3, num transactions: 3
+[0m[0m[0m[33mINFO - Received a block: hash: 0000..07f3, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..07f3, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..07f3, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..07f3, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..07f3, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..604e, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..604e 
+ total blocks: 55, longest_chain_len: 46, 
+ Blockchain: tip_hash: 0000..604e, tip state: {
+    7245..63a7: AccountState {
+        nonce: 19,
+        balance: 19,
+    },
+    3475..a4b5: AccountState {
+        nonce: 21,
+        balance: 6,
+    },
+    fe81..11ef: AccountState {
+        nonce: 18,
+        balance: 29,
+    },
+    139e..26e0: AccountState {
+        nonce: 18,
+        balance: 49,
+    },
+    7599..2bf6: AccountState {
+        nonce: 14,
+        balance: 27,
+    },
+    b62e..3078: AccountState {
+        nonce: 15,
+        balance: 18,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 13,
+        balance: 13,
+    },
+    6a38..caac: AccountState {
+        nonce: 17,
+        balance: 39,
+    },
+}; 
+[0m[0m[33mINFO - Mined a new block: hash: 0000..9774, num transactions: 3, num blocks mined: 7
+[0m[0m[33mINFO - New block_hash: 0000..9774 
+ total blocks: 56, longest_chain_len: 47, 
+ Blockchain: tip_hash: 0000..9774, tip state: {
+    7245..63a7: AccountState {
+        nonce: 20,
+        balance: 10,
+    },
+    3475..a4b5: AccountState {
+        nonce: 21,
+        balance: 6,
+    },
+    fe81..11ef: AccountState {
+        nonce: 18,
+        balance: 38,
+    },
+    139e..26e0: AccountState {
+        nonce: 18,
+        balance: 49,
+    },
+    7599..2bf6: AccountState {
+        nonce: 14,
+        balance: 52,
+    },
+    b62e..3078: AccountState {
+        nonce: 15,
+        balance: 18,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 14,
+        balance: 7,
+    },
+    6a38..caac: AccountState {
+        nonce: 18,
+        balance: 20,
+    },
+}; 
+[0m[0m[33mINFO - Mined a new block: hash: 0000..49d1, num transactions: 3, num blocks mined: 8
+[0m[0m[33mINFO - New block_hash: 0000..49d1 
+ total blocks: 57, longest_chain_len: 48, 
+ Blockchain: tip_hash: 0000..49d1, tip state: {
+    7245..63a7: AccountState {
+        nonce: 20,
+        balance: 10,
+    },
+    3475..a4b5: AccountState {
+        nonce: 21,
+        balance: 6,
+    },
+    fe81..11ef: AccountState {
+        nonce: 18,
+        balance: 41,
+    },
+    139e..26e0: AccountState {
+        nonce: 19,
+        balance: 35,
+    },
+    7599..2bf6: AccountState {
+        nonce: 15,
+        balance: 26,
+    },
+    b62e..3078: AccountState {
+        nonce: 15,
+        balance: 44,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 15,
+        balance: 4,
+    },
+    6a38..caac: AccountState {
+        nonce: 18,
+        balance: 34,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..7fe6, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..7fe6, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..7fe6, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..7fe6, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..7fe6 
+ total blocks: 58, longest_chain_len: 49, 
+ Blockchain: tip_hash: 0000..7fe6, tip state: {
+    7245..63a7: AccountState {
+        nonce: 21,
+        balance: 5,
+    },
+    3475..a4b5: AccountState {
+        nonce: 21,
+        balance: 6,
+    },
+    fe81..11ef: AccountState {
+        nonce: 19,
+        balance: 22,
+    },
+    139e..26e0: AccountState {
+        nonce: 19,
+        balance: 35,
+    },
+    7599..2bf6: AccountState {
+        nonce: 16,
+        balance: 13,
+    },
+    b62e..3078: AccountState {
+        nonce: 15,
+        balance: 49,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 15,
+        balance: 4,
+    },
+    6a38..caac: AccountState {
+        nonce: 18,
+        balance: 66,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..7fe6, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..7fe6, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..7fe6, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..7fe6, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..7fe6, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..7fe6, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..7fe6, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..7fe6, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..987d, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..987d 
+ total blocks: 59, longest_chain_len: 50, 
+ Blockchain: tip_hash: 0000..987d, tip state: {
+    7245..63a7: AccountState {
+        nonce: 21,
+        balance: 5,
+    },
+    3475..a4b5: AccountState {
+        nonce: 21,
+        balance: 6,
+    },
+    fe81..11ef: AccountState {
+        nonce: 19,
+        balance: 22,
+    },
+    139e..26e0: AccountState {
+        nonce: 19,
+        balance: 76,
+    },
+    7599..2bf6: AccountState {
+        nonce: 16,
+        balance: 13,
+    },
+    b62e..3078: AccountState {
+        nonce: 16,
+        balance: 27,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 16,
+        balance: 2,
+    },
+    6a38..caac: AccountState {
+        nonce: 19,
+        balance: 49,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..da1e, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..da1e 
+ total blocks: 60, longest_chain_len: 51, 
+ Blockchain: tip_hash: 0000..da1e, tip state: {
+    7245..63a7: AccountState {
+        nonce: 21,
+        balance: 5,
+    },
+    3475..a4b5: AccountState {
+        nonce: 21,
+        balance: 7,
+    },
+    fe81..11ef: AccountState {
+        nonce: 19,
+        balance: 60,
+    },
+    139e..26e0: AccountState {
+        nonce: 20,
+        balance: 44,
+    },
+    7599..2bf6: AccountState {
+        nonce: 17,
+        balance: 7,
+    },
+    b62e..3078: AccountState {
+        nonce: 16,
+        balance: 27,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 17,
+        balance: 1,
+    },
+    6a38..caac: AccountState {
+        nonce: 19,
+        balance: 49,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..a5cf, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..a5cf 
+ total blocks: 61, longest_chain_len: 52, 
+ Blockchain: tip_hash: 0000..a5cf, tip state: {
+    7245..63a7: AccountState {
+        nonce: 22,
+        balance: 3,
+    },
+    3475..a4b5: AccountState {
+        nonce: 21,
+        balance: 7,
+    },
+    fe81..11ef: AccountState {
+        nonce: 19,
+        balance: 60,
+    },
+    139e..26e0: AccountState {
+        nonce: 20,
+        balance: 44,
+    },
+    7599..2bf6: AccountState {
+        nonce: 17,
+        balance: 7,
+    },
+    b62e..3078: AccountState {
+        nonce: 16,
+        balance: 53,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 18,
+        balance: 1,
+    },
+    6a38..caac: AccountState {
+        nonce: 20,
+        balance: 25,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..a5cf, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..a5cf, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..a5cf, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..a5cf, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..a5cf, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..a5cf, num transactions: 3
+[0m[0m[33mINFO - Mined a new block: hash: 0000..fba8, num transactions: 3, num blocks mined: 9
+[0m[0m[33mINFO - New block_hash: 0000..fba8 
+ total blocks: 62, longest_chain_len: 53, 
+ Blockchain: tip_hash: 0000..fba8, tip state: {
+    7245..63a7: AccountState {
+        nonce: 22,
+        balance: 3,
+    },
+    3475..a4b5: AccountState {
+        nonce: 21,
+        balance: 7,
+    },
+    fe81..11ef: AccountState {
+        nonce: 20,
+        balance: 49,
+    },
+    139e..26e0: AccountState {
+        nonce: 20,
+        balance: 44,
+    },
+    7599..2bf6: AccountState {
+        nonce: 18,
+        balance: 41,
+    },
+    b62e..3078: AccountState {
+        nonce: 17,
+        balance: 30,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 18,
+        balance: 1,
+    },
+    6a38..caac: AccountState {
+        nonce: 20,
+        balance: 25,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..7979, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..7979 
+ total blocks: 63, longest_chain_len: 54, 
+ Blockchain: tip_hash: 0000..7979, tip state: {
+    7245..63a7: AccountState {
+        nonce: 22,
+        balance: 18,
+    },
+    3475..a4b5: AccountState {
+        nonce: 22,
+        balance: 4,
+    },
+    fe81..11ef: AccountState {
+        nonce: 20,
+        balance: 49,
+    },
+    139e..26e0: AccountState {
+        nonce: 20,
+        balance: 44,
+    },
+    7599..2bf6: AccountState {
+        nonce: 19,
+        balance: 21,
+    },
+    b62e..3078: AccountState {
+        nonce: 18,
+        balance: 35,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 18,
+        balance: 4,
+    },
+    6a38..caac: AccountState {
+        nonce: 20,
+        balance: 25,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..7979, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..4f0a, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..4f0a, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..4f0a, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..4f0a 
+ total blocks: 64, longest_chain_len: 55, 
+ Blockchain: tip_hash: 0000..4f0a, tip state: {
+    7245..63a7: AccountState {
+        nonce: 23,
+        balance: 17,
+    },
+    3475..a4b5: AccountState {
+        nonce: 22,
+        balance: 14,
+    },
+    fe81..11ef: AccountState {
+        nonce: 20,
+        balance: 50,
+    },
+    139e..26e0: AccountState {
+        nonce: 20,
+        balance: 44,
+    },
+    7599..2bf6: AccountState {
+        nonce: 20,
+        balance: 11,
+    },
+    b62e..3078: AccountState {
+        nonce: 18,
+        balance: 47,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 18,
+        balance: 4,
+    },
+    6a38..caac: AccountState {
+        nonce: 21,
+        balance: 13,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..58df, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..58df 
+ total blocks: 65, longest_chain_len: 56, 
+ Blockchain: tip_hash: 0000..58df, tip state: {
+    7245..63a7: AccountState {
+        nonce: 24,
+        balance: 15,
+    },
+    3475..a4b5: AccountState {
+        nonce: 22,
+        balance: 14,
+    },
+    fe81..11ef: AccountState {
+        nonce: 21,
+        balance: 25,
+    },
+    139e..26e0: AccountState {
+        nonce: 20,
+        balance: 44,
+    },
+    7599..2bf6: AccountState {
+        nonce: 20,
+        balance: 11,
+    },
+    b62e..3078: AccountState {
+        nonce: 18,
+        balance: 47,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 18,
+        balance: 29,
+    },
+    6a38..caac: AccountState {
+        nonce: 22,
+        balance: 15,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..997b, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..997b 
+ total blocks: 66, longest_chain_len: 57, 
+ Blockchain: tip_hash: 0000..997b, tip state: {
+    7245..63a7: AccountState {
+        nonce: 24,
+        balance: 15,
+    },
+    3475..a4b5: AccountState {
+        nonce: 23,
+        balance: 26,
+    },
+    fe81..11ef: AccountState {
+        nonce: 21,
+        balance: 25,
+    },
+    139e..26e0: AccountState {
+        nonce: 20,
+        balance: 51,
+    },
+    7599..2bf6: AccountState {
+        nonce: 20,
+        balance: 11,
+    },
+    b62e..3078: AccountState {
+        nonce: 19,
+        balance: 30,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 19,
+        balance: 27,
+    },
+    6a38..caac: AccountState {
+        nonce: 22,
+        balance: 15,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..a862, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..a862, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..a862, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..a862 
+ total blocks: 67, longest_chain_len: 57, 
+ Blockchain: tip_hash: 0000..997b, tip state: {
+    7245..63a7: AccountState {
+        nonce: 24,
+        balance: 20,
+    },
+    3475..a4b5: AccountState {
+        nonce: 22,
+        balance: 37,
+    },
+    fe81..11ef: AccountState {
+        nonce: 21,
+        balance: 25,
+    },
+    139e..26e0: AccountState {
+        nonce: 20,
+        balance: 44,
+    },
+    7599..2bf6: AccountState {
+        nonce: 21,
+        balance: 8,
+    },
+    b62e..3078: AccountState {
+        nonce: 19,
+        balance: 24,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 19,
+        balance: 27,
+    },
+    6a38..caac: AccountState {
+        nonce: 22,
+        balance: 15,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..a862, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..a862, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..a862, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..a862, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..a862, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..a862, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..4e84, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..4e84, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..4e84 
+ total blocks: 68, longest_chain_len: 58, 
+ Blockchain: tip_hash: 0000..4e84, tip state: {
+    7245..63a7: AccountState {
+        nonce: 25,
+        balance: 5,
+    },
+    3475..a4b5: AccountState {
+        nonce: 23,
+        balance: 26,
+    },
+    fe81..11ef: AccountState {
+        nonce: 21,
+        balance: 32,
+    },
+    139e..26e0: AccountState {
+        nonce: 21,
+        balance: 26,
+    },
+    7599..2bf6: AccountState {
+        nonce: 20,
+        balance: 21,
+    },
+    b62e..3078: AccountState {
+        nonce: 19,
+        balance: 55,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 19,
+        balance: 27,
+    },
+    6a38..caac: AccountState {
+        nonce: 23,
+        balance: 8,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..4e84, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..4e84, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..f0fe, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..f0fe 
+ total blocks: 69, longest_chain_len: 59, 
+ Blockchain: tip_hash: 0000..f0fe, tip state: {
+    7245..63a7: AccountState {
+        nonce: 25,
+        balance: 15,
+    },
+    3475..a4b5: AccountState {
+        nonce: 23,
+        balance: 26,
+    },
+    fe81..11ef: AccountState {
+        nonce: 21,
+        balance: 32,
+    },
+    139e..26e0: AccountState {
+        nonce: 22,
+        balance: 17,
+    },
+    7599..2bf6: AccountState {
+        nonce: 21,
+        balance: 11,
+    },
+    b62e..3078: AccountState {
+        nonce: 19,
+        balance: 68,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 19,
+        balance: 27,
+    },
+    6a38..caac: AccountState {
+        nonce: 24,
+        balance: 4,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..8a34, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..8a34, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..8a34, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..8a34, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..8a34 
+ total blocks: 70, longest_chain_len: 60, 
+ Blockchain: tip_hash: 0000..8a34, tip state: {
+    7245..63a7: AccountState {
+        nonce: 26,
+        balance: 13,
+    },
+    3475..a4b5: AccountState {
+        nonce: 23,
+        balance: 39,
+    },
+    fe81..11ef: AccountState {
+        nonce: 22,
+        balance: 20,
+    },
+    139e..26e0: AccountState {
+        nonce: 22,
+        balance: 19,
+    },
+    7599..2bf6: AccountState {
+        nonce: 21,
+        balance: 11,
+    },
+    b62e..3078: AccountState {
+        nonce: 19,
+        balance: 80,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 20,
+        balance: 14,
+    },
+    6a38..caac: AccountState {
+        nonce: 24,
+        balance: 4,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..8a34, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..8a34, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..8a34, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..8a34, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..3106, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..3106 
+ total blocks: 71, longest_chain_len: 61, 
+ Blockchain: tip_hash: 0000..3106, tip state: {
+    7245..63a7: AccountState {
+        nonce: 26,
+        balance: 13,
+    },
+    3475..a4b5: AccountState {
+        nonce: 24,
+        balance: 26,
+    },
+    fe81..11ef: AccountState {
+        nonce: 22,
+        balance: 32,
+    },
+    139e..26e0: AccountState {
+        nonce: 22,
+        balance: 21,
+    },
+    7599..2bf6: AccountState {
+        nonce: 21,
+        balance: 11,
+    },
+    b62e..3078: AccountState {
+        nonce: 20,
+        balance: 81,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 20,
+        balance: 14,
+    },
+    6a38..caac: AccountState {
+        nonce: 25,
+        balance: 2,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..f711, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..f711 
+ total blocks: 72, longest_chain_len: 62, 
+ Blockchain: tip_hash: 0000..f711, tip state: {
+    7245..63a7: AccountState {
+        nonce: 26,
+        balance: 23,
+    },
+    3475..a4b5: AccountState {
+        nonce: 24,
+        balance: 26,
+    },
+    fe81..11ef: AccountState {
+        nonce: 22,
+        balance: 32,
+    },
+    139e..26e0: AccountState {
+        nonce: 23,
+        balance: 51,
+    },
+    7599..2bf6: AccountState {
+        nonce: 22,
+        balance: 6,
+    },
+    b62e..3078: AccountState {
+        nonce: 21,
+        balance: 46,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 20,
+        balance: 14,
+    },
+    6a38..caac: AccountState {
+        nonce: 25,
+        balance: 2,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..f711, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..f711, num transactions: 3
+[0m[0m[33mINFO - Mined a new block: hash: 0000..15bc, num transactions: 3, num blocks mined: 10
+[0m[0m[33mINFO - New block_hash: 0000..15bc 
+ total blocks: 73, longest_chain_len: 63, 
+ Blockchain: tip_hash: 0000..15bc, tip state: {
+    7245..63a7: AccountState {
+        nonce: 27,
+        balance: 17,
+    },
+    3475..a4b5: AccountState {
+        nonce: 25,
+        balance: 13,
+    },
+    fe81..11ef: AccountState {
+        nonce: 22,
+        balance: 32,
+    },
+    139e..26e0: AccountState {
+        nonce: 23,
+        balance: 67,
+    },
+    7599..2bf6: AccountState {
+        nonce: 23,
+        balance: 3,
+    },
+    b62e..3078: AccountState {
+        nonce: 21,
+        balance: 46,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 20,
+        balance: 14,
+    },
+    6a38..caac: AccountState {
+        nonce: 25,
+        balance: 8,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..b647, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..b647, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..b647, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..b647, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..b647 
+ total blocks: 74, longest_chain_len: 63, 
+ Blockchain: tip_hash: 0000..15bc, tip state: {
+    7245..63a7: AccountState {
+        nonce: 26,
+        balance: 23,
+    },
+    3475..a4b5: AccountState {
+        nonce: 24,
+        balance: 29,
+    },
+    fe81..11ef: AccountState {
+        nonce: 23,
+        balance: 16,
+    },
+    139e..26e0: AccountState {
+        nonce: 23,
+        balance: 51,
+    },
+    7599..2bf6: AccountState {
+        nonce: 23,
+        balance: 3,
+    },
+    b62e..3078: AccountState {
+        nonce: 21,
+        balance: 47,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 20,
+        balance: 14,
+    },
+    6a38..caac: AccountState {
+        nonce: 26,
+        balance: 17,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..b647, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..b647, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..b647, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..b647, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..b647, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..b647, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..b647, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..b647, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..53c9, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..53c9, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..53c9, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..53c9, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..53c9 
+ total blocks: 75, longest_chain_len: 64, 
+ Blockchain: tip_hash: 0000..53c9, tip state: {
+    7245..63a7: AccountState {
+        nonce: 27,
+        balance: 12,
+    },
+    3475..a4b5: AccountState {
+        nonce: 25,
+        balance: 15,
+    },
+    fe81..11ef: AccountState {
+        nonce: 23,
+        balance: 41,
+    },
+    139e..26e0: AccountState {
+        nonce: 24,
+        balance: 26,
+    },
+    7599..2bf6: AccountState {
+        nonce: 23,
+        balance: 3,
+    },
+    b62e..3078: AccountState {
+        nonce: 21,
+        balance: 47,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 20,
+        balance: 25,
+    },
+    6a38..caac: AccountState {
+        nonce: 26,
+        balance: 31,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..53c9, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..53c9, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..53c9, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..53c9, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..53c9, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..53c9, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..53c9, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..53c9, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..53c9, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..53c9, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..53c9, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..53c9, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..53c9, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..53c9, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..53c9, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..53c9, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..53c9, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..53c9, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..53c9, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..53c9, num transactions: 3
+[0m[0m[33mINFO - Mined a new block: hash: 0000..3694, num transactions: 3, num blocks mined: 11
+[0m[0m[33mINFO - New block_hash: 0000..3694 
+ total blocks: 76, longest_chain_len: 65, 
+ Blockchain: tip_hash: 0000..3694, tip state: {
+    7245..63a7: AccountState {
+        nonce: 27,
+        balance: 20,
+    },
+    3475..a4b5: AccountState {
+        nonce: 26,
+        balance: 8,
+    },
+    fe81..11ef: AccountState {
+        nonce: 24,
+        balance: 56,
+    },
+    139e..26e0: AccountState {
+        nonce: 24,
+        balance: 26,
+    },
+    7599..2bf6: AccountState {
+        nonce: 23,
+        balance: 10,
+    },
+    b62e..3078: AccountState {
+        nonce: 22,
+        balance: 24,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 20,
+        balance: 25,
+    },
+    6a38..caac: AccountState {
+        nonce: 26,
+        balance: 31,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..3443, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..3443, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..3443 
+ total blocks: 77, longest_chain_len: 66, 
+ Blockchain: tip_hash: 0000..3443, tip state: {
+    7245..63a7: AccountState {
+        nonce: 27,
+        balance: 20,
+    },
+    3475..a4b5: AccountState {
+        nonce: 26,
+        balance: 8,
+    },
+    fe81..11ef: AccountState {
+        nonce: 24,
+        balance: 56,
+    },
+    139e..26e0: AccountState {
+        nonce: 25,
+        balance: 13,
+    },
+    7599..2bf6: AccountState {
+        nonce: 23,
+        balance: 25,
+    },
+    b62e..3078: AccountState {
+        nonce: 22,
+        balance: 37,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 21,
+        balance: 18,
+    },
+    6a38..caac: AccountState {
+        nonce: 27,
+        balance: 23,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..3443, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..3443, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..8716, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..8716 
+ total blocks: 78, longest_chain_len: 67, 
+ Blockchain: tip_hash: 0000..8716, tip state: {
+    7245..63a7: AccountState {
+        nonce: 28,
+        balance: 14,
+    },
+    3475..a4b5: AccountState {
+        nonce: 26,
+        balance: 8,
+    },
+    fe81..11ef: AccountState {
+        nonce: 25,
+        balance: 28,
+    },
+    139e..26e0: AccountState {
+        nonce: 25,
+        balance: 19,
+    },
+    7599..2bf6: AccountState {
+        nonce: 24,
+        balance: 13,
+    },
+    b62e..3078: AccountState {
+        nonce: 22,
+        balance: 37,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 21,
+        balance: 58,
+    },
+    6a38..caac: AccountState {
+        nonce: 27,
+        balance: 23,
+    },
+}; 
+[0m[0m[33mINFO - Mined a new block: hash: 0000..2a28, num transactions: 3, num blocks mined: 12
+[0m[0m[33mINFO - New block_hash: 0000..2a28 
+ total blocks: 79, longest_chain_len: 68, 
+ Blockchain: tip_hash: 0000..2a28, tip state: {
+    7245..63a7: AccountState {
+        nonce: 28,
+        balance: 14,
+    },
+    3475..a4b5: AccountState {
+        nonce: 26,
+        balance: 26,
+    },
+    fe81..11ef: AccountState {
+        nonce: 25,
+        balance: 28,
+    },
+    139e..26e0: AccountState {
+        nonce: 25,
+        balance: 30,
+    },
+    7599..2bf6: AccountState {
+        nonce: 24,
+        balance: 13,
+    },
+    b62e..3078: AccountState {
+        nonce: 23,
+        balance: 48,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 22,
+        balance: 29,
+    },
+    6a38..caac: AccountState {
+        nonce: 28,
+        balance: 12,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..73ff, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..73ff, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..73ff, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..73ff 
+ total blocks: 80, longest_chain_len: 68, 
+ Blockchain: tip_hash: 0000..2a28, tip state: {
+    7245..63a7: AccountState {
+        nonce: 28,
+        balance: 14,
+    },
+    3475..a4b5: AccountState {
+        nonce: 26,
+        balance: 8,
+    },
+    fe81..11ef: AccountState {
+        nonce: 25,
+        balance: 28,
+    },
+    139e..26e0: AccountState {
+        nonce: 26,
+        balance: 10,
+    },
+    7599..2bf6: AccountState {
+        nonce: 24,
+        balance: 13,
+    },
+    b62e..3078: AccountState {
+        nonce: 23,
+        balance: 30,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 21,
+        balance: 76,
+    },
+    6a38..caac: AccountState {
+        nonce: 28,
+        balance: 21,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..73ff, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..73ff, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..73ff, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..73ff, num transactions: 3
+[0m[0m[33mINFO - Mined a new block: hash: 0000..e8de, num transactions: 3, num blocks mined: 13
+[0m[0m[33mINFO - New block_hash: 0000..e8de 
+ total blocks: 81, longest_chain_len: 69, 
+ Blockchain: tip_hash: 0000..e8de, tip state: {
+    7245..63a7: AccountState {
+        nonce: 29,
+        balance: 7,
+    },
+    3475..a4b5: AccountState {
+        nonce: 27,
+        balance: 22,
+    },
+    fe81..11ef: AccountState {
+        nonce: 25,
+        balance: 28,
+    },
+    139e..26e0: AccountState {
+        nonce: 26,
+        balance: 15,
+    },
+    7599..2bf6: AccountState {
+        nonce: 24,
+        balance: 17,
+    },
+    b62e..3078: AccountState {
+        nonce: 23,
+        balance: 48,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 22,
+        balance: 36,
+    },
+    6a38..caac: AccountState {
+        nonce: 28,
+        balance: 27,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..3a39, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..3a39, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..3a39 
+ total blocks: 82, longest_chain_len: 70, 
+ Blockchain: tip_hash: 0000..3a39, tip state: {
+    7245..63a7: AccountState {
+        nonce: 30,
+        balance: 4,
+    },
+    3475..a4b5: AccountState {
+        nonce: 27,
+        balance: 22,
+    },
+    fe81..11ef: AccountState {
+        nonce: 25,
+        balance: 31,
+    },
+    139e..26e0: AccountState {
+        nonce: 26,
+        balance: 39,
+    },
+    7599..2bf6: AccountState {
+        nonce: 25,
+        balance: 11,
+    },
+    b62e..3078: AccountState {
+        nonce: 24,
+        balance: 24,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 22,
+        balance: 42,
+    },
+    6a38..caac: AccountState {
+        nonce: 28,
+        balance: 27,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..3a39, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..3a39, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..3a39, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..3a39, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..3095, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..3095, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..3095, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..3095, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..3095 
+ total blocks: 83, longest_chain_len: 70, 
+ Blockchain: tip_hash: 0000..3a39, tip state: {
+    7245..63a7: AccountState {
+        nonce: 29,
+        balance: 7,
+    },
+    3475..a4b5: AccountState {
+        nonce: 28,
+        balance: 11,
+    },
+    fe81..11ef: AccountState {
+        nonce: 26,
+        balance: 14,
+    },
+    139e..26e0: AccountState {
+        nonce: 26,
+        balance: 15,
+    },
+    7599..2bf6: AccountState {
+        nonce: 24,
+        balance: 49,
+    },
+    b62e..3078: AccountState {
+        nonce: 23,
+        balance: 48,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 23,
+        balance: 18,
+    },
+    6a38..caac: AccountState {
+        nonce: 28,
+        balance: 38,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..697d, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..697d, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..697d 
+ total blocks: 84, longest_chain_len: 71, 
+ Blockchain: tip_hash: 0000..697d, tip state: {
+    7245..63a7: AccountState {
+        nonce: 30,
+        balance: 4,
+    },
+    3475..a4b5: AccountState {
+        nonce: 27,
+        balance: 22,
+    },
+    fe81..11ef: AccountState {
+        nonce: 26,
+        balance: 17,
+    },
+    139e..26e0: AccountState {
+        nonce: 26,
+        balance: 39,
+    },
+    7599..2bf6: AccountState {
+        nonce: 25,
+        balance: 11,
+    },
+    b62e..3078: AccountState {
+        nonce: 24,
+        balance: 24,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 23,
+        balance: 37,
+    },
+    6a38..caac: AccountState {
+        nonce: 29,
+        balance: 46,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..697d, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..697d, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..697d, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..13b3, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..13b3, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..13b3, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..13b3, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..13b3 
+ total blocks: 85, longest_chain_len: 72, 
+ Blockchain: tip_hash: 0000..13b3, tip state: {
+    7245..63a7: AccountState {
+        nonce: 30,
+        balance: 11,
+    },
+    3475..a4b5: AccountState {
+        nonce: 28,
+        balance: 11,
+    },
+    fe81..11ef: AccountState {
+        nonce: 26,
+        balance: 22,
+    },
+    139e..26e0: AccountState {
+        nonce: 27,
+        balance: 32,
+    },
+    7599..2bf6: AccountState {
+        nonce: 26,
+        balance: 6,
+    },
+    b62e..3078: AccountState {
+        nonce: 24,
+        balance: 24,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 23,
+        balance: 37,
+    },
+    6a38..caac: AccountState {
+        nonce: 29,
+        balance: 57,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..13b3, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..13b3, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..13b3, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..13b3, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..13b3, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..13b3, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..cae8, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..cae8, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..cae8, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..cae8, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..cae8 
+ total blocks: 86, longest_chain_len: 73, 
+ Blockchain: tip_hash: 0000..cae8, tip state: {
+    7245..63a7: AccountState {
+        nonce: 30,
+        balance: 11,
+    },
+    3475..a4b5: AccountState {
+        nonce: 28,
+        balance: 11,
+    },
+    fe81..11ef: AccountState {
+        nonce: 27,
+        balance: 14,
+    },
+    139e..26e0: AccountState {
+        nonce: 27,
+        balance: 44,
+    },
+    7599..2bf6: AccountState {
+        nonce: 26,
+        balance: 24,
+    },
+    b62e..3078: AccountState {
+        nonce: 25,
+        balance: 20,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 24,
+        balance: 19,
+    },
+    6a38..caac: AccountState {
+        nonce: 29,
+        balance: 57,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..cae8, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..cae8, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..9929, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..9929 
+ total blocks: 87, longest_chain_len: 74, 
+ Blockchain: tip_hash: 0000..9929, tip state: {
+    7245..63a7: AccountState {
+        nonce: 30,
+        balance: 20,
+    },
+    3475..a4b5: AccountState {
+        nonce: 28,
+        balance: 39,
+    },
+    fe81..11ef: AccountState {
+        nonce: 27,
+        balance: 14,
+    },
+    139e..26e0: AccountState {
+        nonce: 28,
+        balance: 22,
+    },
+    7599..2bf6: AccountState {
+        nonce: 26,
+        balance: 24,
+    },
+    b62e..3078: AccountState {
+        nonce: 25,
+        balance: 20,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 25,
+        balance: 10,
+    },
+    6a38..caac: AccountState {
+        nonce: 30,
+        balance: 51,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..ffd4, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..ffd4, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..ffd4 
+ total blocks: 88, longest_chain_len: 74, 
+ Blockchain: tip_hash: 0000..9929, tip state: {
+    7245..63a7: AccountState {
+        nonce: 31,
+        balance: 9,
+    },
+    3475..a4b5: AccountState {
+        nonce: 29,
+        balance: 6,
+    },
+    fe81..11ef: AccountState {
+        nonce: 27,
+        balance: 14,
+    },
+    139e..26e0: AccountState {
+        nonce: 27,
+        balance: 67,
+    },
+    7599..2bf6: AccountState {
+        nonce: 26,
+        balance: 24,
+    },
+    b62e..3078: AccountState {
+        nonce: 25,
+        balance: 20,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 24,
+        balance: 19,
+    },
+    6a38..caac: AccountState {
+        nonce: 30,
+        balance: 41,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..ffd4, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..ffd4, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..b6a4, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..b6a4 
+ total blocks: 89, longest_chain_len: 75, 
+ Blockchain: tip_hash: 0000..b6a4, tip state: {
+    7245..63a7: AccountState {
+        nonce: 31,
+        balance: 9,
+    },
+    3475..a4b5: AccountState {
+        nonce: 29,
+        balance: 6,
+    },
+    fe81..11ef: AccountState {
+        nonce: 27,
+        balance: 14,
+    },
+    139e..26e0: AccountState {
+        nonce: 29,
+        balance: 34,
+    },
+    7599..2bf6: AccountState {
+        nonce: 26,
+        balance: 45,
+    },
+    b62e..3078: AccountState {
+        nonce: 26,
+        balance: 10,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 24,
+        balance: 19,
+    },
+    6a38..caac: AccountState {
+        nonce: 30,
+        balance: 63,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..e170, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..e170 
+ total blocks: 90, longest_chain_len: 75, 
+ Blockchain: tip_hash: 0000..b6a4, tip state: {
+    7245..63a7: AccountState {
+        nonce: 31,
+        balance: 15,
+    },
+    3475..a4b5: AccountState {
+        nonce: 28,
+        balance: 39,
+    },
+    fe81..11ef: AccountState {
+        nonce: 27,
+        balance: 14,
+    },
+    139e..26e0: AccountState {
+        nonce: 28,
+        balance: 22,
+    },
+    7599..2bf6: AccountState {
+        nonce: 27,
+        balance: 26,
+    },
+    b62e..3078: AccountState {
+        nonce: 26,
+        balance: 10,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 25,
+        balance: 20,
+    },
+    6a38..caac: AccountState {
+        nonce: 30,
+        balance: 54,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..ccd0, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..ccd0 
+ total blocks: 91, longest_chain_len: 76, 
+ Blockchain: tip_hash: 0000..ccd0, tip state: {
+    7245..63a7: AccountState {
+        nonce: 31,
+        balance: 9,
+    },
+    3475..a4b5: AccountState {
+        nonce: 29,
+        balance: 6,
+    },
+    fe81..11ef: AccountState {
+        nonce: 27,
+        balance: 19,
+    },
+    139e..26e0: AccountState {
+        nonce: 30,
+        balance: 26,
+    },
+    7599..2bf6: AccountState {
+        nonce: 26,
+        balance: 45,
+    },
+    b62e..3078: AccountState {
+        nonce: 27,
+        balance: 5,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 25,
+        balance: 27,
+    },
+    6a38..caac: AccountState {
+        nonce: 30,
+        balance: 63,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..3901, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..3901 
+ total blocks: 92, longest_chain_len: 77, 
+ Blockchain: tip_hash: 0000..3901, tip state: {
+    7245..63a7: AccountState {
+        nonce: 32,
+        balance: 5,
+    },
+    3475..a4b5: AccountState {
+        nonce: 30,
+        balance: 28,
+    },
+    fe81..11ef: AccountState {
+        nonce: 27,
+        balance: 23,
+    },
+    139e..26e0: AccountState {
+        nonce: 30,
+        balance: 26,
+    },
+    7599..2bf6: AccountState {
+        nonce: 26,
+        balance: 45,
+    },
+    b62e..3078: AccountState {
+        nonce: 27,
+        balance: 5,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 25,
+        balance: 30,
+    },
+    6a38..caac: AccountState {
+        nonce: 31,
+        balance: 38,
+    },
+}; 
+[0m[0m[33m[0m[33mINFO - Received a block: hash: 0000..4b59, num transactions: 3
+INFO - Received a block: hash: 0000..4b59, num transactions: 3
+[0m[0m[0m[33mINFO - Received a block: hash: 0000..4b59, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..4b59 
+[0m[33m total blocks: 93, longest_chain_len: 77, 
+INFO - Received a block: hash: 0000..4b59, num transactions: 3
+[0m Blockchain: tip_hash: 0000..3901, tip state: {
+    7245..63a7: AccountState {
+        nonce: 32,
+        balance: 5,
+    },
+    3475..a4b5: AccountState {
+        nonce: 29,
+        balance: 6,
+    },
+    fe81..11ef: AccountState {
+        nonce: 27,
+        balance: 45,
+    },
+    139e..26e0: AccountState {
+        nonce: 30,
+        balance: 26,
+    },
+    7599..2bf6: AccountState {
+        nonce: 27,
+        balance: 54,
+    },
+    b62e..3078: AccountState {
+        nonce: 27,
+        balance: 5,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 25,
+        balance: 27,
+    },
+    6a38..caac: AccountState {
+        nonce: 31,
+        balance: 32,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..4b59, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..4b59, num transactions: 3
+[0m[33m[0mINFO - Received a block: hash: 0000..4b59, num transactions: 3
+[0m[33m[0mINFO - Received a block: hash: 0000..4b59, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..4b59, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..4b59, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..4b59, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..4b59, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..4b59, num transactions: 3
+[0m[33m[0mINFO - Received a block: hash: 0000..4b59, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..4b59, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..4b59, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..b5b9, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..b5b9, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..b5b9 
+ total blocks: 94, longest_chain_len: 78, 
+ Blockchain: tip_hash: 0000..b5b9, tip state: {
+    7245..63a7: AccountState {
+        nonce: 32,
+        balance: 5,
+    },
+    3475..a4b5: AccountState {
+        nonce: 30,
+        balance: 28,
+    },
+    fe81..11ef: AccountState {
+        nonce: 28,
+        balance: 14,
+    },
+    139e..26e0: AccountState {
+        nonce: 30,
+        balance: 41,
+    },
+    7599..2bf6: AccountState {
+        nonce: 27,
+        balance: 23,
+    },
+    b62e..3078: AccountState {
+        nonce: 27,
+        balance: 27,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 26,
+        balance: 24,
+    },
+    6a38..caac: AccountState {
+        nonce: 31,
+        balance: 38,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..b5b9, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..b5b9, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..0ffa, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..0ffa 
+ total blocks: 95, longest_chain_len: 79, 
+ Blockchain: tip_hash: 0000..0ffa, tip state: {
+    7245..63a7: AccountState {
+        nonce: 33,
+        balance: 3,
+    },
+    3475..a4b5: AccountState {
+        nonce: 30,
+        balance: 30,
+    },
+    fe81..11ef: AccountState {
+        nonce: 29,
+        balance: 7,
+    },
+    139e..26e0: AccountState {
+        nonce: 30,
+        balance: 41,
+    },
+    7599..2bf6: AccountState {
+        nonce: 27,
+        balance: 23,
+    },
+    b62e..3078: AccountState {
+        nonce: 28,
+        balance: 25,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 26,
+        balance: 31,
+    },
+    6a38..caac: AccountState {
+        nonce: 31,
+        balance: 40,
+    },
+}; 
+[0m[0m[33mINFO - Mined a new block: hash: 0000..68bc, num transactions: 3, num blocks mined: 14
+[0m[0m[33mINFO - New block_hash: 0000..68bc 
+ total blocks: 96, longest_chain_len: 80, 
+ Blockchain: tip_hash: 0000..68bc, tip state: {
+    7245..63a7: AccountState {
+        nonce: 33,
+        balance: 22,
+    },
+    3475..a4b5: AccountState {
+        nonce: 31,
+        balance: 16,
+    },
+    fe81..11ef: AccountState {
+        nonce: 29,
+        balance: 7,
+    },
+    139e..26e0: AccountState {
+        nonce: 31,
+        balance: 28,
+    },
+    7599..2bf6: AccountState {
+        nonce: 27,
+        balance: 23,
+    },
+    b62e..3078: AccountState {
+        nonce: 28,
+        balance: 38,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 26,
+        balance: 31,
+    },
+    6a38..caac: AccountState {
+        nonce: 32,
+        balance: 35,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..2fc5, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..2fc5 
+ total blocks: 97, longest_chain_len: 80, 
+ Blockchain: tip_hash: 0000..68bc, tip state: {
+    7245..63a7: AccountState {
+        nonce: 33,
+        balance: 3,
+    },
+    3475..a4b5: AccountState {
+        nonce: 30,
+        balance: 30,
+    },
+    fe81..11ef: AccountState {
+        nonce: 29,
+        balance: 7,
+    },
+    139e..26e0: AccountState {
+        nonce: 31,
+        balance: 47,
+    },
+    7599..2bf6: AccountState {
+        nonce: 27,
+        balance: 23,
+    },
+    b62e..3078: AccountState {
+        nonce: 29,
+        balance: 13,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 26,
+        balance: 31,
+    },
+    6a38..caac: AccountState {
+        nonce: 32,
+        balance: 46,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..4495, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..4495 
+ total blocks: 98, longest_chain_len: 80, 
+ Blockchain: tip_hash: 0000..68bc, tip state: {
+    7245..63a7: AccountState {
+        nonce: 33,
+        balance: 3,
+    },
+    3475..a4b5: AccountState {
+        nonce: 31,
+        balance: 29,
+    },
+    fe81..11ef: AccountState {
+        nonce: 29,
+        balance: 40,
+    },
+    139e..26e0: AccountState {
+        nonce: 31,
+        balance: 28,
+    },
+    7599..2bf6: AccountState {
+        nonce: 27,
+        balance: 23,
+    },
+    b62e..3078: AccountState {
+        nonce: 28,
+        balance: 25,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 26,
+        balance: 31,
+    },
+    6a38..caac: AccountState {
+        nonce: 32,
+        balance: 21,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..2fc5, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..2fc5, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..a659, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..a659 
+ total blocks: 99, longest_chain_len: 81, 
+ Blockchain: tip_hash: 0000..a659, tip state: {
+    7245..63a7: AccountState {
+        nonce: 33,
+        balance: 32,
+    },
+    3475..a4b5: AccountState {
+        nonce: 31,
+        balance: 15,
+    },
+    fe81..11ef: AccountState {
+        nonce: 29,
+        balance: 7,
+    },
+    139e..26e0: AccountState {
+        nonce: 32,
+        balance: 33,
+    },
+    7599..2bf6: AccountState {
+        nonce: 27,
+        balance: 23,
+    },
+    b62e..3078: AccountState {
+        nonce: 30,
+        balance: 7,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 26,
+        balance: 37,
+    },
+    6a38..caac: AccountState {
+        nonce: 32,
+        balance: 46,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..03af, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..03af 
+ total blocks: 100, longest_chain_len: 82, 
+ Blockchain: tip_hash: 0000..03af, tip state: {
+    7245..63a7: AccountState {
+        nonce: 34,
+        balance: 31,
+    },
+    3475..a4b5: AccountState {
+        nonce: 31,
+        balance: 15,
+    },
+    fe81..11ef: AccountState {
+        nonce: 29,
+        balance: 7,
+    },
+    139e..26e0: AccountState {
+        nonce: 32,
+        balance: 48,
+    },
+    7599..2bf6: AccountState {
+        nonce: 27,
+        balance: 26,
+    },
+    b62e..3078: AccountState {
+        nonce: 31,
+        balance: 4,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 27,
+        balance: 22,
+    },
+    6a38..caac: AccountState {
+        nonce: 32,
+        balance: 47,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..7c90, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..7c90 
+ total blocks: 101, longest_chain_len: 83, 
+ Blockchain: tip_hash: 0000..7c90, tip state: {
+    7245..63a7: AccountState {
+        nonce: 34,
+        balance: 31,
+    },
+    3475..a4b5: AccountState {
+        nonce: 32,
+        balance: 7,
+    },
+    fe81..11ef: AccountState {
+        nonce: 29,
+        balance: 42,
+    },
+    139e..26e0: AccountState {
+        nonce: 33,
+        balance: 32,
+    },
+    7599..2bf6: AccountState {
+        nonce: 28,
+        balance: 15,
+    },
+    b62e..3078: AccountState {
+        nonce: 31,
+        balance: 4,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 27,
+        balance: 22,
+    },
+    6a38..caac: AccountState {
+        nonce: 32,
+        balance: 47,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..1c12, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..1c12 
+ total blocks: 102, longest_chain_len: 84, 
+ Blockchain: tip_hash: 0000..1c12, tip state: {
+    7245..63a7: AccountState {
+        nonce: 35,
+        balance: 16,
+    },
+    3475..a4b5: AccountState {
+        nonce: 32,
+        balance: 22,
+    },
+    fe81..11ef: AccountState {
+        nonce: 30,
+        balance: 39,
+    },
+    139e..26e0: AccountState {
+        nonce: 33,
+        balance: 35,
+    },
+    7599..2bf6: AccountState {
+        nonce: 28,
+        balance: 15,
+    },
+    b62e..3078: AccountState {
+        nonce: 32,
+        balance: 2,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 27,
+        balance: 24,
+    },
+    6a38..caac: AccountState {
+        nonce: 32,
+        balance: 47,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..1c12, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..1c12, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..1c12, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..1c12, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..1c12, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..1c12, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..1c12, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..1c12, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..1c12, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..c0a7, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..c0a7, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..c0a7, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..c0a7 
+ total blocks: 103, longest_chain_len: 85, 
+ Blockchain: tip_hash: 0000..c0a7, tip state: {
+    7245..63a7: AccountState {
+        nonce: 35,
+        balance: 16,
+    },
+    3475..a4b5: AccountState {
+        nonce: 32,
+        balance: 22,
+    },
+    fe81..11ef: AccountState {
+        nonce: 30,
+        balance: 57,
+    },
+    139e..26e0: AccountState {
+        nonce: 34,
+        balance: 19,
+    },
+    7599..2bf6: AccountState {
+        nonce: 29,
+        balance: 8,
+    },
+    b62e..3078: AccountState {
+        nonce: 32,
+        balance: 18,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 28,
+        balance: 13,
+    },
+    6a38..caac: AccountState {
+        nonce: 32,
+        balance: 47,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..c0a7, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..c0a7, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..c0a7, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..c0a7, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..c0a7, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..c0a7, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..1151, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..1151 
+ total blocks: 104, longest_chain_len: 86, 
+ Blockchain: tip_hash: 0000..1151, tip state: {
+    7245..63a7: AccountState {
+        nonce: 36,
+        balance: 8,
+    },
+    3475..a4b5: AccountState {
+        nonce: 32,
+        balance: 22,
+    },
+    fe81..11ef: AccountState {
+        nonce: 30,
+        balance: 66,
+    },
+    139e..26e0: AccountState {
+        nonce: 35,
+        balance: 10,
+    },
+    7599..2bf6: AccountState {
+        nonce: 29,
+        balance: 16,
+    },
+    b62e..3078: AccountState {
+        nonce: 32,
+        balance: 24,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 29,
+        balance: 7,
+    },
+    6a38..caac: AccountState {
+        nonce: 32,
+        balance: 47,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..1151, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..1151, num transactions: 3
+[0m[0m[33mINFO - Mined a new block: hash: 0000..681d, num transactions: 3, num blocks mined: 15
+[0m[0m[33mINFO - New block_hash: 0000..681d 
+ total blocks: 105, longest_chain_len: 87, 
+ Blockchain: tip_hash: 0000..681d, tip state: {
+    7245..63a7: AccountState {
+        nonce: 36,
+        balance: 8,
+    },
+    3475..a4b5: AccountState {
+        nonce: 32,
+        balance: 55,
+    },
+    fe81..11ef: AccountState {
+        nonce: 31,
+        balance: 38,
+    },
+    139e..26e0: AccountState {
+        nonce: 36,
+        balance: 5,
+    },
+    7599..2bf6: AccountState {
+        nonce: 29,
+        balance: 16,
+    },
+    b62e..3078: AccountState {
+        nonce: 33,
+        balance: 12,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 29,
+        balance: 7,
+    },
+    6a38..caac: AccountState {
+        nonce: 32,
+        balance: 59,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..27c9, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..27c9 
+ total blocks: 106, longest_chain_len: 87, 
+ Blockchain: tip_hash: 0000..681d, tip state: {
+    7245..63a7: AccountState {
+        nonce: 37,
+        balance: 4,
+    },
+    3475..a4b5: AccountState {
+        nonce: 32,
+        balance: 22,
+    },
+    fe81..11ef: AccountState {
+        nonce: 30,
+        balance: 66,
+    },
+    139e..26e0: AccountState {
+        nonce: 35,
+        balance: 27,
+    },
+    7599..2bf6: AccountState {
+        nonce: 30,
+        balance: 8,
+    },
+    b62e..3078: AccountState {
+        nonce: 32,
+        balance: 36,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 29,
+        balance: 7,
+    },
+    6a38..caac: AccountState {
+        nonce: 33,
+        balance: 30,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..27c9, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..27c9, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..27c9, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..d39a, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..d39a, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..d39a, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..d39a, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..d39a 
+ total blocks: 107, longest_chain_len: 88, 
+ Blockchain: tip_hash: 0000..d39a, tip state: {
+    7245..63a7: AccountState {
+        nonce: 37,
+        balance: 4,
+    },
+    3475..a4b5: AccountState {
+        nonce: 33,
+        balance: 11,
+    },
+    fe81..11ef: AccountState {
+        nonce: 30,
+        balance: 78,
+    },
+    139e..26e0: AccountState {
+        nonce: 36,
+        balance: 22,
+    },
+    7599..2bf6: AccountState {
+        nonce: 30,
+        balance: 8,
+    },
+    b62e..3078: AccountState {
+        nonce: 33,
+        balance: 40,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 29,
+        balance: 7,
+    },
+    6a38..caac: AccountState {
+        nonce: 33,
+        balance: 30,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..d39a, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..d39a, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..d39a, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..d39a, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..d39a, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..d39a, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..a983, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..a983 
+ total blocks: 108, longest_chain_len: 89, 
+ Blockchain: tip_hash: 0000..a983, tip state: {
+    7245..63a7: AccountState {
+        nonce: 37,
+        balance: 4,
+    },
+    3475..a4b5: AccountState {
+        nonce: 34,
+        balance: 6,
+    },
+    fe81..11ef: AccountState {
+        nonce: 31,
+        balance: 48,
+    },
+    139e..26e0: AccountState {
+        nonce: 36,
+        balance: 22,
+    },
+    7599..2bf6: AccountState {
+        nonce: 30,
+        balance: 8,
+    },
+    b62e..3078: AccountState {
+        nonce: 33,
+        balance: 40,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 30,
+        balance: 37,
+    },
+    6a38..caac: AccountState {
+        nonce: 33,
+        balance: 35,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..311a, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..311a 
+ total blocks: 109, longest_chain_len: 89, 
+ Blockchain: tip_hash: 0000..a983, tip state: {
+    7245..63a7: AccountState {
+        nonce: 37,
+        balance: 4,
+    },
+    3475..a4b5: AccountState {
+        nonce: 34,
+        balance: 6,
+    },
+    fe81..11ef: AccountState {
+[0m        nonce: 31,
+        balance: 44,
+    },
+    139e..26e0: AccountState {
+        nonce: 36,
+        balance: 25,
+    },
+    7599..2bf6: AccountState {
+        nonce: 30,
+        balance: 47,
+    },
+[33m    b62e..3078: AccountState {
+INFO - Received a block: hash: 0000..311a, num transactions: 3
+        nonce: 33,
+[0m        balance: 40,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 30,
+        balance: 4,
+    },
+    6a38..caac: AccountState {
+        nonce: 33,
+        balance: 30,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..311a, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..deb3, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..deb3, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..deb3 
+ total blocks: 110, longest_chain_len: 90, 
+ Blockchain: tip_hash: 0000..deb3, tip state: {
+    7245..63a7: AccountState {
+        nonce: 38,
+        balance: 2,
+    },
+    3475..a4b5: AccountState {
+        nonce: 34,
+        balance: 6,
+    },
+    fe81..11ef: AccountState {
+        nonce: 32,
+        balance: 26,
+    },
+    139e..26e0: AccountState {
+        nonce: 37,
+        balance: 20,
+    },
+    7599..2bf6: AccountState {
+        nonce: 30,
+        balance: 8,
+    },
+    b62e..3078: AccountState {
+        nonce: 33,
+        balance: 66,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 30,
+        balance: 37,
+    },
+    6a38..caac: AccountState {
+        nonce: 33,
+        balance: 35,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..deb3, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..deb3, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..adaf, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..adaf 
+ total blocks: 111, longest_chain_len: 91, 
+ Blockchain: tip_hash: 0000..adaf, tip state: {
+    7245..63a7: AccountState {
+        nonce: 38,
+        balance: 2,
+    },
+    3475..a4b5: AccountState {
+        nonce: 35,
+        balance: 3,
+    },
+    fe81..11ef: AccountState {
+        nonce: 33,
+        balance: 13,
+    },
+    139e..26e0: AccountState {
+        nonce: 37,
+        balance: 20,
+    },
+    7599..2bf6: AccountState {
+        nonce: 30,
+        balance: 8,
+    },
+    b62e..3078: AccountState {
+        nonce: 33,
+        balance: 66,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 30,
+        balance: 54,
+    },
+    6a38..caac: AccountState {
+        nonce: 34,
+        balance: 34,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..14ca, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..14ca, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..14ca 
+ total blocks: 112, longest_chain_len: 92, 
+ Blockchain: tip_hash: 0000..14ca, tip state: {
+    7245..63a7: AccountState {
+        nonce: 39,
+        balance: 1,
+    },
+    3475..a4b5: AccountState {
+        nonce: 35,
+        balance: 3,
+    },
+    fe81..11ef: AccountState {
+        nonce: 34,
+        balance: 7,
+    },
+    139e..26e0: AccountState {
+        nonce: 38,
+        balance: 10,
+    },
+    7599..2bf6: AccountState {
+        nonce: 30,
+        balance: 8,
+    },
+    b62e..3078: AccountState {
+        nonce: 33,
+        balance: 67,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 30,
+        balance: 60,
+    },
+    6a38..caac: AccountState {
+        nonce: 34,
+        balance: 44,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..14ca, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..14ca, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..b66d, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..b66d 
+ total blocks: 113, longest_chain_len: 93, 
+ Blockchain: tip_hash: 0000..b66d, tip state: {
+    7245..63a7: AccountState {
+        nonce: 40,
+        balance: 1,
+    },
+    3475..a4b5: AccountState {
+        nonce: 35,
+        balance: 3,
+    },
+    fe81..11ef: AccountState {
+        nonce: 34,
+        balance: 7,
+    },
+    139e..26e0: AccountState {
+        nonce: 38,
+        balance: 14,
+    },
+    7599..2bf6: AccountState {
+        nonce: 31,
+        balance: 4,
+    },
+    b62e..3078: AccountState {
+        nonce: 33,
+        balance: 67,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 30,
+        balance: 82,
+    },
+    6a38..caac: AccountState {
+        nonce: 35,
+        balance: 22,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..5bf2, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..5bf2 
+ total blocks: 114, longest_chain_len: 94, 
+ Blockchain: tip_hash: 0000..5bf2, tip state: {
+    7245..63a7: AccountState {
+        nonce: 40,
+        balance: 21,
+    },
+    3475..a4b5: AccountState {
+        nonce: 35,
+        balance: 3,
+    },
+    fe81..11ef: AccountState {
+        nonce: 34,
+        balance: 7,
+    },
+    139e..26e0: AccountState {
+        nonce: 39,
+        balance: 9,
+    },
+    7599..2bf6: AccountState {
+        nonce: 31,
+        balance: 4,
+    },
+    b62e..3078: AccountState {
+        nonce: 34,
+        balance: 47,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 31,
+        balance: 55,
+    },
+    6a38..caac: AccountState {
+        nonce: 35,
+        balance: 54,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..1248, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..1248 
+ total blocks: 115, longest_chain_len: 95, 
+ Blockchain: tip_hash: 0000..1248, tip state: {
+    7245..63a7: AccountState {
+        nonce: 41,
+        balance: 11,
+    },
+    3475..a4b5: AccountState {
+        nonce: 35,
+        balance: 3,
+    },
+    fe81..11ef: AccountState {
+        nonce: 34,
+        balance: 34,
+    },
+    139e..26e0: AccountState {
+        nonce: 39,
+        balance: 11,
+    },
+    7599..2bf6: AccountState {
+        nonce: 32,
+        balance: 2,
+    },
+    b62e..3078: AccountState {
+        nonce: 34,
+        balance: 57,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 32,
+        balance: 28,
+    },
+    6a38..caac: AccountState {
+        nonce: 35,
+        balance: 54,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..0e50, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..0e50 
+ total blocks: 116, longest_chain_len: 95, 
+ Blockchain: tip_hash: 0000..1248, tip state: {
+    7245..63a7: AccountState {
+        nonce: 41,
+        balance: 21,
+    },
+    3475..a4b5: AccountState {
+        nonce: 36,
+        balance: 2,
+    },
+    fe81..11ef: AccountState {
+        nonce: 34,
+        balance: 7,
+    },
+    139e..26e0: AccountState {
+        nonce: 39,
+        balance: 36,
+    },
+    7599..2bf6: AccountState {
+        nonce: 31,
+        balance: 4,
+    },
+    b62e..3078: AccountState {
+        nonce: 34,
+        balance: 48,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 32,
+        balance: 28,
+    },
+[0m[33m    6a38..caac: AccountState {
+INFO - Received a block: hash: 0000..0e50, num transactions: 3
+[0m        nonce: 35,
+        balance: 54,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..0e50, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..0e50, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..55f0, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..55f0 
+ total blocks: 117, longest_chain_len: 96, 
+ Blockchain: tip_hash: 0000..55f0, tip state: {
+    7245..63a7: AccountState {
+        nonce: 42,
+        balance: 20,
+    },
+    3475..a4b5: AccountState {
+        nonce: 35,
+        balance: 26,
+    },
+    fe81..11ef: AccountState {
+        nonce: 34,
+        balance: 34,
+    },
+    139e..26e0: AccountState {
+        nonce: 39,
+        balance: 11,
+    },
+    7599..2bf6: AccountState {
+        nonce: 32,
+        balance: 7,
+    },
+    b62e..3078: AccountState {
+        nonce: 35,
+        balance: 34,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 33,
+        balance: 14,
+    },
+    6a38..caac: AccountState {
+        nonce: 35,
+        balance: 54,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..0d9e, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..0d9e 
+ total blocks: 118, longest_chain_len: 97, 
+ Blockchain: tip_hash: 0000..0d9e, tip state: {
+    7245..63a7: AccountState {
+        nonce: 42,
+        balance: 21,
+    },
+    3475..a4b5: AccountState {
+        nonce: 36,
+        balance: 13,
+    },
+    fe81..11ef: AccountState {
+        nonce: 34,
+        balance: 34,
+    },
+    139e..26e0: AccountState {
+        nonce: 39,
+        balance: 18,
+    },
+    7599..2bf6: AccountState {
+        nonce: 33,
+        balance: 6,
+    },
+    b62e..3078: AccountState {
+        nonce: 35,
+        balance: 34,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 34,
+        balance: 7,
+    },
+    6a38..caac: AccountState {
+        nonce: 35,
+        balance: 67,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..963b, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..963b 
+ total blocks: 119, longest_chain_len: 97, 
+ Blockchain: tip_hash: 0000..0d9e, tip state: {
+    7245..63a7: AccountState {
+        nonce: 42,
+        balance: 20,
+    },
+    3475..a4b5: AccountState {
+        nonce: 35,
+        balance: 26,
+    },
+    fe81..11ef: AccountState {
+        nonce: 34,
+        balance: 38,
+    },
+    139e..26e0: AccountState {
+        nonce: 40,
+        balance: 7,
+    },
+    7599..2bf6: AccountState {
+        nonce: 33,
+        balance: 21,
+    },
+    b62e..3078: AccountState {
+        nonce: 36,
+        balance: 17,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 33,
+        balance: 14,
+    },
+    6a38..caac: AccountState {
+        nonce: 35,
+        balance: 57,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..963b, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..963b, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..3e2f, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..3e2f 
+ total blocks: 120, longest_chain_len: 98, 
+ Blockchain: tip_hash: 0000..3e2f, tip state: {
+    7245..63a7: AccountState {
+        nonce: 42,
+        balance: 38,
+    },
+    3475..a4b5: AccountState {
+        nonce: 36,
+        balance: 17,
+    },
+    fe81..11ef: AccountState {
+        nonce: 35,
+        balance: 17,
+    },
+    139e..26e0: AccountState {
+        nonce: 40,
+        balance: 31,
+    },
+    7599..2bf6: AccountState {
+        nonce: 33,
+        balance: 6,
+    },
+    b62e..3078: AccountState {
+        nonce: 36,
+        balance: 17,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 34,
+        balance: 7,
+    },
+    6a38..caac: AccountState {
+        nonce: 35,
+        balance: 67,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..fa0a, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..fa0a 
+ total blocks: 121, longest_chain_len: 98, 
+ Blockchain: tip_hash: 0000..3e2f, tip state: {
+    7245..63a7: AccountState {
+        nonce: 42,
+        balance: 25,
+    },
+    3475..a4b5: AccountState {
+        nonce: 36,
+        balance: 13,
+    },
+    fe81..11ef: AccountState {
+        nonce: 35,
+        balance: 17,
+    },
+    139e..26e0: AccountState {
+        nonce: 40,
+        balance: 41,
+    },
+    7599..2bf6: AccountState {
+        nonce: 33,
+        balance: 23,
+    },
+    b62e..3078: AccountState {
+        nonce: 35,
+        balance: 34,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 34,
+        balance: 7,
+    },
+    6a38..caac: AccountState {
+        nonce: 36,
+        balance: 40,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..cd37, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..cd37, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..cd37 
+ total blocks: 122, longest_chain_len: 99, 
+ Blockchain: tip_hash: 0000..cd37, tip state: {
+    7245..63a7: AccountState {
+        nonce: 42,
+        balance: 25,
+    },
+    3475..a4b5: AccountState {
+        nonce: 36,
+        balance: 16,
+    },
+    fe81..11ef: AccountState {
+        nonce: 35,
+        balance: 17,
+    },
+    139e..26e0: AccountState {
+        nonce: 40,
+        balance: 41,
+    },
+    7599..2bf6: AccountState {
+        nonce: 34,
+        balance: 45,
+    },
+    b62e..3078: AccountState {
+        nonce: 37,
+        balance: 9,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 34,
+        balance: 7,
+    },
+    6a38..caac: AccountState {
+        nonce: 36,
+        balance: 40,
+    },
+}; 
+[0m[0m[33mINFO - Received a block: hash: 0000..b988, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..cd37, num transactions: 3
+[0m[0m[33mINFO - Received a block: hash: 0000..cd37, num transactions: 3
+[0m[0m[33mINFO - New block_hash: 0000..b988 
+ total blocks: 123, longest_chain_len: 99, 
+ Blockchain: tip_hash: 0000..cd37, tip state: {
+    7245..63a7: AccountState {
+        nonce: 43,
+        balance: 15,
+    },
+    3475..a4b5: AccountState {
+        nonce: 37,
+        balance: 7,
+    },
+    fe81..11ef: AccountState {
+        nonce: 35,
+        balance: 20,
+    },
+    139e..26e0: AccountState {
+        nonce: 40,
+        balance: 41,
+    },
+    7599..2bf6: AccountState {
+        nonce: 33,
+        balance: 29,
+    },
+    b62e..3078: AccountState {
+        nonce: 35,
+        balance: 34,
+    },
+    c5b9..a57b: AccountState {
+        nonce: 35,
+        balance: 14,
+    },
+    6a38..caac: AccountState {
+        nonce: 36,
+        balance: 40,
+    },
+}; 
+[0m
