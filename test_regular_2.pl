@@ -3,7 +3,7 @@ use warnings;
 use strict;
 use threads;
 
-my $cmd1 = "cargo run -- -vvv --p2p 127.0.0.1:6000 --api 127.0.0.1:7000 2> ./log/reg2_8.log";
+my $cmd1 = "cargo run -- -vvv --p2p 127.0.0.1:6000 --api 127.0.0.1:7000 2> ./log/reg2_64.log";
 my $cmd2 = "cargo run -- -vvv --p2p 127.0.0.1:6001 --api 127.0.0.1:7001 -c 127.0.0.1:6000";
 my $cmd3 = "cargo run -- -vvv --p2p 127.0.0.1:6002 --api 127.0.0.1:7002 -c 127.0.0.1:6001 &> /dev/null";
 my $cmd4 = "cargo run -- -vvv --p2p 127.0.0.1:6003 --api 127.0.0.1:7003 -c 127.0.0.1:6002 &> /dev/null";
@@ -24,6 +24,7 @@ my @threads;
 
 foreach my $cmd (@cmd_array) {
     push @threads, threads->create(sub {system($cmd)});
+    sleep(1);
 }
 
 sleep(5);

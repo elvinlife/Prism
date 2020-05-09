@@ -24,6 +24,7 @@ my @threads;
 
 foreach my $cmd (@cmd_array) {
     push @threads, threads->create(sub {system($cmd)});
+    sleep(1);
 }
 
 sleep(5);

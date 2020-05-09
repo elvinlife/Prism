@@ -20,7 +20,7 @@ impl Blockchain {
             header: Header{
                 parent: Default::default(),
                 nonce: Default::default(),
-                difficulty: H256::from([0,8,0,0,0,0,0,0,
+                difficulty: H256::from([0,64,0,0,0,0,0,0,
                                         0,0,0,0,0,0,0,0,
                                         0,0,0,0,0,0,0,0,
                                         0,0,0,0,0,0,0,0]),

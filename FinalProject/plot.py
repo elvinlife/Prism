@@ -42,14 +42,14 @@ def plot_topo():
     x = np.arange(len(labels))  # the label locations
     width = 0.15  # the width of the bars
     fig, ax = plt.subplots()
-    rects1 = ax.bar(x - 3/2 * width, np.array(topo_2_validblocks['line'])/60, width, label='Line')
-    rects2 = ax.bar(x - width / 2, np.array(topo_2_validblocks['reg2'])/60, width, label='Reg-2')
-    rects3 = ax.bar(x + width / 2, np.array(topo_2_validblocks['reg3'])/60, width, label='Reg-3')
-    rects4 = ax.bar(x + 3/2 * width, np.array(topo_2_validblocks['reg4'])/60, width, label='Reg-4')
+    rects1 = ax.bar(x - 3/2 * width, np.array(topo_2_validblocks['line'])*3/60, width, label='Line')
+    rects2 = ax.bar(x - width / 2, np.array(topo_2_validblocks['reg2'])*3/60, width, label='2-regular')
+    rects3 = ax.bar(x + width / 2, np.array(topo_2_validblocks['reg3'])*3/60, width, label='3-regular')
+    rects4 = ax.bar(x + 3/2 * width, np.array(topo_2_validblocks['reg4'])*3/60, width, label='4-regular')
     # Add some text for labels, title and custom x-axis tick labels, etc.
-    ax.set_ylabel('Mining Rate (tx/s)')
-    ax.set_xlabel('Difficulty')
-    ax.set_title('Mining rate ~ Topology')
+    ax.set_ylabel('Throughput(tx/s)')
+    ax.set_xlabel('Threshold for PoW')
+    ax.set_title('Throughput ~ Topology')
     ax.set_xticks(x)
     ax.set_xticklabels(labels)
     ax.legend()
@@ -62,16 +62,16 @@ def plot_topo():
     plt.savefig('topology.pdf')
 
 def plot_diff():
-    labels = ['Line', 'Reg-2', 'Reg-3', 'Reg-4']
+    labels = ['Line', '2-regular', '3-regular', '4-regular']
     x = np.arange(len(labels))  # the label locations
     width = 0.15  # the width of the bars
     fig, ax = plt.subplots()
-    rects1 = ax.bar(x - width, np.array(diff_2_validblocks['1'])/60, width, label='Difficulty: 1')
-    rects2 = ax.bar(x, np.array(diff_2_validblocks['8'])/60, width, label='Difficulty: 8')
-    rects3 = ax.bar(x + width, np.array(diff_2_validblocks['64'])/60, width, label='Difficulty: 64')
-    ax.set_ylabel('Mining Rate (tx/s)')
+    rects1 = ax.bar(x - width, np.array(diff_2_validblocks['1'])*3/60, width, label='Threshold: 1')
+    rects2 = ax.bar(x, np.array(diff_2_validblocks['8'])*3/60, width, label='Threshold: 8')
+    rects3 = ax.bar(x + width, np.array(diff_2_validblocks['64'])*3/60, width, label='Threshold: 64')
+    ax.set_ylabel('Throughput(tx/s)')
     ax.set_xlabel('Topology')
-    ax.set_title('Mining rate ~ Difficulty')
+    ax.set_title('Throughput ~ Threshold for PoW')
     ax.set_xticks(x)
     ax.set_xticklabels(labels)
     ax.legend()
