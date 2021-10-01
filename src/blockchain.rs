@@ -79,15 +79,16 @@ impl Blockchain {
 
             let new_len: u32 = self.block_len.get(&prev_block_hash).unwrap() + 1; 
             self.block_len.insert(curr_block_hash, new_len);
-
             self.block_states.insert(curr_block_hash, state.clone());
 
+            info!("New block_hash: {:?} total blocks: {:?}, longest_chain_len: {:?}",
+                block.hash(), self.blocks.len(), self.block_len.get(self.tip()).unwrap());
+
             if new_len > *self.block_len.get(&self.head).unwrap(){
-                self.head = curr_block_hash; 
+                self.head = curr_block_hash;
+                info!("Blockchain: tip_hash: {:?}, tip state: {:#?}; ", self.tip(), state.account_state);
             }
 
-            info!("New block_hash: {:?} \r\n total blocks: {:?}, longest_chain_len: {:?}, \r\n Blockchain: tip_hash: {:?}, tip state: {:#?}; ",
-                block.hash(), self.blocks.len(), self.block_len.get(self.tip()).unwrap(), self.tip(), state.account_state);
             return true;
         }
         false
